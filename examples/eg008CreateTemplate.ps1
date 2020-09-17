@@ -36,7 +36,6 @@ $templateId = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.temp
 
 Write-Output "Did we find any templateIds?: $templateId"
 
-#if ($templateId -ne "") {
 if (-not ([string]::IsNullOrEmpty($templateId))) {
     Write-Output ""
     Write-Output "Your account already includes the '${templateName}' template."
@@ -214,10 +213,10 @@ Write-Output "Template '${templateName}' was created! Template ID ${templateId}.
 Write-Output ${templateId} > .\config\TEMPLATE_ID
 
 # cleanup
-# Remove-Item $requestData
-# Remove-Item $requestDataTemp
-# Remove-Item $response
-# Remove-Item $doc1Base64
+Remove-Item $requestData
+Remove-Item $requestDataTemp
+Remove-Item $response
+Remove-Item $doc1Base64
 
 Write-Output ""
 Write-Output "Done."

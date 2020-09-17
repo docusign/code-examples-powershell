@@ -21,7 +21,7 @@ $fromDate = ((Get-Date).adddays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
 
 $(Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
-    -Method 'Get' `
+    -Method 'GET' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
     'Content-Type'  = "application/json";

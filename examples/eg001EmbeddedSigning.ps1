@@ -38,8 +38,7 @@ $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
 # Fetch doc and encode
-$demoFile = $(Get-Location).Path + '\demo_documents\World_Wide_Corp_lorem.pdf'
-[Convert]::ToBase64String([IO.File]::ReadAllBytes($demoFile)) > $doc1Base64
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
 
 Write-Output "`nSending the envelope request to DocuSign...`n"
 

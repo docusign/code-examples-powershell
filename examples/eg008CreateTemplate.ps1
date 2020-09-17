@@ -22,7 +22,7 @@ $templateName = "Example Signer and CC template"
 $response = New-TemporaryFile
 
 Invoke-RestMethod `
-    -Uri "${basePath}/v2.1/accounts/${accountId}/templates" `
+    -Uri "${apiUri}/v2.1/accounts/${accountId}/templates" `
     -Method 'GET' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
@@ -36,7 +36,8 @@ $templateId = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.temp
 
 Write-Output "Did we find any templateIds?: $templateId"
 
-if ($templateId -ne "") {
+#if ($templateId -ne "") {
+if (-not ([string]::IsNullOrEmpty($templateId))) {
     Write-Output ""
     Write-Output "Your account already includes the '${templateName}' template."
     # Save the template id for use by other scripts

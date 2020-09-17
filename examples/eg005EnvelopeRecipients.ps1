@@ -13,12 +13,11 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$basePath = "https://demo.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
 
 # Check that we have an envelope id
 if (Test-Path .\config\ENVELOPE_ID) {
   $envelopeID = Get-Content .\config\ENVELOPE_ID
-  # $envelopeID = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\ENVELOPE_ID"))
 }
 else {
   Write-Output "`nPROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email`n"
@@ -30,21 +29,12 @@ Write-Output "Sending the EnvelopeRecipients::list request to DocuSign...`n"
 Write-Output "Results:"
 
 # ***DS.snippet.0.start
-$headers = @{
-  'Authorization' = "Bearer $accessToken"
-  'Content-Type'  = 'application/json'
-}
-
-$parameters = @{
-  Uri    = $basePath + "/v2.1/accounts/" + $accountId + "/envelopes/" + $envelopeId + "/recipients"
-  Method = 'GET'
-}
-
-try {
-  Invoke-RestMethod -Headers $headers @parameters
-}
-catch {
-  Write-Error  $_
+Invoke-RestMethod `
+  -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/recipients" `
+  -Method 'GET' `
+  -Headers @{
+  'Authorization' = "Bearer $accessToken";
+  'Content-Type'  = "application/json";
 }
 # ***DS.snippet.0.end
 

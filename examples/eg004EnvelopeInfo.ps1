@@ -32,11 +32,11 @@ Write-Output "Results:"
 
 # ***DS.snippet.0.start
 Invoke-RestMethod `
-    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}" `
-    -Method 'GET' `
-    -Headers @{
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
+  -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}" `
+  -Method 'GET' `
+  -Headers @{
+  'Authorization' = "Bearer $accessToken";
+  'Content-Type'  = "application/json";
 }
 # ***DS.snippet.0.end
 

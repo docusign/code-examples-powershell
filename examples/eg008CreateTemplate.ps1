@@ -197,8 +197,6 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
-Write-Output "Response: $(Get-Content -Raw $response)`n"
-
 Write-Output ""
 Write-Output "Results:"
 Get-Content $response

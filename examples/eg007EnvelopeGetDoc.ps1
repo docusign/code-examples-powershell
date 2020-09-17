@@ -86,7 +86,7 @@ Write-Output ""
 
 # ***DS.snippet.0.start
 Invoke-RestMethod `
-    -Uri "${basePath}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
+    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
     -Method 'GET' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";

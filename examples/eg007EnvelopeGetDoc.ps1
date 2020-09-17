@@ -16,7 +16,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 #
 $outputFile = "envelope_document."
 
-$basePath = "https://demo.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
 
 # Check that we have an envelope id
 if (Test-Path .\config\ENVELOPE_ID) {
@@ -85,19 +85,14 @@ Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
 Write-Output ""
 
 # ***DS.snippet.0.start
-try {
-    Invoke-RestMethod `
-        -Uri "${basePath}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
-        -Method 'GET' `
-        -Headers @{
-        'Authorization' = "Bearer $accessToken";
-        'Content-Type'  = "application/json"; 
-    } `
-        -OutFile ${outputFile}${outputFileExtension}
-}
-catch {
-    Write-Error $_
-}
+Invoke-RestMethod `
+    -Uri "${basePath}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
+    -Method 'GET' `
+    -Headers @{
+    'Authorization' = "Bearer $accessToken";
+    'Content-Type'  = "application/json"; 
+} `
+    -OutFile ${outputFile}${outputFileExtension}
 # ***DS.snippet.0.end
 
 Write-Output ""

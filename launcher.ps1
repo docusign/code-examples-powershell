@@ -165,8 +165,7 @@ function choices {
                 Invoke-Expression .\examples\eg010SendBinaryDocs.ps1
                 continu
             } '11' {
-                # powershell.exe .\examples\eg011EmbeddedSending.ps1
-                Write-Output "`nUnder construction...`n"
+                Invoke-Expression .\examples\eg011EmbeddedSending.ps1
                 continu 
             } '12' {
                 # powershell.exe .\examples\eg012EmbeddedConsole.ps1

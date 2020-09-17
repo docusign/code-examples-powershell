@@ -1,6 +1,6 @@
 # Embedded signing ceremony
 
-# Ger required environment variables from .\config\settings.json file
+# Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 $CC_EMAIL = [System.Environment]::ExpandEnvironmentVariables($variables.CC_EMAIL)

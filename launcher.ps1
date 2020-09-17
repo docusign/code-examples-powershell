@@ -154,8 +154,7 @@ function choices {
                 Write-Output "`nUnder construction...`n"
                 continu
             } '8' {
-                # powershell.exe .\examples\eg008CreateTemplate.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg008CreateTemplate.ps1
                 continu
             } '9' {
                 # powershell.exe .\examples\eg009UseTemplate.ps1

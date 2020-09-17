@@ -11,7 +11,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountID = Get-Content .\config\API_ACCOUNT_ID
 
-$basePath="https://demo.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
 
 Write-Output "`nSending the list envelope status request to DocuSign..."
 Write-Output "`nResults:"
@@ -19,18 +19,13 @@ Write-Output "`nResults:"
 # Get date in the ISO 8601 format
 $fromDate = ((Get-Date).adddays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
 
-$headers = @{
-  Authorization="Bearer $accessToken"
-}
+$(Invoke-RestMethod `
+    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
+    -Method 'Get' `
+    -Headers @{
+    'Authorization' = "Bearer $accessToken";
+    'Content-Type'  = "application/json";
+  } `
+    -Body @{ "from_date" = ${fromDate} }).envelopes
 
-try {
-  $(Invoke-RestMethod -Method Get `
-    -Headers $headers `
-    -Uri $basePath/v2.1/accounts/$accountID/envelopes `
-    -ContentType application/json `
-    -Body @{ "from_date" = $fromDate }).envelopes
-  Write-Output "`nDone...`n"
-}
-catch {
-  Write-Error "Something went wrong " $_.Exception.Response.StatusCode
-}
+Write-Output "`nDone...`n"

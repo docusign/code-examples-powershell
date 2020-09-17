@@ -128,30 +128,25 @@ function choices {
         $CHOICE = Read-Host "Select the action"
         switch ($CHOICE) {
             '1' {
-                Invoke-Expression .\examples\eg001EmbeddedSigning.ps1
+                powershell.exe -Command .\examples\eg001EmbeddedSigning.ps1
                 continu
             } '2' {
-                # powershell.exe .\examples\eg002SigningViaEmail.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe -Command .\examples\eg002SigningViaEmail.ps1
                 continu 
             } '3' {
-                Invoke-Expression .\examples\eg003ListEnvelopes.ps1
+                powershell.exe -Command .\examples\eg003ListEnvelopes.ps1
                 continu
             } '4' {
-                # powershell.exe .\examples\eg004EnvelopeInfo.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe -Command .\examples\eg004EnvelopeInfo.ps1
                 continu
             } '5' {
-                # powershell.exe .\examples\eg005EnvelopeRecipients.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg005EnvelopeRecipients.ps1
                 continu 
             } '6' {
-                # powershell.exe .\examples\eg006EnvelopeDocs.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg006EnvelopeDocs.ps1
                 continu
             } '7' {
-                # powershell.exe .\examples\eg007EnvelopeGetDoc.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg007EnvelopeGetDoc.ps1
                 continu
             } '8' {
                 # powershell.exe .\examples\eg008CreateTemplate.ps1

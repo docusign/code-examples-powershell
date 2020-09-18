@@ -66,126 +66,125 @@ Write-Output "Sending the template create request to DocuSign..."
 Write-Output ""
 
 # Fetch document and encode
-$doc = $(Get-Location).Path + '\demo_documents\World_Wide_Corp_fields.pdf'
-[Convert]::ToBase64String([IO.File]::ReadAllBytes($doc)) > $doc1Base64
-
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_fields.pdf"))) > $doc1Base64
 
 # Concatenate the different parts of the request
-Write-Output '{
-    "documents": [
-        {
-            "documentBase64": "doc1Base64",
-            "documentId": "1", "fileExtension": "pdf",
-            "name": "Lorem Ipsum"
-        }
-    ],
-    "emailSubject": "Please sign this document",
-    "envelopeTemplateDefinition": {
-        "description": "Example template created via the API",
-        "name": "Example Signer and CC template",
-        "shared": "false"
-    },
-    "recipients": {
-        "carbonCopies": [
-            {"recipientId": "2", "roleName": "cc", "routingOrder": "2"}
-        ],
-        "signers": [
-            {
-                "recipientId": "1", "roleName": "signer", "routingOrder": "1",
-                "tabs": {
-                    "checkboxTabs": [
-                        {
-                            "documentId": "1", "pageNumber": "1",
-                            "tabLabel": "ckAuthorization", "xPosition": "75",
-                            "yPosition": "417"
-                        },
-                        {
-                            "documentId": "1", "pageNumber": "1",
-                            "tabLabel": "ckAuthentication", "xPosition": "75",
-                            "yPosition": "447"
-                        },
-                        {
-                            "documentId": "1", "pageNumber": "1",
-                            "tabLabel": "ckAgreement", "xPosition": "75",
-                            "yPosition": "478"
-                        },
-                        {
-                            "documentId": "1", "pageNumber": "1",
-                            "tabLabel": "ckAcknowledgement", "xPosition": "75",
-                            "yPosition": "508"
-                        }
-                    ],
-                    "listTabs": [
-                        {
-                            "documentId": "1", "font": "helvetica", 
-                            "fontSize": "size14",
-                            "listItems": [
-                                {"text": "Red", "value": "red"},
-                                {"text": "Orange", "value": "orange"},
-                                {"text": "Yellow", "value": "yellow"},
-                                {"text": "Green", "value": "green"},
-                                {"text": "Blue", "value": "blue"},
-                                {"text": "Indigo", "value": "indigo"},
-                                {"text": "Violet", "value": "violet"}
-                            ],
-                            "pageNumber": "1", "required": "false", 
-                            "tabLabel": "list", "xPosition": "142",
-                            "yPosition": "291"
-                        }
-                    ],
-                    "radioGroupTabs": [
-                        {
-                            "documentId": "1", "groupName": "radio1",
-                            "radios": [
-                                {
-                                    "pageNumber": "1", "required": "false",
-                                    "value": "white", "xPosition": "142",
-                                    "yPosition": "384"
-                                },
-                                {
-                                    "pageNumber": "1", "required": "false",
-                                    "value": "red", "xPosition": "74",
-                                    "yPosition": "384"
-                                },
-                                {
-                                    "pageNumber": "1", "required": "false",
-                                    "value": "blue", "xPosition": "220",
-                                    "yPosition": "384"
-                                }
-                            ]
-                        }
-                    ],
-                    "signHereTabs": [
-                        {
-                            "documentId": "1", "pageNumber": "1",
-                            "xPosition": "191", "yPosition": "148"
-                        }
-                    ],
-                    "textTabs": [
-                        {
-                            "documentId": "1", "font": "helvetica",
-                            "fontSize": "size14", "height": 23, 
-                            "pageNumber": "1", "required": "false",
-                            "tabLabel": "text", "width": 84,
-                            "xPosition": "153", "yPosition": "230"
-                        },
-                        {
-                            "documentId": "1", "font": "helvetica",
-                            "fontSize": "size14", "height": 23,
-                            "pageNumber": "1", "required": "false",
-                            "tabLabel": "numbersOnly", "width": 84,
-                            "xPosition": "153", "yPosition": "260"
-                        }
-                    ]
-                }
-            }
-        ]
-    },
-    "status": "created"
-}' > $requestDataTemp
+@{
+    documents                  = @(
+        @{
+            documentBase64 = "$(Get-Content $doc1Base64)";
+            documentId     = "1";
+            fileExtension  = "pdf";
+            name           = "Lorem Ipsum";
+        };
+    );
+    emailSubject               = "Please sign this document";
+    envelopeTemplateDefinition = @{
+        description = "Example template created via the API";
+        name        = "Example Signer and CC template";
+        shared      = "false";
+    };
+    recipients                 = @{
+        carbonCopies = @(
+            @{recipientId = "2"; roleName = "cc"; routingOrder = "2"; };
+        );
+        signers      = @(
+            @{
+                recipientId = "1"; roleName = "signer"; routingOrder = "1";
+                tabs = @{
+                    checkboxTabs   = @(
+                        @{
+                            documentId = "1"; pageNumber = "1";
+                            tabLabel = "ckAuthorization"; xPosition = "75";
+                            yPosition = "417";
+                        };
+                        @{
+                            documentId = "1"; pageNumber = "1";
+                            tabLabel = "ckAuthentication"; xPosition = "75";
+                            yPosition = "447";
+                        };
+                        @{
+                            documentId = "1"; pageNumber = "1";
+                            tabLabel = "ckAgreement"; xPosition = "75";
+                            yPosition = "478";
+                        };
+                        @{
+                            documentId = "1"; pageNumber = "1";
+                            tabLabel = "ckAcknowledgement"; xPosition = "75";
+                            yPosition = "508";
+                        };
+                    );
+                    listTabs       = @(
+                        @{
+                            documentId = "1"; font = "helvetica";
+                            fontSize = "size14";
+                            listItems = @(
+                                @{text = "Red"; value = "red"; };
+                                @{text = "Orange"; value = "orange"; };
+                                @{text = "Yellow"; value = "yellow"; };
+                                @{text = "Green"; value = "green"; };
+                                @{text = "Blue"; value = "blue"; };
+                                @{text = "Indigo"; value = "indigo"; };
+                                @{text = "Violet"; value = "violet"; };
+                            );
+                            pageNumber = "1"; required = "false";
+                            tabLabel = "list"; xPosition = "142";
+                            yPosition = "291";
+                        };
+                    );
+                    radioGroupTabs = @(
+                        @{
+                            documentId = "1"; groupName = "radio1";
+                            radios = @(
+                                @{
+                                    pageNumber = "1"; required = "false";
+                                    value = "white"; xPosition = "142";
+                                    yPosition = "384";
+                                };
+                                @{
+                                    pageNumber = "1"; required = "false";
+                                    value = "red"; xPosition = "74";
+                                    yPosition = "384";
+                                };
+                                @{
+                                    pageNumber = "1"; required = "false";
+                                    value = "blue"; xPosition = "220";
+                                    yPosition = "384";
+                                };
+                            );
+                        };
+                    );
+                    signHereTabs   = @(
+                        @{
+                            documentId = "1"; pageNumber = "1";
+                            xPosition = "191"; yPosition = "148";
+                        };
+                    );
+                    textTabs       = @(
+                        @{
+                            documentId = "1"; font = "helvetica";
+                            fontSize = "size14"; height = 23;
+                            pageNumber = "1"; required = "false";
+                            tabLabel = "text"; width = 84;
+                            xPosition = "153"; yPosition = "230";
+                        };
+                        @{
+                            documentId = "1"; font = "helvetica";
+                            fontSize = "size14"; height = 23;
+                            pageNumber = "1"; required = "false";
+                            tabLabel = "numbersOnly"; width = 84;
+                            xPosition = "153"; yPosition = "260";
+                        };
+                    );
+                };
+            };
+        );
+    };
+    status = "created";
+} | ConvertTo-Json -Depth 32 > $requestData
 
-$((Get-Content -path $requestDataTemp -Raw) -replace 'doc1Base64', `
-    $(Get-Content $doc1Base64)) > $requestData
+<# $((Get-Content -path $requestDataTemp -Raw) -replace 'doc1Base64', `
+    $(Get-Content $doc1Base64)) > $requestData #>
 
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/templates" `

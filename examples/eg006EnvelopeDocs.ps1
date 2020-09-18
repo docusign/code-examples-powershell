@@ -13,7 +13,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$basePath = "https://demo.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
 
 # Check that we have an envelope id
 if (Test-Path .\config\ENVELOPE_ID) {
@@ -30,26 +30,15 @@ Write-Output ""
 Write-Output "Results:"
 
 # ***DS.snippet.0.start
-$headers = @{
-  'Authorization' = "Bearer $accessToken"
-  'Content-Type'  = 'application/json'
-}
-
-$parameters = @{
-  Uri    = $basePath + "/v2.1/accounts/" + $accountId + "/envelopes/" + $envelopeId + "/documents"
-  Method = 'GET'
-}
-
-try {
-  $responce = $(Invoke-RestMethod -Headers $headers @parameters)
-  Write-Output $responce.envelopeDocuments
-}
-catch {
-  Write-Error  $_
+Invoke-RestMethod `
+  -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents" `
+  -Method 'GET' `
+  -Headers @{
+  'Authorization' = "Bearer $accessToken";
+  'Content-Type'  = "application/json";
 }
 # ***DS.snippet.0.end
 
 Write-Output ""
 Write-Output "Done."
 Write-Output ""
-

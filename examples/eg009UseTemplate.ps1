@@ -71,6 +71,7 @@ Get-Content $response
 
 # cleanup
 Remove-Item $response
+Remove-Item $requestData
 
 Write-Output ""
 Write-Output "Done."

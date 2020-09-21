@@ -152,8 +152,7 @@ function choices {
                 powershell.exe .\examples\eg008CreateTemplate.ps1
                 continu
             } '9' {
-                # powershell.exe .\examples\eg009UseTemplate.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg009UseTemplate.ps1
                 continu 
             } '10' {
                 Invoke-Expression .\examples\eg010SendBinaryDocs.ps1

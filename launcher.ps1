@@ -253,5 +253,4 @@ function continu {
     choices
 }
 
-loginlogin
 login

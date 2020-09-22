@@ -1,25 +1,15 @@
 $ErrorActionPreference = "Stop" # force stop on failure
 
-$configFile = ".\config\settings.txt"
+$configFile = ".\config\settings.json"
 
 if ((Test-Path $configFile) -eq $False) {
     Write-Output "`nError: "
-    Write-Output "First copy the file '.\config\settings.example.txt' to '$configFile'."
+    Write-Output "First copy the file '.\config\settings.example.json' to '$configFile'."
     Write-Output "Next, fill in your API credentials, Signer name and email to continue.`n"
 }
 
-# If settings.txt file exist, we use all variables from this file
-if (Test-Path $configFile) {
-    Get-Content $configFile | Foreach-Object {
-        $var = $_.Split('=')
-        if ($var.Lengh -ne 2 -and $var[0].IsNullOrEmpty) {
-            throw;
-        }
-        else {
-            New-Variable -Name $var[0] -Value $var[1] -Force -Scope Global
-        }
-    }
-}
+# Get required environment variables from .\config\settings.json file
+$config = Get-Content $configFile -Raw | ConvertFrom-Json
 
 function resetToken {
     Remove-Item -Path .\config\ds_access_token*
@@ -61,7 +51,7 @@ function login {
         $METHOD = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
         switch ($METHOD) {
             '1' {
-                Invoke-Expression -Command .\OAuth\code_grant.ps1
+                . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY)
                 choices
             } '2' {
                 Invoke-Expression -Command .\OAuth\jwt.ps1
@@ -161,8 +151,7 @@ function choices {
                 Invoke-Expression .\examples\eg011EmbeddedSending.ps1
                 continu 
             } '12' {
-                # powershell.exe .\examples\eg012EmbeddedConsole.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg012EmbeddedConsole.ps1
                 continu
             } '13' {
                 # powershell.exe .\examples\eg013AddDocToTemplate.ps1

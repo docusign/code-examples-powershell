@@ -158,8 +158,7 @@ function choices {
                 Write-Output "`nUnder construction...`n"
                 continu
             } '14' {
-                # powershell.exe .\examples\eg014CollectPayment.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg014CollectPayment.ps1
                 continu
             } '15' {
                 powershell.exe .\examples\eg015EnvelopeTabData.ps1

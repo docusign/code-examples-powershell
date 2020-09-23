@@ -59,7 +59,7 @@ Invoke-RestMethod `
     -Method 'POST' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response

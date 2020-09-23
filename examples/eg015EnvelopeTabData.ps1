@@ -27,7 +27,7 @@ $headers = @{
 }
 
 # Step 3: a) Make a GET call to the form_data endpoint to retrieve your envelope tab values
-#         b) Display the JSON response 
+#         b) Display the JSON response
 $result = $(Invoke-WebRequest `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/form_data" `
     -Method 'GET' `

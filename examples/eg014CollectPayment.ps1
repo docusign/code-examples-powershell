@@ -15,10 +15,10 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# 4. Log in to DocuSign Admin and from the top 
-#    navigation, select Admin. From there look 
-#    to the left under INTEGRATIONS and select 
-#    Payments to retrieve your Gateway account ID. 
+# 4. Log in to DocuSign Admin and from the top
+#    navigation, select Admin. From there look
+#    to the left under INTEGRATIONS and select
+#    Payments to retrieve your Gateway account ID.
 
 $apiUri = "https://demo.docusign.net/restapi"
 
@@ -167,7 +167,7 @@ Invoke-RestMethod `
     -Method 'POST' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response

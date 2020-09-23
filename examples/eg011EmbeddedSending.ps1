@@ -33,13 +33,13 @@ do {
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
 #  document 3 (pdf) has tag /sn1/
-# 
+#
 #  The envelope has two recipients.
 #  recipient 1 - signer
 #  recipient 2 - cc
 #
 #  The envelope is created with "created" (draft) status.
-# 
+#
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
@@ -124,7 +124,7 @@ Invoke-RestMethod `
     -Method 'POST' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
@@ -139,14 +139,14 @@ Write-Output "Requesting the sender view url"
 
 # The returnUrl is normally your own web app. DocuSign will redirect
 # the signer to returnUrl when the sending ceremony completes.
-# For this example, we'll use http://httpbin.org/get to show the 
+# For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/sender" `
     -Method 'POST' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -Body (@{ returnUrl = "http://httpbin.org/get"; } | ConvertTo-Json) `
     -OutFile $response

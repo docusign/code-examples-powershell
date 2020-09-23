@@ -82,7 +82,7 @@ $json = @{
 				email        = $CC_EMAIL;
 				name         = $CC_NAME;
 				routingOrder = 2;
-				recipientId  = 2; 
+				recipientId  = 2;
 			})
 	};
 	status       = "sent"

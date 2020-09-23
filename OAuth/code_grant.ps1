@@ -66,7 +66,7 @@ while ($http.IsListening) {
     $context.Response.ContentLength64 = $buffer.Length
     $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream to broswer
     $context.Response.OutputStream.Close() # Close the response
-        
+
     # Get context
     $Regex = [Regex]::new("(?<=code=)(.*)(?=&state)")
     $Match = $Regex.Match($context.Request.Url)
@@ -94,7 +94,7 @@ try {
     -Headers @{ "Authorization" = "Basic $authorizationHeaderKey" } `
     -Body @{
     "grant_type" = "authorization_code";
-    "code"       = "$authorizationCode" 
+    "code"       = "$authorizationCode"
   }
   $accessToken = $accessTokenResponse.access_token
   Write-Output "`nAccess token: $accessToken`n"

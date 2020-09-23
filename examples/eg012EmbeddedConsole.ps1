@@ -22,7 +22,7 @@ $envelopeId = Get-Content .\config\ENVELOPE_ID
 
 # The returnUrl is normally your own web app. DocuSign will redirect
 # the signer to returnUrl when the signing ceremony completes.
-# For this example, we'll use http://httpbin.org/get to show the 
+# For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
 # The web tool console can be opened in either of two views:
@@ -47,14 +47,14 @@ Write-Output ""
 
 $requestBody = switch ($selectedView) {
     { [ViewType]::FrontPage } {
-        @{ 
+        @{
             "returnUrl" = "http://httpbin.org/get"
         }; break;
     }
     { [ViewType]::EnvelopeView } {
         @{
             "returnUrl"  = "http://httpbin.org/get";
-            "envelopeId" = "$envelopeId" 
+            "envelopeId" = "$envelopeId"
         }; break;
     }
     Default { }

@@ -26,11 +26,11 @@ Invoke-RestMethod `
     -Method 'GET' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -Body @{ 'search_text' = $templateName } `
     -OutFile $response
-    
+
 # pull out the templateId if it was returned
 $templateId = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.templateId
 
@@ -49,7 +49,7 @@ if (-not ([string]::IsNullOrEmpty($templateId))) {
 }
 
 # Step 2. Create the template programmatically
-# 
+#
 #  The envelope has two recipients.
 #  recipient 1 - signer
 #  recipient 2 - cc
@@ -191,7 +191,7 @@ Invoke-RestMethod `
     -Method 'POST' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response

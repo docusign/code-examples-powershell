@@ -20,7 +20,7 @@ function login {
         Write-Output "Welcome to the DocuSign PowerShell Launcher"
         Write-Output "using Authorization Code grant or JWT grant authentication.`n"
         Write-Output "Choose an OAuth Strategy:`n"
-        
+
         # Create a List with Login methods
         $list = @(
             "Use_Authorization_Code_Grant",
@@ -46,7 +46,7 @@ function login {
         }
         # Output menu
         $formattedList | Format-Table -HideTableHeaders
-        
+
         # Read method from console
         $METHOD = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
         switch ($METHOD) {
@@ -54,7 +54,7 @@ function login {
                 . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY)
                 choices
             } '2' {
-                Invoke-Expression -Command .\OAuth\jwt.ps1
+                powershell.exe -Command .\OAuth\jwt.ps1
                 choices
             } '3' {
                 exit 0
@@ -64,7 +64,7 @@ function login {
     } until ($METHOD -eq '3')
 
     # Set Environment Variable
-    $env:API_ACCOUNT_ID = $API_ACCOUNT_ID 
+    $env:API_ACCOUNT_ID = $API_ACCOUNT_ID
     # Get Token
     $token_file_name = ".\ds_access_token.txt"
     # Set Environment Variable
@@ -111,7 +111,7 @@ function choices {
 
         # Show Columns
         for ($i = 0; $i -lt $list.Count; $i++) {
-            Write-Host "$($i+1)) $($list[$i])"
+            Write-Output "$($i+1)) $($list[$i])"
         }
 
         # Read method from console
@@ -122,7 +122,7 @@ function choices {
                 continu
             } '2' {
                 powershell.exe -Command .\examples\eg002SigningViaEmail.ps1
-                continu 
+                continu
             } '3' {
                 powershell.exe -Command .\examples\eg003ListEnvelopes.ps1
                 continu
@@ -131,7 +131,7 @@ function choices {
                 continu
             } '5' {
                 powershell.exe .\examples\eg005EnvelopeRecipients.ps1
-                continu 
+                continu
             } '6' {
                 powershell.exe .\examples\eg006EnvelopeDocs.ps1
                 continu
@@ -143,13 +143,13 @@ function choices {
                 continu
             } '9' {
                 powershell.exe .\examples\eg009UseTemplate.ps1
-                continu 
+                continu
             } '10' {
-                Invoke-Expression .\examples\eg010SendBinaryDocs.ps1
+                powershell.exe .\examples\eg010SendBinaryDocs.ps1
                 continu
             } '11' {
-                Invoke-Expression .\examples\eg011EmbeddedSending.ps1
-                continu 
+                powershell.exe .\examples\eg011EmbeddedSending.ps1
+                continu
             } '12' {
                 powershell.exe .\examples\eg012EmbeddedConsole.ps1
                 continu
@@ -198,7 +198,7 @@ function choices {
             } '24' {
                 # powershell.exe .\examples\eg024CreatingPermissionProfiles.ps1
                 Write-Output "`nUnder construction...`n"
-                continu 
+                continu
             } '25' {
                 # powershell.exe .\examples\eg025SettingPermissionProfiles.ps1
                 Write-Output "`nUnder construction...`n"

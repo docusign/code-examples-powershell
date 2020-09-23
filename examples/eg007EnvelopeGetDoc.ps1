@@ -90,7 +90,7 @@ Invoke-RestMethod `
     -Method 'GET' `
     -Headers @{
     'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json"; 
+    'Content-Type'  = "application/json";
 } `
     -OutFile ${outputFile}${outputFileExtension}
 # ***DS.snippet.0.end

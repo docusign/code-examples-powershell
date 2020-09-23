@@ -164,8 +164,7 @@ function choices {
                 powershell.exe .\examples\eg015EnvelopeTabData.ps1
                 continu
             } '16' {
-                # powershell.exe .\examples\eg016SetTabValues.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg016SetTabValues.ps1
                 continu
             } '17' {
                 # powershell.exe .\examples\eg017SetTemplateTabValues.ps1

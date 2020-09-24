@@ -1,3 +1,9 @@
+param(
+  [Parameter(Mandatory = $true)]
+  [string]$clientId,
+  [Parameter(Mandatory = $true)]
+  [string]$clientSecret)
+
 $PORT = '8080'
 $IP = 'localhost'
 
@@ -7,13 +13,11 @@ $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT
 $state = [Convert]::ToString($(Get-Random -Maximum 1000000000), 16)
 
 # Get environment variables
-$clientID = $(Get-Variable INTEGRATION_KEY_AUTH_CODE -ValueOnly) -replace '["]'
-$clientSecret = $(Get-Variable SECRET_KEY -ValueOnly) -replace '["]'
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
-$authorizationURL = "${authorizationEndpoint}auth?redirect_uri=${redirectUriEscaped}&scope=signature&client_id=${clientID}&state=${state}&response_type=code"
+$authorizationURL = "${authorizationEndpoint}auth?redirect_uri=${redirectUriEscaped}&scope=signature&client_id=${clientId}&state=${state}&response_type=code"
 
 Write-Output "The authorisation URL is:"
 Write-Output $authorizationURL
@@ -62,7 +66,7 @@ while ($http.IsListening) {
     $context.Response.ContentLength64 = $buffer.Length
     $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream to broswer
     $context.Response.OutputStream.Close() # Close the response
-        
+
     # Get context
     $Regex = [Regex]::new("(?<=code=)(.*)(?=&state)")
     $Match = $Regex.Match($context.Request.Url)
@@ -76,7 +80,7 @@ while ($http.IsListening) {
 
 # Obtain the access token
 # Preparing an Authorization header which contains your integration key and secret key
-$authorizationHeader = "${clientID}:${clientSecret}"
+$authorizationHeader = "${clientId}:${clientSecret}"
 
 # Convert the Authorization header into base64
 $authorizationHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($authorizationHeader)
@@ -90,7 +94,7 @@ try {
     -Headers @{ "Authorization" = "Basic $authorizationHeaderKey" } `
     -Body @{
     "grant_type" = "authorization_code";
-    "code"       = "$authorizationCode" 
+    "code"       = "$authorizationCode"
   }
   $accessToken = $accessTokenResponse.access_token
   Write-Output "`nAccess token: $accessToken`n"

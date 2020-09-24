@@ -145,7 +145,8 @@ function choices {
                 powershell.exe .\examples\eg009UseTemplate.ps1
                 continu
             } '10' {
-                powershell.exe .\examples\eg010SendBinaryDocs.ps1
+                # powershell.exe .\examples\eg010SendBinaryDocs.ps1
+                Write-Output "`nUnder construction...`n"
                 continu
             } '11' {
                 powershell.exe .\examples\eg011EmbeddedSending.ps1

@@ -3,11 +3,6 @@
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-$CC_EMAIL = [System.Environment]::ExpandEnvironmentVariables($variables.CC_EMAIL)
-$CC_NAME = [System.Environment]::ExpandEnvironmentVariables($variables.CC_NAME)
-$SIGNER_EMAIL = [System.Environment]::ExpandEnvironmentVariables($variables.SIGNER_EMAIL)
-$SIGNER_NAME = [System.Environment]::ExpandEnvironmentVariables($variables.SIGNER_NAME)
-
 # Configuration
 # 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
@@ -56,16 +51,16 @@ Write-Output "`nSending the envelope request to DocuSign...`n"
     recipients   = @{
         carbonCopies = @(
             @{
-                email        = $CC_EMAIL;
-                name         = $CC_NAME;
+                email        = $variables.CC_EMAIL;
+                name         = $variables.CC_NAME;
                 recipientId  = "2";
                 routingOrder = "2";
             };
         );
         signers      = @(
             @{
-                email        = $SIGNER_EMAIL;
-                name         = $SIGNER_NAME;
+                email        = $variables.SIGNER_EMAIL;
+                name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
                 clientUserId = "1000";
@@ -114,8 +109,8 @@ Write-Output "`nRequesting the url for the signing ceremony...`n"
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
     'authenticationMethod' = 'none';
-    'email'                = $SIGNER_EMAIL;
-    'userName'             = $SIGNER_NAME;
+    'email'                = $variables.SIGNER_EMAIL;
+    'userName'             = $variables.SIGNER_NAME;
     'clientUserId'         = 1000
 } | ConvertTo-Json -Compress
 

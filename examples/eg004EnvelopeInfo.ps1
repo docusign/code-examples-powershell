@@ -1,5 +1,4 @@
 # Get the envelope's details
-#
 # This script uses the envelope_id stored in ../envelope_id.
 # The envelope_id file is created by example eg002SigningViaEmail.sh or
 # can be manually created.

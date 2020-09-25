@@ -167,7 +167,6 @@ Write-Output "Response:"
 Get-Content $response
 Write-Output ""
 
-# signing_ceremony_url=`cat $response | grep url | sed 's/.*\"url\":\"//'# | sed 's/\".*//'`
 $signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
 
 Write-Output ""

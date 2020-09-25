@@ -183,9 +183,6 @@ Write-Output ""
     status = "created";
 } | ConvertTo-Json -Depth 32 > $requestData
 
-<# $((Get-Content -path $requestDataTemp -Raw) -replace 'doc1Base64', `
-    $(Get-Content $doc1Base64)) > $requestData #>
-
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/templates" `
     -Method 'POST' `

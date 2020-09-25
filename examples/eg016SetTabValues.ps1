@@ -164,7 +164,6 @@ Write-Output ""
 
 $signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
 
-
 Write-Output ""
 Write-Output "The signing ceremony URL is $signingCeremonyUrl`n"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser...`n"

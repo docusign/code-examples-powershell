@@ -171,8 +171,7 @@ function choices {
                 powershell.exe .\examples\eg017SetTemplateTabValues.ps1
                 continu
             } '18' {
-                # powershell.exe .\examples\eg018EnvelopeCustomFieldData.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg018EnvelopeCustomFieldData.ps1
                 continu
             } '19' {
                 # powershell.exe .\examples\eg019SigningViaEmailWithAccessCode.ps1

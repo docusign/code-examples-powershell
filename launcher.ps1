@@ -155,8 +155,7 @@ function choices {
                 powershell.exe .\examples\eg012EmbeddedConsole.ps1
                 continu
             } '13' {
-                # powershell.exe .\examples\eg013AddDocToTemplate.ps1
-                Write-Output "`nUnder construction...`n"
+                powershell.exe .\examples\eg013AddDocToTemplate.ps1
                 continu
             } '14' {
                 powershell.exe .\examples\eg014CollectPayment.ps1

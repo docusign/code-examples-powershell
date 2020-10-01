@@ -1,5 +1,3 @@
-# Get-Item / Resolve-Path / Get-Content
-
 # Configuration
 # 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
@@ -84,7 +82,7 @@ $json = @{
 				email        = $CC_EMAIL;
 				name         = $CC_NAME;
 				routingOrder = 2;
-				recipientId  = 2; 
+				recipientId  = 2;
 			})
 	};
 	status       = "sent"
@@ -129,8 +127,9 @@ try {
 		-Uri "${basePath}/v2.1/accounts/${accountId}/envelopes" `
 		-Method 'POST' `
 		-Headers @{
-			'Authorization' = "Bearer $accessToken";
-			'Content-Type'  = "multipart/form-data; boundary=${boundary}"; } `
+		'Authorization' = "Bearer $accessToken";
+		'Content-Type'  = "multipart/form-data; boundary=${boundary}";
+	} `
 		-InFile (Resolve-Path $requestData).Path `
 		-OutFile $response
 

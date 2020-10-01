@@ -1,4 +1,4 @@
-# Embedded signing ceremony
+# Send an envelope with three documents
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -13,29 +13,36 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
-$accountID = Get-Content .\config\API_ACCOUNT_ID
+$accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # ***DS.snippet.0.start
-# Step 1. Create the envelope.
-#         The signer recipient includes a clientUserId setting
+#  document 1 (html) has tag **signature_1**
+#  document 2 (docx) has tag /sn1/
+#  document 3 (pdf) has tag /sn1/
 #
-#  document 1 (pdf) has tag /sn1/
 #  The envelope has two recipients.
 #  recipient 1 - signer
 #  recipient 2 - cc
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
+
 $apiUri = "https://demo.docusign.net/restapi"
 
 # temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
+$doc2Base64 = New-TemporaryFile
+$doc3Base64 = New-TemporaryFile
 
-# Fetch doc and encode
-[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
+# Fetch docs and encode
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\doc_1.html"))) > $doc1Base64
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
 Write-Output "`nSending the envelope request to DocuSign...`n"
+Write-Output "The envelope has three documents. Processing time will be about 15 seconds.`n"
+Write-Output "`nResults:`n"
 
 # Concatenate the different parts of the request
 @{
@@ -43,11 +50,22 @@ Write-Output "`nSending the envelope request to DocuSign...`n"
     documents    = @(
         @{
             documentBase64 = "$(Get-Content $doc1Base64)";
-            name           = "Lorem Ipsum";
-            fileExtension  = "pdf";
+            name           = "Order acknowledgement";
+            fileExtension  = "html";
             documentId     = "1";
         };
-    );
+        @{
+            documentBase64 = "$(Get-Content $doc2Base64)";
+            name           = "Battle Plan";
+            fileExtension  = "docx";
+            documentId     = "2";
+        };
+        @{
+            documentBase64 = "$(Get-Content $doc3Base64)";
+            name           = "Lorem Ipsum";
+            fileExtension  = "pdf";
+            documentId     = "3";
+        }; );
     recipients   = @{
         carbonCopies = @(
             @{
@@ -63,9 +81,14 @@ Write-Output "`nSending the envelope request to DocuSign...`n"
                 name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
-                clientUserId = "1000";
                 tabs         = @{
                     signHereTabs = @(
+                        @{
+                            anchorString  = "**signature_1**";
+                            anchorUnits   = "pixels";
+                            anchorXOffset = "20";
+                            anchorYOffset = "10";
+                        };
                         @{
                             anchorString  = "/sn1/";
                             anchorUnits   = "pixels";
@@ -94,50 +117,18 @@ Write-Output "Response: $(Get-Content -Raw $response)`n"
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
-Write-Output "EnvelopeId: $envelopeId"
-
-# Step 2. Create a recipient view (a signing ceremony view)
-#         that the signer will directly open in their browser to sign.
-#
-# The returnUrl is normally your own web app. DocuSign will redirect
-# the signer to returnUrl when the signing ceremony completes.
-# For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
-
-Write-Output "`nRequesting the url for the signing ceremony...`n"
-
-$json = [ordered]@{
-    'returnUrl'            = 'http://httpbin.org/get';
-    'authenticationMethod' = 'none';
-    'email'                = $variables.SIGNER_EMAIL;
-    'userName'             = $variables.SIGNER_NAME;
-    'clientUserId'         = 1000
-} | ConvertTo-Json -Compress
-
-Invoke-RestMethod `
-    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
-    -Method 'POST' `
-    -Headers @{
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
-} `
-    -Body $json `
-    -OutFile $response
-
-Write-Output "Response: $(Get-Content -Raw $response)`n"
-$signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
 
 # ***DS.snippet.0.end
-Write-Output "The signing ceremony URL is $signingCeremonyUrl"
-Write-Output ""
-Write-Output "It is only valid for five minutes. Attempting to automatically open your browser...`n"
-
-Start-Process $signingCeremonyUrl
+# Save the envelope id for use by other scripts
+Write-Output "EnvelopeId: $envelopeId"
+Write-Output $envelopeId > .\config\ENVELOPE_ID
 
 # cleanup
 Remove-Item $requestData
 Remove-Item $response
 Remove-Item $doc1Base64
+Remove-Item $doc2Base64
+Remove-Item $doc3Base64
 
 Write-Output ""
 Write-Output "Done."

@@ -1,0 +1,15 @@
+name: Code Analysis
+on: [push]
+jobs:
+  lint:
+    name: Run PSScriptAnalyzer
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run PSScriptAnalyzer
+      uses: devblackops/github-action-psscriptanalyzer@master
+      with:
+        sendComment: false
+        failOnErrors: true
+        failOnWarnings: true
+        failOnInfos: true

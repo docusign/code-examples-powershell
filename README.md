@@ -5,7 +5,7 @@
 This repo includes a powershell command-line application to demonstrate:
 
 1. **Embedded Signing Ceremony.**
-   [Source.](./eg001EmbeddedSigning.ps1)
+   [Source.](./examples/eg001EmbeddedSigning.ps1)
    This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
    With embedded signing, the DocuSign signing ceremony is initiated from your website.
 1. **Send an envelope with a remote (email) signer and cc recipient.**

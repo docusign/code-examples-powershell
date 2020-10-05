@@ -19,7 +19,7 @@ $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
 $authorizationURL = "${authorizationEndpoint}auth?redirect_uri=${redirectUriEscaped}&scope=signature&client_id=${clientId}&state=${state}&response_type=code"
 
-Write-Output "The authorisation URL is:"
+Write-Output "The authorization URL is:"
 Write-Output $authorizationURL
 
 # Request the authorization code
@@ -33,7 +33,7 @@ $http.Prefixes.Add($redirectURI + "/")
 $http.Start()
 
 if ($http.IsListening) {
-  Write-Output "`nOpen the following URL in a browser to continue:" $authorizationURL
+  Write-Output "Open the following URL in a browser to continue:" $authorizationURL
   Start-Process $authorizationURL
 }
 
@@ -61,10 +61,10 @@ while ($http.IsListening) {
         </body>
         </html>
         '
-    # Resposed to the request
-    $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # Convert htmtl to bytes
+    # Respond to the request
+    $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # Convert HTML to bytes
     $context.Response.ContentLength64 = $buffer.Length
-    $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream to broswer
+    $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream HTML to browser
     $context.Response.OutputStream.Close() # Close the response
 
     # Get context
@@ -87,7 +87,7 @@ $authorizationHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($authorization
 $authorizationHeaderKey = [System.Convert]::ToBase64String($authorizationHeaderBytes)
 
 try {
-  Write-Output "`nGetting an access token...`n"
+  Write-Output "Getting an access token..."
   $accessTokenResponse = Invoke-RestMethod `
     -Uri "$authorizationEndpoint/token" `
     -Method "POST" `
@@ -97,19 +97,19 @@ try {
     "code"       = "$authorizationCode"
   }
   $accessToken = $accessTokenResponse.access_token
-  Write-Output "`nAccess token: $accessToken`n"
+  Write-Output "Access token: $accessToken"
   Write-Output $accessToken > $accessTokenFile
-  Write-Output "Access token has been written to $accessTokenFile file...`n"
+  Write-Output "Access token has been written to $accessTokenFile file..."
 
-  Write-Output "`nGetting an account id...`n"
+  Write-Output "Getting an account id..."
   $userInfoResponse = Invoke-RestMethod `
     -Uri "$authorizationEndpoint/userinfo" `
     -Method "GET" `
     -Headers @{ "Authorization" = "Bearer $accessToken" }
   $accountId = $userInfoResponse.accounts[0].account_id
-  Write-Output "`nAccount id: $accountId`n"
+  Write-Output "Account id: $accountId"
   Write-Output $accountId > $accountIdFile
-  Write-Output "Account id has been written to $accountIdFile file...`n"
+  Write-Output "Account id has been written to $accountIdFile file..."
 }
 catch {
   Write-Error $_

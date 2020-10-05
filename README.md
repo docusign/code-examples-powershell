@@ -74,7 +74,7 @@ This repo includes a powershell command-line application to demonstrate:
    [Source.](./examples/eg021SigningViaEmailWithPhoneAuthentication.ps1)
    This example sends an envelope using remote (email) signing requiring the recipient to supply a verification code sent to them via a phone call.
 1. **Send an envelope with a remote (email) signer using Knowledge-Based authentication.**
-   [Source.](./examples/eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1)
+   [Source.](./examples/eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1)
    This example sends an envelope using remote (email) signing requiring the recipient to validate their identity via Knowledge-Based authentication.
 1. **Send an envelope with a remote (email) signer using Identity Verification.**
    [Source.](./examples/eg023SigningViaEmailWithIDVAuthentication.ps1)
@@ -120,17 +120,22 @@ Download or clone this repository to your workstation
 ## Collect your Integration information
 
 * Create a [DocuSign developer account](https://account-d.docusign.com/#/username) if you have not yet done so.
-* Once you have a Docusign account created, make a new [**integration key**](https://admindemo.docusign.com/api-integrator-key). 
+* Once you have a DocuSign account created, make a new [**integration key**](https://admindemo.docusign.com/api-integrator-key).
 * Add in the following **redirect uri** `http://localhost:8080/authorization-code/callback`
-* Find your **API Account Id:** on the same page you used to setup your [**integration key**](https://admindemo.docusign.com/api-integrator-key). 
- * **Signer name and email:** Remember to try the DocuSign signing ceremony using both a mobile phone and a regular
-   email client.
-
+* Find your **API Account Id:** on the same page you used to setup your [**integration key**](https://admindemo.docusign.com/api-integrator-key).
+* Update `config/settings.json` with the credentials from DocuSign developer account:
+  * `IMPERSONATION_USER_GUID` = API Account ID
+  * `INTEGRATION_KEY_JWT` = Integration Key
+  * `INTEGRATION_KEY_AUTH_CODE` = Integration Key
+  * `SECRET_KEY` = Secret Key
+  * `GATEWAY_ACCOUNT_ID``GATEWAY_ACCOUNT_ID` = Account ID
+* **Signer name and email:** Remember to try the DocuSign signing ceremony using both a mobile phone and a regular
+  email client.
 
 
 ## JWT Authentication
 
-* create an RSA keypair on your **integration key** and copy the **private_key** into the file `config/private.key` and save it. Use JWT authentication if you intend to run a system account integration or to impersonate a different user.
+* create an RSA KeyPair on your **integration key** and copy the **private_key** into the file `config/private.key` and save it. Use JWT authentication if you intend to run a system account integration or to impersonate a different user.
 * OPTIONAL: If you intend to use JWT grant authentication, set **Impersonation_user_guid** by using your own **user_account_id** found on the same page used to set your [**integration key**](https://admindemo.docusign.com/api-integrator-key). 
 
 

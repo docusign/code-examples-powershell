@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Set Envelope Tab Data
 
 # Get required environment variables from .\config\settings.json file
@@ -11,14 +13,11 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # Temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-Write-Output ""
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Fetch doc and encode
@@ -114,15 +113,12 @@ Invoke-RestMethod `
   -InFile (Resolve-Path $requestData).Path `
   -OutFile $response
 
-Write-Output ""
 Write-Output "Response:"
 Get-Content $response
-Write-Output ""
 
 # Pull out the envelope ID
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
-Write-Output ""
 
 # Save the envelope ID for use by other scripts
 Write-Output $envelopeId > .\config\ENVELOPE_ID
@@ -135,7 +131,6 @@ Write-Output $envelopeId > .\config\ENVELOPE_ID
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
-Write-Output ""
 Write-Output "Requesting the url for the signing ceremony..."
 
 @{
@@ -156,17 +151,13 @@ Invoke-RestMethod `
   -InFile (Resolve-Path $requestData).Path`
   -OutFile $response
 
-
-Write-Output ""
 Write-Output "Response:"
 Get-Content $response
-Write-Output ""
 
 $signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
 
-Write-Output ""
-Write-Output "The signing ceremony URL is $signingCeremonyUrl`n"
-Write-Output "It is only valid for five minutes. Attempting to automatically open your browser...`n"
+Write-Output "The signing ceremony URL is $signingCeremonyUrl"
+Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 Start-Process $signingCeremonyUrl
 
 # cleanup
@@ -174,6 +165,4 @@ Remove-Item $requestData
 Remove-Item $response
 Remove-Item $doc1Base64
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

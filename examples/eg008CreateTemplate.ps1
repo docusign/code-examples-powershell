@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Create a template. First, the account's templates are listed.
 # If one of the templates is named "Example Signer and CC template"
 # then the template will not be created.
@@ -10,13 +12,9 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # ***DS.snippet.0.start
 # Step 1. List the account's templates
-Write-Output ""
 Write-Output "Checking to see if the template already exists in your account..."
-Write-Output ""
 
 $templateName = "Example Signer and CC template"
 $response = New-TemporaryFile
@@ -37,14 +35,11 @@ $templateId = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.temp
 Write-Output "Did we find any templateIds?: $templateId"
 
 if (-not ([string]::IsNullOrEmpty($templateId))) {
-    Write-Output ""
     Write-Output "Your account already includes the '${templateName}' template."
     # Save the template id for use by other scripts
     Write-Output "${templateId}" > .\config\TEMPLATE_ID
     Remove-Item $response
-    Write-Output ""
     Write-Output "Done."
-    Write-Output ""
     exit 0
 }
 
@@ -61,9 +56,7 @@ $requestData = New-TemporaryFile
 $requestDataTemp = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-Write-Output ""
 Write-Output "Sending the template create request to DocuSign..."
-Write-Output ""
 
 # Fetch document and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_fields.pdf"))) > $doc1Base64
@@ -180,7 +173,7 @@ Write-Output ""
             };
         );
     };
-    status = "created";
+    status                     = "created";
 } | ConvertTo-Json -Depth 32 > $requestData
 
 Invoke-RestMethod `
@@ -193,7 +186,6 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
-Write-Output ""
 Write-Output "Results:"
 Get-Content $response
 
@@ -201,7 +193,6 @@ Get-Content $response
 $templateId = $(Get-Content $response | ConvertFrom-Json).templateId
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "Template '${templateName}' was created! Template ID ${templateId}."
 # Save the template id for use by other scripts
 Write-Output ${templateId} > .\config\TEMPLATE_ID
@@ -212,6 +203,4 @@ Remove-Item $requestDataTemp
 Remove-Item $response
 Remove-Item $doc1Base64
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

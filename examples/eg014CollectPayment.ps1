@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Send an envelope including an order form with payment by credit card
 #
 # Get required environment variables from .\config\settings.json file
@@ -20,8 +22,6 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 #    to the left under INTEGRATIONS and select
 #    Payments to retrieve your Gateway account ID.
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
@@ -31,7 +31,6 @@ $doc1Base64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\order_form.html"))) > $doc1Base64
 
-Write-Output ""
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
@@ -173,9 +172,7 @@ Invoke-RestMethod `
     -OutFile $response
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "Results:"
-Write-Output ""
 Get-Content $response
 
 # cleanup
@@ -183,7 +180,4 @@ Remove-Item $requestData
 Remove-Item $response
 Remove-Item $doc1Base64
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""
-

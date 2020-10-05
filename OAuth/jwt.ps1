@@ -62,17 +62,17 @@ try {
         -Body "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwtToken"
     $accessToken = ($tokenResponse | ConvertFrom-Json).access_token
     Write-Output $accessToken > $outputFile
-    Write-Output "Access token has been written to $outputFile file...`n"
+    Write-Output "Access token has been written to $outputFile file..."
 
-    Write-Output "`nGetting an account id...`n"
+    Write-Output "Getting an account id..."
     $userInfoResponse = Invoke-RestMethod `
         -Uri "$authorizationEndpoint/userinfo" `
         -Method "GET" `
         -Headers @{ "Authorization" = "Bearer $accessToken" }
     $accountId = $userInfoResponse.accounts[0].account_id
-    Write-Output "`nAccount id: $accountId`n"
+    Write-Output "Account id: $accountId"
     Write-Output $accountId > $accountIdFile
-    Write-Output "Account id has been written to $accountIdFile file...`n"
+    Write-Output "Account id has been written to $accountIdFile file..."
 }
 catch {
     Write-Error $_

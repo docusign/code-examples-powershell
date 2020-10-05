@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Download a document from an envelope
 # This script uses the envelope_id stored in ../envelope_id.
 # The envelope_id file is created by example eg002SigningViaEmail.ps1 or
@@ -16,14 +18,12 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 #
 $outputFile = "envelope_document."
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # Check that we have an envelope id
 if (Test-Path .\config\ENVELOPE_ID) {
     $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-    Write-Output "`nPROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email`n"
+    Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
     exit 1
 }
 
@@ -80,9 +80,7 @@ switch ($METHOD) {
     }
 }
 
-Write-Output ""
 Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
-Write-Output ""
 
 # ***DS.snippet.0.start
 Invoke-RestMethod `
@@ -95,8 +93,5 @@ Invoke-RestMethod `
     -OutFile ${outputFile}${outputFileExtension}
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

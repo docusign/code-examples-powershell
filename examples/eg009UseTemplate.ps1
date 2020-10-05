@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Send a signing request via email using a DocuSign template
 
 # Get required environment variables from .\config\settings.json file
@@ -17,11 +19,9 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Check that we have a template id
 if (-not (Test-Path .\config\TEMPLATE_ID)) {
-    Write-Output "`nPROBLEM: A template id is needed. Fix: execute step 8 - Create_Template`n"
+    Write-Output "PROBLEM: A template id is needed. Fix: execute step 8 - Create_Template"
     exit 0
 }
-
-$apiUri = "https://demo.docusign.net/restapi"
 
 # ***DS.snippet.0.start
 # Step 1. Create the envelope request.
@@ -29,7 +29,6 @@ $apiUri = "https://demo.docusign.net/restapi"
 $response = New-TemporaryFile
 $requestData = New-TemporaryFile
 
-Write-Output ""
 Write-Output "Sending the envelope request to DocuSign..."
 
 @{
@@ -60,7 +59,6 @@ Invoke-RestMethod `
     -OutFile $response
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "Response:"
 Get-Content $response
 
@@ -68,6 +66,4 @@ Get-Content $response
 Remove-Item $response
 Remove-Item $requestData
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

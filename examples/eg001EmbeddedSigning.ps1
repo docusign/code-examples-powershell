@@ -1,16 +1,16 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Embedded signing ceremony
 
-# Get required environment variables from .\config\settings.json file
+# Get required variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 # Configuration
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
+# 1. Obtain an OAuth access token from
 #    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
+# 2. Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountID = Get-Content .\config\API_ACCOUNT_ID
@@ -25,7 +25,6 @@ $accountID = Get-Content .\config\API_ACCOUNT_ID
 #  recipient 2 - cc
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
-$apiUri = "https://demo.docusign.net/restapi"
 
 # temp files:
 $requestData = New-TemporaryFile
@@ -35,7 +34,7 @@ $doc1Base64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
 
-Write-Output "`nSending the envelope request to DocuSign...`n"
+Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
 @{
@@ -90,7 +89,7 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
-Write-Output "Response: $(Get-Content -Raw $response)`n"
+Write-Output "Response: $(Get-Content -Raw $response)"
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
@@ -104,7 +103,7 @@ Write-Output "EnvelopeId: $envelopeId"
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
-Write-Output "`nRequesting the url for the signing ceremony...`n"
+Write-Output "Requesting the url for the signing ceremony..."
 
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
@@ -124,13 +123,12 @@ Invoke-RestMethod `
     -Body $json `
     -OutFile $response
 
-Write-Output "Response: $(Get-Content -Raw $response)`n"
+Write-Output "Response: $(Get-Content -Raw $response)"
 $signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
 
 # ***DS.snippet.0.end
 Write-Output "The signing ceremony URL is $signingCeremonyUrl"
-Write-Output ""
-Write-Output "It is only valid for five minutes. Attempting to automatically open your browser...`n"
+Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 
 Start-Process $signingCeremonyUrl
 
@@ -139,6 +137,4 @@ Remove-Item $requestData
 Remove-Item $response
 Remove-Item $doc1Base64
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

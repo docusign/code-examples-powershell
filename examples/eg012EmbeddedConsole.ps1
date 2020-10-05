@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Redirect to the DocuSign console web tool
 
 # Configuration
@@ -8,8 +10,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
-
-$apiUri = "https://demo.docusign.net/restapi"
 
 # Check that we have an envelope id
 if (-not (Test-Path .\config\ENVELOPE_ID)) {
@@ -41,9 +41,7 @@ do {
     [int]$selectedView = Read-Host "Please make a selection"
 } while (-not [ViewType]::IsDefined([ViewType], $selectedView));
 
-Write-Output ""
 Write-Output "Requesting the console view url"
-Write-Output ""
 
 $requestBody = switch ($selectedView) {
     { [ViewType]::FrontPage } {
@@ -71,18 +69,13 @@ $console = Invoke-RestMethod `
 } `
     -Body ($requestBody | ConvertTo-Json)
 
-Write-Output ""
 Write-Output "Results:"
-Write-Output ""
 Write-Output "Console received: $console"
 $consoleUrl = $console.url
 
 # ***DS.snippet.0.end
-Write-Output ""
-Write-Output "The console URL is $consoleUrl`n"
-Write-Output "It is only valid for five minutes. Attempting to automatically open your browser...`n"
+Write-Output "The console URL is $consoleUrl"
+Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 Start-Process $consoleUrl
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

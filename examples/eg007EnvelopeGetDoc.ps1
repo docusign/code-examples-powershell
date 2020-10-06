@@ -30,78 +30,51 @@ else {
 $docChoice = "1"
 $outputFileExtension = "pdf"
 
-function sendDocuments {
-    Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
-    # ***DS.snippet.0.start
-    Invoke-RestMethod `
-        -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
-        -Method 'GET' `
-        -Headers @{
-        'Authorization' = "Bearer $accessToken";
-        'Content-Type'  = "application/json";
-    } `
-        -OutFile ${outputFile}${outputFileExtension}
-    # ***DS.snippet.0.end
-    Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
-    Write-Output "Done."
+Enum listDocs {
+    Document1 = 1;
+    Document2 = 2;
+    Document3 = 3;
+    CertificateOfCompletion = 4;
+    DocumentsCombinedTogether = 5;
+    ZIPfile = 6;
 }
 
+$listDocsView = $null;
 do {
-    # Create a List with Documents
-    $listDocs = @(
-        "Document 1",
-        "Document 2",
-        "Document 3",
-        "Certificate of Completion",
-        "Documents combined together",
-        "ZIP file",
-        "Exit"
-    )
+    Write-Output 'Select the initial sending view: '
+    Write-Output "$([int][listDocs]::Document1) - Document 1"
+    Write-Output "$([int][listDocs]::Document2) - Document 2"
+    Write-Output "$([int][listDocs]::Document3) - Document 3"
+    Write-Output "$([int][listDocs]::CertificateOfCompletion) - Certificate of Completion"
+    Write-Output "$([int][listDocs]::DocumentsCombinedTogether) - Documents combined together"
+    Write-Output "$([int][listDocs]::ZIPfile) - ZIP file"
+    [int]$listDocsView = Read-Host "Please make a selection"
+} while (-not [listDocs]::IsDefined([listDocs], $listDocsView));
 
-    # Create a blank array to hold menu
-    $formattedListDocs = @()
-    # Even Odd Columns
-    for ($i = 0; $i -lt $listDocs.Count; $i += 1) {
-        if ($null -ne $listDocs[$i + 1]) {
-            $formattedListDocs += [PSCustomObject]@{
-                Odd = "$($i+1)) $($listDocs[$i])";
-            }
-        }
-        else {
-            $formattedListDocs += [PSCustomObject]@{
-                Odd  = "$($i+1)) $($listDocs[$i])";
-                Even = ""
-            }
-        }
-    }
+if ($listDocsView -eq 4) {
+    $docChoice = "certificate"
+}
+elseif ($listDocsView -eq 5) {
+    $docChoice = "combined"
+}
+elseif ($listDocsView -eq 6) {
+    $docChoice = "archive"
+    $outputFileExtension = "zip"
+}
+else {
+    $docChoice = $listDocsView
+}
 
-    # Output menu
-    $formattedListDocs | Format-Table -HideTableHeaders
-
-    # Read method from console
-    $METHOD = Read-Host "Select a document or document set to download"
-    switch ($METHOD) {
-        '1' {
-            $docChoice = "1"
-            sendDocuments
-        } '2' {
-            $docChoice = "2"
-            sendDocuments
-        } '3' {
-            $docChoice = "3"
-            sendDocuments
-        } '4' {
-            $docChoice = "certificate"
-            sendDocuments
-        } '5' {
-            $docChoice = "combined"
-            sendDocuments
-        } '6' {
-            $docChoice = "archive"
-            $outputFileExtension = "zip"
-            sendDocuments
-        } '7' {
-            exit 0
-        }
-    }
-} until ($METHOD -eq '7')
+Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
+# ***DS.snippet.0.start
+Invoke-RestMethod `
+    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
+    -Method 'GET' `
+    -Headers @{
+    'Authorization' = "Bearer $accessToken";
+    'Content-Type'  = "application/json";
+} `
+    -OutFile ${outputFile}${outputFileExtension}
+# ***DS.snippet.0.end
+Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
+Write-Output "Done."

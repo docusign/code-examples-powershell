@@ -1,8 +1,21 @@
-$basePath = "https://demo.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
+
+function Add-OemContent {
+	param(
+		$destination,
+		$content
+	)
+	Add-Content -Path $destination -Value $content -Encoding oem -NoNewline
+}
 
 # Configuration
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
+# 1.  Get required variables from .\config\settings.json:
+$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
+$CC_EMAIL = $variables.CC_EMAIL
+$CC_NAME = $variables.CC_NAME
+$SIGNER_EMAIL = $variables.SIGNER_EMAIL
+$SIGNER_NAME = $variables.SIGNER_NAME
+
 # 2. Obtain an OAuth access token from
 #    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt"))
@@ -23,14 +36,7 @@ $accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\AP
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
-# Get environment variables
-$CC_EMAIL = $(Get-Variable CC_EMAIL -ValueOnly) -replace '["]'
-$CC_NAME = $(Get-Variable CC_NAME -ValueOnly) -replace '["]'
-$SIGNER_EMAIL = $(Get-Variable SIGNER_EMAIL -ValueOnly) -replace '["]'
-$SIGNER_NAME = $(Get-Variable SIGNER_NAME -ValueOnly) -replace '["]'
-
 # temp files
-$PSDefaultParameterValues['Out-File:Encoding'] = 'ascii'
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
@@ -86,45 +92,62 @@ $json = @{
 			})
 	};
 	status       = "sent"
-} | ConvertTo-Json -Depth 32;
+} | ConvertTo-Json -Depth 32 -Compress;
 
 # Step 2. Assemble the multipart body
 $CRLF = "`r`n"
 $boundary = "multipartboundary_multipartboundary"
-"--$boundary" > $requestData
-"Content-Type: application/json" >> $requestData
-"Content-Disposition: form-data" >> $requestData
-"${CRLF}" >> $requestData
-"$json" >> $requestData
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/json"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: form-data"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData $json
+Add-OemContent $requestData "${CRLF}"
 
 # Next add the documents. Each document has its own mime type,
 # filename, and documentId. The filename and documentId must match
 # the document's info in the JSON.
-"--$boundary"  >> $requestData
-"Content-Type: text/html"  >> $requestData
-"Content-Disposition: file; filename=`"Order acknowledgement`";documentid=1" >> $requestData
-"${CRLF}" >> $requestData
-(Get-Content $doc1) >> $requestData
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: text/html"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Order acknowledgement`";documentid=1"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc1 -Encoding oem)
+Add-OemContent $requestData "${CRLF}"
 
-"--$boundary"  >> $requestData
-"Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document"  >> $requestData
-"Content-Disposition: file; filename=`"Battle Plan`";documentid=2" >> $requestData
-"${CRLF}" >> $requestData
-(Get-Content $doc2) >> $requestData
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Battle Plan`";documentid=2"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc2 -Encoding oem -Raw)
+Add-OemContent $requestData "${CRLF}"
 
-"--$boundary" >> $requestData
-"Content-Type: application/pdf"  >> $requestData
-"Content-Disposition: file; filename=`"Lorem Ipsum`";documentid=3" >> $requestData
-"${CRLF}" >> $requestData
-(Get-Content $doc3) >> $requestData
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/pdf"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Lorem Ipsum`";documentid=3"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc3 -Encoding oem -Raw)
+Add-OemContent $requestData "${CRLF}"
 
 # Add closing boundary
-"--$boundary--"  >> $requestData
+Add-OemContent $requestData "--$boundary--"
+Add-OemContent $requestData "${CRLF}"
 
 # Send request
 try {
 	Invoke-RestMethod `
-		-Uri "${basePath}/v2.1/accounts/${accountId}/envelopes" `
+		-Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
 		-Method 'POST' `
 		-Headers @{
 		'Authorization' = "Bearer $accessToken";

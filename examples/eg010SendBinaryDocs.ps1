@@ -1,21 +1,6 @@
 $apiUri = "https://demo.docusign.net/restapi"
 
-# function AppendFile {
-# 	param(
-# 		$source,
-# 		$destination
-# 	)
-# 	$destinationStream = $destination.OpenWrite()
-# 	$destinationStream.Seek(0, [System.IO.SeekOrigin]::End)
-# 	$sourceStream = $source.OpenRead()
-# 	$sourceStream.CopyTo($destinationStream)
-# 	$destinationStream.Flush()
-# 	$destinationStream.Dispose()
-# 	$sourceStream.Dispose()
-# }
-# Add-Content -Path $tmp  -Value "hello!" -Encoding ascii -NoNewline
-
-function Add-AsciiContent {
+function Add-OemContent {
 	param(
 		$destination,
 		$content
@@ -51,10 +36,7 @@ $accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\AP
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
-
-
 # temp files
-$PSDefaultParameterValues['Out-File:Encoding'] = 'ascii'
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
@@ -115,61 +97,52 @@ $json = @{
 # Step 2. Assemble the multipart body
 $CRLF = "`r`n"
 $boundary = "multipartboundary_multipartboundary"
-Add-AsciiContent $requestData "--$boundary"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Type: application/json"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Disposition: form-data"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData $json
-Add-AsciiContent $requestData "${CRLF}"
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/json"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: form-data"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData $json
+Add-OemContent $requestData "${CRLF}"
 
 # Next add the documents. Each document has its own mime type,
 # filename, and documentId. The filename and documentId must match
 # the document's info in the JSON.
-Add-AsciiContent $requestData "--$boundary"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Type: text/html"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Disposition: file; filename=`"Order acknowledgement`";documentid=1"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "${CRLF}"
-#(Get-Content $doc1) 
-#AppendFile $doc1 $requestData
-Add-AsciiContent $requestData (Get-Content $doc1 -Encoding ascii) #$doc1
-Add-AsciiContent $requestData "${CRLF}"
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: text/html"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Order acknowledgement`";documentid=1"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc1 -Encoding oem)
+Add-OemContent $requestData "${CRLF}"
 
-Add-AsciiContent $requestData "--$boundary"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Disposition: file; filename=`"Battle Plan`";documentid=2"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "${CRLF}"
-#(Get-Content $doc2) 
-#AppendFile $doc2 $requestData
-#Add-AsciiContent $requestData (Get-Content $doc2 -Encoding ascii)#$doc2
-Add-Content $requestData (Get-Content $doc2 -Encoding oem -Raw) -Encoding oem -NoNewline
-Add-AsciiContent $requestData "${CRLF}"
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Battle Plan`";documentid=2"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc2 -Encoding oem -Raw)
+Add-OemContent $requestData "${CRLF}"
 
-Add-AsciiContent $requestData "--$boundary"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Type: application/pdf"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "Content-Disposition: file; filename=`"Lorem Ipsum`";documentid=3"
-Add-AsciiContent $requestData "${CRLF}"
-Add-AsciiContent $requestData "${CRLF}"
-#(Get-Content $doc3) 
-#AppendFile $doc3 $requestData
-Add-Content $requestData (Get-Content $doc3 -Encoding oem -Raw) -Encoding oem -NoNewline
-Add-AsciiContent $requestData "${CRLF}"
+Add-OemContent $requestData "--$boundary"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Type: application/pdf"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "Content-Disposition: file; filename=`"Lorem Ipsum`";documentid=3"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData "${CRLF}"
+Add-OemContent $requestData (Get-Content $doc3 -Encoding oem -Raw)
+Add-OemContent $requestData "${CRLF}"
 
 # Add closing boundary
-Add-AsciiContent $requestData "--$boundary--"  
-Add-AsciiContent $requestData "${CRLF}"
-
-Copy-Item  $requestData "d:\req" -Force
+Add-OemContent $requestData "--$boundary--"  
+Add-OemContent $requestData "${CRLF}"
 
 # Send request
 try {
@@ -193,7 +166,7 @@ catch {
 Get-Content $response
 
 # cleanup
-#Remove-Item $requestData
+Remove-Item $requestData
 Remove-Item $response
 
 Write-Output "Done."

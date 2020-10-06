@@ -9,8 +9,11 @@ $privateKeyPath = [System.IO.Path]::Combine($PSScriptRoot, "..\config\private.ke
 $outputFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt") | Resolve-Path
 $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID")
 
-$userId = $(Get-Variable IMPERSONATION_USER_GUID -ValueOnly) -replace '["]'
-$INTEGRATION_KEY_JWT = $(Get-Variable INTEGRATION_KEY_JWT -ValueOnly) -replace '["]'
+# Get required variables from .\config\settings.json file
+$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
+
+$userId = $variables.IMPERSONATION_USER_GUID
+$INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
 
 Clear-Content -Path $outputFile
 

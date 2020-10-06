@@ -5,12 +5,20 @@ $apiUri = "https://demo.docusign.net/restapi"
 # 2. Open the sending view of the DocuSign web tool
 
 # Configuration
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
+# 1.  Get required variables from .\config\settings.json:
+$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
+$CC_EMAIL = $variables.CC_EMAIL
+$CC_NAME = $variables.CC_NAME
+$SIGNER_EMAIL = $variables.SIGNER_EMAIL
+$SIGNER_NAME = $variables.SIGNER_NAME
+
+# 2. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
+# 3. Obtain an OAuth access token from
 #    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
+
+# 4. Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID

@@ -2,7 +2,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Get the envelope's custom field data
 # This script uses the envelope ID stored in ../envelope_id.
-# The envelope_id file is created by example eg016SetTabValues.sh or
+# The envelope_id file is created by example eg016SetTabValues.ps1 or
 # can be manually created.
 
 # Step 1: Obtain your OAuth token

@@ -141,7 +141,7 @@ Add-OemContent $requestData (Get-Content $doc3 -Encoding oem -Raw)
 Add-OemContent $requestData "${CRLF}"
 
 # Add closing boundary
-Add-OemContent $requestData "--$boundary--"  
+Add-OemContent $requestData "--$boundary--"
 Add-OemContent $requestData "${CRLF}"
 
 # Send request

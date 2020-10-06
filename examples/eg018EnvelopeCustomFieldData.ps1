@@ -1,6 +1,8 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Get the envelope's custom field data
 # This script uses the envelope ID stored in ../envelope_id.
-# The envelope_id file is created by example eg016SetTabValues.sh or
+# The envelope_id file is created by example eg016SetTabValues.ps1 or
 # can be manually created.
 
 # Step 1: Obtain your OAuth token
@@ -11,8 +13,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # temp files:
 $response = New-TemporaryFile
 
@@ -21,12 +21,11 @@ if (Test-Path .\config\ENVELOPE_ID) {
   $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-  Write-Output "`nPROBLEM: An envelope id is needed. Fix: execute step 16 - Set_Tab_Values`n"
+  Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 16 - Set_Tab_Values"
   exit 1
 }
 
-Write-Output ""
-Write-Output "Sending the EnvelopeCustomFields::list request to DocuSign...`n"
+Write-Output "Sending the EnvelopeCustomFields::list request to DocuSign..."
 
 #Step 2: a) Create your authorization headers
 #        b) Send a GET request to the Envelopes endpoint
@@ -46,6 +45,4 @@ Get-Content $response
 # cleanup
 Remove-Item $response
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

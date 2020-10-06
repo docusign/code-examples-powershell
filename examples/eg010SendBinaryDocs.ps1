@@ -1,3 +1,5 @@
+$basePath = "https://demo.docusign.net/restapi"
+
 # Configuration
 # 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
@@ -21,8 +23,6 @@ $accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\AP
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
-$basePath = "https://demo.docusign.net/restapi"
-
 # Get environment variables
 $CC_EMAIL = $(Get-Variable CC_EMAIL -ValueOnly) -replace '["]'
 $CC_NAME = $(Get-Variable CC_NAME -ValueOnly) -replace '["]'
@@ -38,9 +38,9 @@ $doc1 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\do
 $doc2 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))
 $doc3 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\World_Wide_Corp_lorem.pdf"))
 
-Write-Output "`nSending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
-Write-Output "Results:`n"
+Write-Output "Results:"
 
 # Step 1. Make the JSON part of the final request body
 $json = @{
@@ -133,21 +133,17 @@ try {
 		-InFile (Resolve-Path $requestData).Path `
 		-OutFile $response
 
-	Write-Output "Response: $(Get-Content -Raw $response)`n"
+	Write-Output "Response: $(Get-Content -Raw $response)"
 }
 catch {
 	Write-Error $_
 }
 # ***DS.snippet.0.end
 
-Write-Output ""
 Get-Content $response
 
 # cleanup
 Remove-Item $requestData
 Remove-Item $response
 
-Write-Output ""
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

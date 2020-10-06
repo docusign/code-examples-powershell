@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Send an envelope with three documents
 
 # Get required environment variables from .\config\settings.json file
@@ -26,7 +28,6 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
-$apiUri = "https://demo.docusign.net/restapi"
 
 # temp files:
 $requestData = New-TemporaryFile
@@ -40,9 +41,9 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
-Write-Output "`nSending the envelope request to DocuSign...`n"
-Write-Output "The envelope has three documents. Processing time will be about 15 seconds.`n"
-Write-Output "`nResults:`n"
+Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
+Write-Output "Results:"
 
 # Concatenate the different parts of the request
 @{
@@ -113,7 +114,7 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
-Write-Output "Response: $(Get-Content -Raw $response)`n"
+Write-Output "Response: $(Get-Content -Raw $response)"
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
@@ -130,6 +131,4 @@ Remove-Item $doc1Base64
 Remove-Item $doc2Base64
 Remove-Item $doc3Base64
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

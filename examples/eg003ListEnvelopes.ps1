@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # List envelopes and their status
 # List changes for the last 10 days
 
@@ -11,13 +13,11 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountID = Get-Content .\config\API_ACCOUNT_ID
 
-$apiUri = "https://demo.docusign.net/restapi"
-
-Write-Output "`nSending the list envelope status request to DocuSign..."
-Write-Output "`nResults:"
+Write-Output "Sending the list envelope status request to DocuSign..."
+Write-Output "Results:"
 
 # Get date in the ISO 8601 format
-$fromDate = ((Get-Date).adddays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
+$fromDate = ((Get-Date).AddDays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
 
 $(Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -28,4 +28,4 @@ $(Invoke-RestMethod `
   } `
     -Body @{ "from_date" = ${fromDate} }).envelopes
 
-Write-Output "`nDone...`n"
+Write-Output "Done..."

@@ -1,6 +1,8 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Get the envelope recipients' details
 # This script uses the envelope_id stored in ../envelope_id.
-# The envelope_id file is created by example eg002SigningViaEmail.sh or
+# The envelope_id file is created by example eg002SigningViaEmail.ps1 or
 # can be manually created.
 
 # Configuration
@@ -13,19 +15,16 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-$apiUri = "https://demo.docusign.net/restapi"
-
 # Check that we have an envelope id
 if (Test-Path .\config\ENVELOPE_ID) {
   $envelopeID = Get-Content .\config\ENVELOPE_ID
 }
 else {
-  Write-Output "`nPROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email`n"
+  Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
   exit 1
 }
 
-Write-Output ""
-Write-Output "Sending the EnvelopeRecipients::list request to DocuSign...`n"
+Write-Output "Sending the EnvelopeRecipients::list request to DocuSign..."
 Write-Output "Results:"
 
 # ***DS.snippet.0.start
@@ -38,7 +37,4 @@ Invoke-RestMethod `
 }
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "Done."
-Write-Output ""
-

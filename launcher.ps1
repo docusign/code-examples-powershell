@@ -3,23 +3,19 @@ $ErrorActionPreference = "Stop" # force stop on failure
 $configFile = ".\config\settings.json"
 
 if ((Test-Path $configFile) -eq $False) {
-    Write-Output "`nError: "
+    Write-Output "Error: "
     Write-Output "First copy the file '.\config\settings.example.json' to '$configFile'."
-    Write-Output "Next, fill in your API credentials, Signer name and email to continue.`n"
+    Write-Output "Next, fill in your API credentials, Signer name and email to continue."
 }
 
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
 
-function resetToken {
-    Remove-Item -Path .\config\ds_access_token*
-}
-
 function login {
     do {
         Write-Output "Welcome to the DocuSign PowerShell Launcher"
-        Write-Output "using Authorization Code grant or JWT grant authentication.`n"
-        Write-Output "Choose an OAuth Strategy:`n"
+        Write-Output "using Authorization Code grant or JWT grant authentication."
+        Write-Output "Choose an OAuth Strategy:"
 
         # Create a List with Login methods
         $list = @(
@@ -96,7 +92,7 @@ function choices {
             "Signing_Via_Email_With_Access_Code"
             "Signing_Via_Email_With_Sms_Authentication"
             "Signing_Via_Email_With_Phone_Authentication"
-            "Signing_Via_Email_With_Knoweldge_Based_Authentication"
+            "Signing_Via_Email_With_Knowledge_Based_Authentication"
             "Signing_Via_Email_With_IDV_Authentication"
             "Creating_Permission_Profiles"
             "Setting_Permission_Profiles"
@@ -146,7 +142,7 @@ function choices {
                 continu
             } '10' {
                 # powershell.exe .\examples\eg010SendBinaryDocs.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '11' {
                 powershell.exe .\examples\eg011EmbeddedSending.ps1
@@ -174,55 +170,55 @@ function choices {
                 continu
             } '19' {
                 # powershell.exe .\examples\eg019SigningViaEmailWithAccessCode.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '20' {
                 # powershell.exe .\examples\eg020SigningViaEmailWithSmsAuthentication.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '21' {
                 # powershell.exe .\examples\eg021SigningViaEmailWithPhoneAuthentication.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '22' {
                 # powershell.exe .\examples\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '23' {
                 # powershell.exe .\examples\eg023SigningViaEmailWithIDVAuthentication.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '24' {
                 # powershell.exe .\examples\eg024CreatingPermissionProfiles.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '25' {
                 # powershell.exe .\examples\eg025SettingPermissionProfiles.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '26' {
                 # powershell.exe .\examples\eg026UpdatingIndividualPermission.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '27' {
                 # powershell.exe .\examples\eg027DeletingPermissions.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '28' {
                 # powershell.exe .\examples\eg028CreatingABrand.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '29' {
                 # powershell.exe .\examples\eg029ApplyingBrandEnvelope.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '30' {
                 # powershell.exe .\examples\eg030ApplyingBrandTemplate.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '31' {
                 # powershell.exe .\examples\eg031BulkSending.ps1
-                Write-Output "`nUnder construction...`n"
+                Write-Output "Under construction..."
                 continu
             } '32' {
                 login

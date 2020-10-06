@@ -1,3 +1,5 @@
+$apiUri = "https://demo.docusign.net/restapi"
+
 # Embedded Sending:
 # 1. create a draft envelope with three documents
 # 2. Open the sending view of the DocuSign web tool
@@ -12,7 +14,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
-$apiUri = "https://demo.docusign.net/restapi"
 
 # The sending editor can be opened in either of two views:
 Enum ViewType {
@@ -55,11 +56,9 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
-Write-Output ""
 Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
-Write-Output ""
 
 @{
     emailSubject = "Please sign this document set";
@@ -134,7 +133,6 @@ $envelop = $response | Get-Content | ConvertFrom-Json
 Write-Output "Envelope received: $envelop"
 $envelopeId = $envelop.envelopeId
 
-Write-Output ""
 Write-Output "Requesting the sender view url"
 
 # The returnUrl is normally your own web app. DocuSign will redirect
@@ -160,7 +158,6 @@ if ($startingView -eq [ViewType]::RecipientsAndDocuments) {
 }
 # ***DS.snippet.0.end
 
-Write-Output ""
 Write-Output "The sending ceremony URL is ${sendingCeremonyUrl}"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 
@@ -173,7 +170,4 @@ Remove-Item $doc1Base64
 Remove-Item $doc2Base64
 Remove-Item $doc3Base64
 
-Write-Output ""
-Write-Output ""
 Write-Output "Done."
-Write-Output ""

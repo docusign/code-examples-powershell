@@ -2,7 +2,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Get the envelope's details
 # This script uses the envelope_id stored in ../envelope_id.
-# The envelope_id file is created by example eg002SigningViaEmail.sh or
+# The envelope_id file is created by example eg002SigningViaEmail.ps1 or
 # can be manually created.
 
 # Configuration

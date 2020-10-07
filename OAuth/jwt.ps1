@@ -5,6 +5,13 @@
 Install-NugetPackage DerConverter '3.0.0.82'
 Install-NugetPackage PemUtils '3.0.0.82'
 
+if (Test-Path ".\config\ds_access_token.txt") {
+    Clear-Content -Path ".\config\ds_access_token.txt"
+}
+else {
+    New-Item ".\config\ds_access_token.txt"
+}
+
 $privateKeyPath = [System.IO.Path]::Combine($PSScriptRoot, "..\config\private.key") | Resolve-Path
 $outputFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt") | Resolve-Path
 $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID")
@@ -14,8 +21,6 @@ $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 $userId = $variables.IMPERSONATION_USER_GUID
 $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
-
-Clear-Content -Path $outputFile
 
 $timestamp = [int][double]::Parse((Get-Date -UFormat %s))
 

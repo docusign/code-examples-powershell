@@ -5,19 +5,18 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-# Configuration
-# 1. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+
+
+# 1. Obtain your OAuth token
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 2. Obtain your accountId from demo.docusign.net -- the account id is shown in
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountID = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
-# Step 1. Create the envelope.
-#         The signer recipient includes a clientUserId setting
+# Step 2. Create the envelope definition.
+# The signer recipient includes a clientUserId setting
 #
 #  document 1 (pdf) has tag /sn1/
 #  The envelope has two recipients.
@@ -79,6 +78,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
+# Step 3. Call DocuSign to create the envelope
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -95,8 +95,8 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
 
-# Step 2. Create a recipient view (a signing ceremony view)
-#         that the signer will directly open in their browser to sign.
+# Step 4. Create a recipient view definition
+# The signer will directly open this link from the browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
 # the signer to returnUrl when the signing ceremony completes.
@@ -113,6 +113,8 @@ $json = [ordered]@{
     'clientUserId'         = 1000
 } | ConvertTo-Json -Compress
 
+
+# Step 5. Create the recipient view and begin the signing ceremony
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `

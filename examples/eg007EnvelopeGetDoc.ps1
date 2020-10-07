@@ -5,9 +5,8 @@ $apiUri = "https://demo.docusign.net/restapi"
 # The envelope_id file is created by example eg002SigningViaEmail.ps1 or
 # can be manually created.
 
-# Configuration
-# 1. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+
+# Step 1. Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # 2. Obtain your accountId from demo.docusign.net -- the account id is shown in

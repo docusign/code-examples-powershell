@@ -5,7 +5,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-# Configuration
+
 # 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
 # 2. Obtain an OAuth access token from

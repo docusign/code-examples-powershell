@@ -2,9 +2,8 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Redirect to the DocuSign console web tool
 
-# Configuration
-# 1. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+
+# Step 1. Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
 # 2. Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or

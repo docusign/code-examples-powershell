@@ -16,8 +16,6 @@ $CC_NAME = $variables.CC_NAME
 $SIGNER_EMAIL = $variables.SIGNER_EMAIL
 $SIGNER_NAME = $variables.SIGNER_NAME
 
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt"))
 
 # 3. Obtain your accountId from demo.docusign.net -- the account id is shown in

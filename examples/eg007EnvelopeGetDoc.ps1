@@ -51,13 +51,15 @@ do {
     [int]$listDocsView = Read-Host "Please make a selection"
 } while (-not [listDocs]::IsDefined([listDocs], $listDocsView));
 
-if ($listDocsView -eq 4) {
+
+
+if ($listDocsView -eq [listDocs]::CertificateOfCompletion) {
     $docChoice = "certificate"
 }
-elseif ($listDocsView -eq 5) {
+elseif ($listDocsView -eq [listDocs]::DocumentsCombinedTogether) {
     $docChoice = "combined"
 }
-elseif ($listDocsView -eq 6) {
+elseif ($listDocsView -eq [listDocs]::ZIPfile) {
     $docChoice = "archive"
     $outputFileExtension = "zip"
 }

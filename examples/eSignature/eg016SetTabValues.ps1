@@ -13,7 +13,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Tabs and customs fields shown in the request body in step 4
+# Tabs and custom fields shown in the request body in step 4
 # Step 4. Construct the request body
 
 # Temp files:

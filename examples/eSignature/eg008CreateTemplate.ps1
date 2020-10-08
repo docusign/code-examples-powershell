@@ -13,7 +13,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # ***DS.snippet.0.start
-# Step 1. List the account's templates
+# List the account's templates
 Write-Output "Checking to see if the template already exists in your account..."
 
 $templateName = "Example Signer and CC template"
@@ -43,7 +43,7 @@ if (-not ([string]::IsNullOrEmpty($templateId))) {
     exit 0
 }
 
-# Step 2. Create the template programmatically
+# Step 2. Create a template
 #
 #  The envelope has two recipients.
 #  recipient 1 - signer

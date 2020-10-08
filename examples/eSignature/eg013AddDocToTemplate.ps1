@@ -5,7 +5,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-# Configuration
+
 # 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
 # 2. Obtain an OAuth access token from
@@ -121,7 +121,7 @@ Write-Output "added by using Composite Templates"
     );
     status             = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-
+# Step 3. Call DocuSign to create the envelope
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -139,8 +139,8 @@ Get-Content $response
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
 
-# Step 2. Create a recipient view (a signing ceremony view)
-#         that the signer will directly open in their browser to sign.
+# Step 4. Create the recipient view definition
+# that the signer will directly open in their browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
 # the signer to returnUrl when the signing ceremony completes.

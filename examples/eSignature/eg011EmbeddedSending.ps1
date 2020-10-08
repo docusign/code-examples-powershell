@@ -14,13 +14,12 @@ $SIGNER_NAME = $variables.SIGNER_NAME
 
 # 2. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
 #    They occur and re-occur multiple times below.
-# 3. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 4. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # The sending editor can be opened in either of two views:
@@ -38,6 +37,8 @@ do {
 } while (-not [ViewType]::IsDefined([ViewType], $startingView));
 
 # ***DS.snippet.0.start
+
+# Step 2. Create the envelope
 # Create the document request body
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
@@ -136,6 +137,7 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
+# Step 3. Create the sender view
 # pull out the envelopeId
 $envelop = $response | Get-Content | ConvertFrom-Json
 Write-Output "Envelope received: $envelop"

@@ -1,3 +1,5 @@
+# Eg009 Use template
+
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send a signing request via email using a DocuSign template
@@ -5,16 +7,13 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-# Configuration
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+# Step 1. Obtain your OAuth access token
+
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Check that we have a template id
@@ -24,7 +23,7 @@ if (-not (Test-Path .\config\TEMPLATE_ID)) {
 }
 
 # ***DS.snippet.0.start
-# Step 1. Create the envelope request.
+# Step 2. Create the envelope definition from a template
 # temp files:
 $response = New-TemporaryFile
 $requestData = New-TemporaryFile
@@ -48,6 +47,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     status        = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
+# Step 3. Create and send the envelope
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -57,7 +57,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response
-# ***DS.snippet.0.end
+
 
 Write-Output "Response:"
 Get-Content $response
@@ -65,5 +65,7 @@ Get-Content $response
 # cleanup
 Remove-Item $response
 Remove-Item $requestData
+
+# ***DS.snippet.0.end
 
 Write-Output "Done."

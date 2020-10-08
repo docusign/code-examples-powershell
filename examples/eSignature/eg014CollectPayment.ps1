@@ -5,29 +5,28 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-# Configuration
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+# Step 1. Obtain your OAuth access
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# 4. Log in to DocuSign Admin and from the top
-#    navigation, select Admin. From there look
-#    to the left under INTEGRATIONS and select
-#    Payments to retrieve your Gateway account ID.
+# Step 2. Log in to DocuSign Admin and from the top
+# navigation, select Admin. From there look
+# to the left under INTEGRATIONS and select
+# Payments to retrieve your Gateway account ID.
+
+# ***DS.snippet.0.start
+
+# Step 3. Create the envelope definition
 
 # temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-# ***DS.snippet.0.start
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\order_form.html"))) > $doc1Base64
 
@@ -161,6 +160,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
+# Step 4. Call the eSignature REST API
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `

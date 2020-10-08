@@ -1,4 +1,4 @@
-$apiUri = "https://demo.docusign.net/restapi"
+
 
 function Add-OemContent {
 	param(
@@ -16,16 +16,17 @@ $CC_NAME = $variables.CC_NAME
 $SIGNER_EMAIL = $variables.SIGNER_EMAIL
 $SIGNER_NAME = $variables.SIGNER_NAME
 
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+# Step 2. Obtain your OAuth access token
 $accessToken = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt"))
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID"))
 
 # ***DS.snippet.0.start
+
+# Step 3. Construct the request body
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
 #  document 3 (pdf) has tag /sn1/
@@ -35,6 +36,8 @@ $accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\AP
 #  recipient 2 - cc
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
+
+$apiUri = "https://demo.docusign.net/restapi"
 
 # temp files
 $requestData = New-TemporaryFile
@@ -48,7 +51,6 @@ Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
-# Step 1. Make the JSON part of the final request body
 $json = @{
 	emailSubject = "Please sign this document set";
 	documents    = @(@{
@@ -94,7 +96,6 @@ $json = @{
 	status       = "sent"
 } | ConvertTo-Json -Depth 32 -Compress;
 
-# Step 2. Assemble the multipart body
 $CRLF = "`r`n"
 $boundary = "multipartboundary_multipartboundary"
 Add-OemContent $requestData "--$boundary"
@@ -146,6 +147,7 @@ Add-OemContent $requestData "${CRLF}"
 
 # Send request
 try {
+	# Step 4. Call the eSignature REST API
 	Invoke-RestMethod `
 		-Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
 		-Method 'POST' `

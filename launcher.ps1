@@ -114,109 +114,109 @@ function choices {
         $CHOICE = Read-Host "Select the action"
         switch ($CHOICE) {
             '1' {
-                powershell.exe -Command .\examples\eg001EmbeddedSigning.ps1
+                powershell.exe -Command .\eg001EmbeddedSigning.ps1
                 continu
             } '2' {
-                powershell.exe -Command .\examples\eg002SigningViaEmail.ps1
+                powershell.exe -Command .\examples\eSignature\eg002SigningViaEmail.ps1
                 continu
             } '3' {
-                powershell.exe -Command .\examples\eg003ListEnvelopes.ps1
+                powershell.exe -Command .\examples\eSignature\eg003ListEnvelopes.ps1
                 continu
             } '4' {
-                powershell.exe -Command .\examples\eg004EnvelopeInfo.ps1
+                powershell.exe -Command .\examples\eSignature\eg004EnvelopeInfo.ps1
                 continu
             } '5' {
-                powershell.exe .\examples\eg005EnvelopeRecipients.ps1
+                powershell.exe .\examples\eSignature\eg005EnvelopeRecipients.ps1
                 continu
             } '6' {
-                powershell.exe .\examples\eg006EnvelopeDocs.ps1
+                powershell.exe .\examples\eSignature\eg006EnvelopeDocs.ps1
                 continu
             } '7' {
-                powershell.exe .\examples\eg007EnvelopeGetDoc.ps1
+                powershell.exe .\examples\eSignature\eg007EnvelopeGetDoc.ps1
                 continu
             } '8' {
-                powershell.exe .\examples\eg008CreateTemplate.ps1
+                powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
                 continu
             } '9' {
-                powershell.exe .\examples\eg009UseTemplate.ps1
+                powershell.exe .\examples\eSignature\eg009UseTemplate.ps1
                 continu
             } '10' {
-                powershell.exe .\examples\eg010SendBinaryDocs.ps1
+                powershell.exe .\examples\eSignature\eg010SendBinaryDocs.ps1
                 continu
             } '11' {
-                powershell.exe .\examples\eg011EmbeddedSending.ps1
+                powershell.exe .\examples\eSignature\eg011EmbeddedSending.ps1
                 continu
             } '12' {
-                powershell.exe .\examples\eg012EmbeddedConsole.ps1
+                powershell.exe .\examples\eSignature\eg012EmbeddedConsole.ps1
                 continu
             } '13' {
-                powershell.exe .\examples\eg013AddDocToTemplate.ps1
+                powershell.exe .\examples\eSignature\eg013AddDocToTemplate.ps1
                 continu
             } '14' {
-                powershell.exe .\examples\eg014CollectPayment.ps1
+                powershell.exe .\examples\eSignature\eg014CollectPayment.ps1
                 continu
             } '15' {
-                powershell.exe .\examples\eg015EnvelopeTabData.ps1
+                powershell.exe .\examples\eSignature\eg015EnvelopeTabData.ps1
                 continu
             } '16' {
-                powershell.exe .\examples\eg016SetTabValues.ps1
+                powershell.exe .\examples\eSignature\eg016SetTabValues.ps1
                 continu
             } '17' {
-                powershell.exe .\examples\eg017SetTemplateTabValues.ps1
+                powershell.exe .\examples\eSignature\eg017SetTemplateTabValues.ps1
                 continu
             } '18' {
-                powershell.exe .\examples\eg018EnvelopeCustomFieldData.ps1
+                powershell.exe .\examples\eSignature\eg018EnvelopeCustomFieldData.ps1
                 continu
             } '19' {
-                # powershell.exe .\examples\eg019SigningViaEmailWithAccessCode.ps1
+                # powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
                 Write-Output "Under construction..."
                 continu
             } '20' {
-                # powershell.exe .\examples\eg020SigningViaEmailWithSmsAuthentication.ps1
+                # powershell.exe .\examples\eSignature\eg020SigningViaEmailWithSmsAuthentication.ps1
                 Write-Output "Under construction..."
                 continu
             } '21' {
-                # powershell.exe .\examples\eg021SigningViaEmailWithPhoneAuthentication.ps1
+                # powershell.exe .\examples\eSignature\eg021SigningViaEmailWithPhoneAuthentication.ps1
                 Write-Output "Under construction..."
                 continu
             } '22' {
-                # powershell.exe .\examples\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
+                # powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
                 Write-Output "Under construction..."
                 continu
             } '23' {
-                # powershell.exe .\examples\eg023SigningViaEmailWithIDVAuthentication.ps1
+                # powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
                 Write-Output "Under construction..."
                 continu
             } '24' {
-                # powershell.exe .\examples\eg024CreatingPermissionProfiles.ps1
+                # powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
                 Write-Output "Under construction..."
                 continu
             } '25' {
-                # powershell.exe .\examples\eg025SettingPermissionProfiles.ps1
+                # powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
                 Write-Output "Under construction..."
                 continu
             } '26' {
-                # powershell.exe .\examples\eg026UpdatingIndividualPermission.ps1
+                # powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
                 Write-Output "Under construction..."
                 continu
             } '27' {
-                # powershell.exe .\examples\eg027DeletingPermissions.ps1
+                # powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
                 Write-Output "Under construction..."
                 continu
             } '28' {
-                # powershell.exe .\examples\eg028CreatingABrand.ps1
+                # powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
                 Write-Output "Under construction..."
                 continu
             } '29' {
-                # powershell.exe .\examples\eg029ApplyingBrandEnvelope.ps1
+                # powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
                 Write-Output "Under construction..."
                 continu
             } '30' {
-                # powershell.exe .\examples\eg030ApplyingBrandTemplate.ps1
+                # powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
                 Write-Output "Under construction..."
                 continu
             } '31' {
-                # powershell.exe .\examples\eg031BulkSending.ps1
+                # powershell.exe .\examples\eSignature\eg031BulkSending.ps1
                 Write-Output "Under construction..."
                 continu
             } '32' {

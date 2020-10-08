@@ -2,13 +2,12 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Redirect to the DocuSign console web tool
 
-# Configuration
-# 1. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
+
+# Step 1. Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
-# 2. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Check that we have an envelope id
@@ -59,7 +58,7 @@ $requestBody = switch ($selectedView) {
 }
 
 $requestBody
-
+# Step 2. Call the eSignature REST API
 $console = Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/views/console" `
     -Method "POST" `

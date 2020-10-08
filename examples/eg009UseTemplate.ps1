@@ -49,7 +49,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     status        = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
-# Step 3. Create and send the envelope 
+# Step 3. Create and send the envelope
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `

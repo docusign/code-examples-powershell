@@ -29,7 +29,7 @@ Write-Output "Sending the EnvelopeRecipients::list request to DocuSign..."
 Write-Output "Results:"
 
 
-# Step 2. List envelope recipients 
+# Step 2. List envelope recipients
 # ***DS.snippet.0.start
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/recipients" `

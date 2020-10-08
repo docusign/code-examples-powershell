@@ -37,6 +37,8 @@ do {
 } while (-not [ViewType]::IsDefined([ViewType], $startingView));
 
 # ***DS.snippet.0.start
+
+# Step 2. Create the envelope
 # Create the document request body
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
@@ -135,6 +137,7 @@ Invoke-RestMethod `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 
+# Step 3. Create the sender view
 # pull out the envelopeId
 $envelop = $response | Get-Content | ConvertFrom-Json
 Write-Output "Envelope received: $envelop"

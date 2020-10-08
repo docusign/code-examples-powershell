@@ -2,7 +2,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Retrieve Envelope Tab Data
 
-# Step 1: Obtain your OAuth token
+# Step 1. Obtain your OAuth token
 # Note: Substitute these values with your own
 $accessToken = Get-Content .\config\ds_access_token.txt
 
@@ -19,14 +19,14 @@ else {
   exit 1
 }
 
-#Step 2: Create your authorization headers
+# Step 2. Create your authorization headers
 $headers = @{
   'Authorization' = "Bearer $accessToken";
   'Accept'        = "application/json";
   'Content-Type'  = "application/json";
 }
 
-# Step 3: a) Make a GET call to the form_data endpoint to retrieve your envelope tab values
+# Step 3. a) Make a GET call to the form_data endpoint to retrieve your envelope tab values
 #         b) Display the JSON response
 $result = $(Invoke-WebRequest `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/form_data" `

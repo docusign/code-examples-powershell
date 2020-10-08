@@ -27,8 +27,8 @@ else {
 }
 
 Write-Output "Sending the envelope request to DocuSign..."
-
-# Step 2. Construct the JSON body for your envelope
+# Tabs and custom fields shown in the request body on step 4
+# Step 4. Construct the request body
 @{
     customFields  = @{
         textCustomFields = @(
@@ -110,8 +110,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     templateId    = "$templateId";
 } | ConvertTo-Json -Depth 32 > $requestData
 
-# Step 3: a) Create your authorization headers
-#         b) Send a POST request to the Envelopes endpoint
+# Step 5. Call the eSignature REST API
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -129,7 +128,7 @@ Get-Content $response
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
 
-# Step 4. Create a recipient view (a signing ceremony view)
+# Step 6. Create a recipient view (a signing ceremony view)
 #         that the signer will directly open in their browser to sign
 #
 # The return URL is normally your own web app. DocuSign will redirect

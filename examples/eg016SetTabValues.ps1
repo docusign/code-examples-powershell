@@ -13,6 +13,9 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
+# Tabs and customs fields shown in the request body in step 4
+# Step 4. Construct the request body
+
 # Temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
@@ -23,7 +26,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_salary.docx"))) > $doc1Base64
 
-# Step 2. Construct the JSON body for your envelope
+
 @{
   customFields       = @{
     textCustomFields = @(@{
@@ -101,8 +104,7 @@ Write-Output "Sending the envelope request to DocuSign..."
   status             = "Sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
-# Step 3: a) Create your authorization headers
-#         b) Send a POST request to the Envelopes endpoint
+# Step 5. Call the eSignature REST API
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
   -Method 'POST' `
@@ -123,7 +125,7 @@ Write-Output "EnvelopeId: $envelopeId"
 # Save the envelope ID for use by other scripts
 Write-Output $envelopeId > .\config\ENVELOPE_ID
 
-# Step 4. Create a recipient view (a signing ceremony view)
+# Step 6. Create a recipient view (a signing ceremony view)
 #         that the signer will directly open in their browser to sign
 #
 # The return URL is normally your own web app. DocuSign will redirect

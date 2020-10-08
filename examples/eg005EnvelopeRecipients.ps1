@@ -6,7 +6,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 # can be manually created.
 
 
-# ***DS.snippet.0.start
+
 
 # Step 1. Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
@@ -30,6 +30,7 @@ Write-Output "Results:"
 
 
 # Step 2. List envelope recipients 
+# ***DS.snippet.0.start
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/recipients" `
   -Method 'GET' `

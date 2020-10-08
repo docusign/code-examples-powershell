@@ -9,9 +9,9 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Step 1. Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 2. Obtain your accountId from demo.docusign.net -- the account id is shown in
-#    the drop down on the upper right corner of the screen by your picture or
-#    the default picture.
+# Obtain your accountId from demo.docusign.net -- the account id is shown in
+# the drop down on the upper right corner of the screen by your picture or
+# the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 #
@@ -68,6 +68,7 @@ else {
 
 Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
 # ***DS.snippet.0.start
+# Step 3. Call the eSignature API
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
     -Method 'GET' `

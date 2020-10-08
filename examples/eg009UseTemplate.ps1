@@ -1,3 +1,7 @@
+# Eg009 Use template
+# Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
+# They occur and re-occur multiple times below.
+
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send a signing request via email using a DocuSign template
@@ -5,11 +9,8 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
+# Step 1. Obtain an OAuth access token from
 
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
@@ -24,7 +25,7 @@ if (-not (Test-Path .\config\TEMPLATE_ID)) {
 }
 
 # ***DS.snippet.0.start
-# Step 1. Create the envelope request.
+# Step 2. Create the envelope definition from a template
 # temp files:
 $response = New-TemporaryFile
 $requestData = New-TemporaryFile
@@ -48,6 +49,7 @@ Write-Output "Sending the envelope request to DocuSign..."
     status        = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
 
+# Step 3. Create and send the envelope 
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `

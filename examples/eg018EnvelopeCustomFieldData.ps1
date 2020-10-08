@@ -27,8 +27,7 @@ else {
 
 Write-Output "Sending the EnvelopeCustomFields::list request to DocuSign..."
 
-#Step 2: a) Create your authorization headers
-#        b) Send a GET request to the Envelopes endpoint
+# Step 3. Call the eSignature REST API
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/custom_fields" `
   -Method 'GET' `

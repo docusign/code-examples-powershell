@@ -287,28 +287,22 @@ function startRooms {
         } while (-not [listRoomExamples]::IsDefined([listRoomExamples], $listRoomExamplesView));
 
         if ($listRoomExamplesView -eq [listRoomExamples]::CreateRoomWithDataController) {
-            # powershell.exe -Command .\examples\Rooms\eg001CreateRoomWithDataController.ps1
-            Write-Output "CreateRoomWithDataController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg001CreateRoomWithDataController.ps1
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateRoomWithTemplateController) {
-            # powershell.exe -Command .\examples\Rooms\eg002CreateRoomWithTemplateController.ps1
-            Write-Output "CreateRoomWithTemplateController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg002CreateRoomWithTemplateController.ps1
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::ExportDataFromRoomController) {
-            # powershell.exe -Command .\examples\Rooms\eg003ExportDataFromRoomController.ps1
-            Write-Output "ExportDataFromRoomController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg003ExportDataFromRoomController.ps1
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::AddFormsToRoomController) {
-            # powershell.exe -Command .\examples\Rooms\eg004AddFormsToRoomController.ps1
-            Write-Output "AddFormsToRoomController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg004AddFormsToRoomController.ps1
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::GetRoomsWithFiltersController) {
-            # powershell.exe -Command .\examples\Rooms\eg005GetRoomsWithFiltersController.ps1
-            Write-Output "GetRoomsWithFiltersController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg005GetRoomsWithFiltersController.ps1
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateAnExternalFormFillSessionController) {
-            # powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
-            Write-Output "CreateAnExternalFormFillSessionController is Under construction..."
+            powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
         }
 
     } until ($listRoomExamplesView -eq [listRoomExamples]::Home)

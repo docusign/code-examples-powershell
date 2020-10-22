@@ -35,7 +35,7 @@ $decJwtPayLoad = [ordered]@{
     'iat'   = $timestamp;
     'exp'   = $timestamp + 3600;
     'aud'   = 'account-d.docusign.com';
-    'scope' = 'signature impersonation'
+    'scope' = 'signature impersonation dtr.rooms.read dtr.rooms.write dtr.documents.read dtr.documents.write dtr.profile.read dtr.profile.write dtr.company.read dtr.company.write room_forms'
 } | ConvertTo-Json -Compress
 
 $encJwtHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($decJwtHeader)

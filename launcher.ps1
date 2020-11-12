@@ -63,7 +63,7 @@ function startAuth {
         . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY)
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
-        powershell.exe -Command .\OAuth\jwt.ps1
+        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE)
     }
 
     if ($listApiView -eq [listApi]::eSignature) {
@@ -206,56 +206,43 @@ function startSignature {
             powershell.exe .\examples\eSignature\eg018EnvelopeCustomFieldData.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
-            # powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Sms_Authentication) {
-            # powershell.exe .\examples\eSignature\eg020SigningViaEmailWithSmsAuthentication.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithSmsAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Phone_Authentication) {
-            # powershell.exe .\examples\eSignature\eg021SigningViaEmailWithPhoneAuthentication.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg021SigningViaEmailWithPhoneAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
-            # powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
-            # powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_Permission_Profiles) {
-            # powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Setting_Permission_Profiles) {
-            # powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Updating_Individual_Permission) {
-            # powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Deleting_Permissions) {
-            # powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_A_Brand) {
-            # powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Envelope) {
-            # powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Template) {
-            # powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
-            # powershell.exe .\examples\eSignature\eg031BulkSending.ps1
-            Write-Output "Under construction..."
+            powershell.exe .\examples\eSignature\eg031BulkSending.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Home)
     startLauncher

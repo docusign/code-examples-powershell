@@ -1,5 +1,3 @@
-
-
 function Add-OemContent {
 	param(
 		$destination,
@@ -17,12 +15,12 @@ $SIGNER_EMAIL = $variables.SIGNER_EMAIL
 $SIGNER_NAME = $variables.SIGNER_NAME
 
 # Step 2. Obtain your OAuth access token
-$accessToken = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt"))
+$accessToken = Get-Content ".\config\ds_access_token.txt"
 
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
 # the drop down on the upper right corner of the screen by your picture or
 # the default picture.
-$accountId = Get-Content ([System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID"))
+$accountId = Get-Content ".\config\API_ACCOUNT_ID"
 
 # ***DS.snippet.0.start
 
@@ -43,9 +41,9 @@ $apiUri = "https://demo.docusign.net/restapi"
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
-$doc1 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\doc_1.html"))
-$doc2 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))
-$doc3 = Get-Item ([System.IO.Path]::Combine($PSScriptRoot, "..\demo_documents\World_Wide_Corp_lorem.pdf"))
+$doc1 = Get-Item ".\demo_documents\doc_1.html"
+$doc2 = Get-Item ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"
+$doc3 = Get-Item ".\demo_documents\World_Wide_Corp_lorem.pdf"
 
 Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."

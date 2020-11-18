@@ -30,8 +30,9 @@ $docBase64 = New-TemporaryFile
 # Fetch docs and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
-$PHONE_NUMBER = Read-Host "Please enter an SMS number for recipient authentication [415-555-1212]"
-
+$PHONE_NUMBER = $(Read-Host "Please enter an SMS number for recipient authentication [415-555-1212]"
+if ($PHONE_NUMBER){$PHONE_NUMBER} else {'415-555-1212'}
+)
 # Construct your envelope JSON body
 $body = @"
 {

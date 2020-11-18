@@ -1,6 +1,5 @@
-# DocuSign eSignature PowerShell Code Examples
+# DocuSign PowerShell Code Examples
 
-### Github repo: code-examples-powershell
 ## Introduction
 This repo includes a powershell command-line application to demonstrate:
 
@@ -64,9 +63,6 @@ This repo includes a powershell command-line application to demonstrate:
 1. **Get the envelope custom field data (metadata).**
    The example retrieves the custom metadata (custom data fields) stored with the envelope.
    [Source.](./examples/eSignature/eg018EnvelopeCustomFieldData.ps1)
-
-<!-- 
-# These have not yet been completed and are coming soon, if you're reading this, stay tuned!  
 1. **Requiring an Access Code for a Recipient**   
    [Source.](./examples/eSignature/eg019SigningViaEmailWithAccessCode.ps1)
    This example sends an envelope using remote (email) signing requiring the recipient to enter an access code.
@@ -114,11 +110,35 @@ This repo includes a powershell command-line application to demonstrate:
    [Create Bulk Send List](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendList), 
    [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
-   After that, initiates bulk envelope sending. -->
+   After that, initiates bulk envelope sending.
+
+ 
+## Rooms API 
+**Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). 
+
+1. **Create room with Data.**
+   [Source.](./examples/Rooms/eg001CreateRoomWithDataController.ps1)
+   This example creates a new room in your DocuSign Rooms account to be used for a transaction.
+1. **Create a room from a template.**
+   [Source.](./examples/Rooms/eg002CreateRoomWithTemplateController.ps1)
+   This example creates a new room using a template.
+1. **Create room with Data.**
+   [Source.](./examples/Rooms/eg003ExportDataFromRoomController.ps1))
+   This example exports all the avialalble data from a specific room in your DocuSign Rooms account.
+1. **Add forms to a room.**
+   [Source.](./examples/Rooms/eg004AddFormsToRoomController.ps1)
+   This example adds a standard real estate related form to a specific room in your DocuSign Rooms account.
+1. **How to search for rooms with filters.**
+   [Source.](./examples/Rooms/eg005GetRoomsWithFiltersController.ps1)
+   This example searches for rooms in your DocuSign Rooms account using a specific filter. 
+1. **Create an external form fillable session.**
+   [Source.](./examples/Rooms/eg006CreateAnExternalFormFillSessionController.ps1)
+   This example create an external form that can be filled using DocuSign for a specific room in your DocuSign Rooms account.
+  
 
 ## Installation
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**
-Download or clone this repository to your workstation
+Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 
 
 ## Collect your Integration information
 
@@ -131,7 +151,7 @@ Download or clone this repository to your workstation
   * `INTEGRATION_KEY_JWT` = Integration Key
   * `INTEGRATION_KEY_AUTH_CODE` = Integration Key
   * `SECRET_KEY` = Secret Key
-  * `GATEWAY_ACCOUNT_ID``GATEWAY_ACCOUNT_ID` = Account ID
+  * `GATEWAY_ACCOUNT_ID` = Account ID
 * **Signer name and email:** Remember to try the DocuSign signing ceremony using both a mobile phone and a regular
   email client.
 
@@ -151,7 +171,7 @@ These OAuth scripts are integrated into the launcher and hardcode the location f
 Do not delete or change the name of the private.key file located in the config directory as this will cause problems with jwt authentication. 
 
 ## Running the examples
-You can see each of the various examples in action by running `powershell launcher.ps1` and pressing the number six to get to the option to edit your form data. 
+You can see each of the various examples in action by running `powershell launcher.ps1` and pressing the number six to get to the option to edit your form data. To use the Rooms API, select Rooms API at the selection prompt just after running `powershell launcher.ps1`.
 
 Log in to your DocuSign account using either Authorization Code Grant or using JWT to gain an OAuth token. From there, you can pick the number that corresponds to a setting or feature you wish to try out. 
 

@@ -10,7 +10,8 @@ if ((Test-Path $configFile) -eq $False) {
 
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
-
+#ESign default will be overwritten if different selection is detected
+$global:apiVersion = "eSign"
 function startLauncher {
     do {
         # Preparing list of Api
@@ -70,6 +71,7 @@ function startAuth {
         startSignature
     }
     elseif ($listApiView -eq [listApi]::Rooms) {
+        $apiVersion = "rooms"
         startRooms
     }
 }

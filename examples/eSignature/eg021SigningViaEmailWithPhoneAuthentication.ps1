@@ -19,14 +19,6 @@ $oAuthAccessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Check that we have an envelope id
-if (Test-Path .\config\ENVELOPE_ID) {
-	$envelopeID = Get-Content .\config\ENVELOPE_ID
-}
-else {
-	Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
-	exit 1
-}
 
 # temp files:
 $docBase64 = New-TemporaryFile
@@ -40,6 +32,10 @@ $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
+
+$PHONE_NUMBER = $(Read-Host "Please enter a phone number for recipient authentication [415-555-1212]"
+if ($PHONE_NUMBER) {$PHONE_NUMBER} else {'415-555-1212'}
+)
 # Construct your envelope JSON body
 $body = @"
 {
@@ -73,8 +69,7 @@ $body = @"
 			},
 			"templateAccessCodeRequired": null,
 			"deliveryMethod": "email",
-			"recipientId": "$envelopeID",
-			"accessCode": "",
+			"recipientId": "1",
 			"phoneAuthentication": {
 				"recordVoicePrint": false,
 				"validateRecipProvidedNumber": false,

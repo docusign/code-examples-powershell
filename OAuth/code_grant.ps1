@@ -12,12 +12,18 @@ $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT
 
 $state = [Convert]::ToString($(Get-Random -Maximum 1000000000), 16)
 
-# Get environment variables
+if($apiVersion -eq "rooms"){
+  $scopes = "signature%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms" 
+}
+else {
+  $scopes = "signature"
+}
+
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
-$authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=signature%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms&client_id=${clientId}&state=${state}&redirect_uri=${redirectUriEscaped}"
+$authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=$scopes&client_id=$clientId&state=$state&redirect_uri=$redirectUriEscaped"
 
 Write-Output "The authorization URL is:"
 Write-Output $authorizationURL

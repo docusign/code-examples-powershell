@@ -21,6 +21,15 @@ $userId = $variables.IMPERSONATION_USER_GUID
 $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
 $timestamp = [int][double]::Parse((Get-Date -UFormat %s))
 
+
+if($apiVersion -eq "rooms"){
+    $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms" 
+  }
+  else {
+    $scopes = "signature%20impersonation"
+  }
+  
+
 # Step 1. Request application consent
 $PORT = '8080'
 $IP = 'localhost'
@@ -28,7 +37,7 @@ $state = [Convert]::ToString($(Get-Random -Maximum 1000000000), 16)
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
-$authorizationURL = "${authorizationEndpoint}auth?scope=signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms&redirect_uri=$redirectUriEscaped&client_id=$clientId&state=$state&response_type=code"
+$authorizationURL = "${authorizationEndpoint}auth?scope=$scopes&redirect_uri=$redirectUriEscaped&client_id=$clientId&state=$state&response_type=code"
 
 Write-Output "The authorization URL is: $authorizationURL"
 Write-Output ""
@@ -95,7 +104,7 @@ $decJwtPayLoad = [ordered]@{
     'iat'   = $timestamp;
     'exp'   = $timestamp + 3600;
     'aud'   = 'account-d.docusign.com';
-    'scope' = 'signature impersonation dtr.rooms.read dtr.rooms.write dtr.documents.read dtr.documents.write dtr.profile.read dtr.profile.write dtr.company.read dtr.company.write room_forms'
+    'scope' = $scopes
 } | ConvertTo-Json -Compress
 
 $encJwtHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($decJwtHeader)

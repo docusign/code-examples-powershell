@@ -111,7 +111,10 @@ function startSignature {
             Applying_Brand_Envelope = 29;
             Applying_Brand_Template = 30;
             Bulk_Sending = 31;
-            Home = 32;
+            Pause_Signature_Workflow = 32;
+            Unpause_Signature_Workflow = 33;
+            Use_Conditional_Recipients = 34;
+            Home = 35;
         }
 
         $ApiExamplesView = $null;
@@ -149,6 +152,9 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Applying_Brand_Envelope)) Applying_Brand_Envelope"
             Write-Output "$([int][ApiExamples]::Applying_Brand_Template)) Applying_Brand_Template"
             Write-Output "$([int][ApiExamples]::Bulk_Sending)) Bulk_Sending"
+            Write-Output "$([int][ApiExamples]::Pause_Signature_Workflow)) Pause_Signature_Workflow"
+            Write-Output "$([int][ApiExamples]::Unpause_Signature_Workflow)) Unpause_Signature_Workflow"
+            Write-Output "$([int][ApiExamples]::Use_Conditional_Recipients)) Use_Conditional_Recipients"
             Write-Output "$([int][ApiExamples]::Home)) Home"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -245,6 +251,15 @@ function startSignature {
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
             powershell.exe .\examples\eSignature\eg031BulkSending.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Pause_Signature_Workflow) {
+            powershell.exe .\examples\eSignature\eg032PauseSignatureWorkflow.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Unpause_Signature_Workflow) {
+            powershell.exe .\examples\eSignature\eg033UnpauseSignatureWorkflow.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Use_Conditional_Recipients) {
+            powershell.exe .\examples\eSignature\eg034UseConditionalRecipients.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Home)
     startLauncher

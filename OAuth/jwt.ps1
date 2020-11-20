@@ -23,12 +23,12 @@ $timestamp = [int][double]::Parse((Get-Date -UFormat %s))
 
 
 if($apiVersion -eq "rooms"){
-    $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms" 
+    $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
   }
   else {
     $scopes = "signature%20impersonation"
-  }
-  
+}
+
 
 # Step 1. Request application consent
 $PORT = '8080'

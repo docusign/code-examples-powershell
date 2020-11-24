@@ -3,10 +3,10 @@
 ## Introduction
 This repo includes a powershell command-line application to demonstrate:
 
-1. **Embedded Signing Ceremony.**
+1. **Use embedded signing.**
    [Source.](./eg001EmbeddedSigning.ps1)
-   This example sends an envelope, and then uses an embedded signing ceremony for the first signer.
-   With embedded signing, the DocuSign signing ceremony is initiated from your website.
+   This example sends an envelope, and then uses embedded signing for the first signer.
+   With embedded signing, the DocuSign signing is initiated from your website.
 1. **Send an envelope with a remote (email) signer and cc recipient.**
    [Source.](./examples/eSignature/eg002SigningViaEmail.ps1)
    The envelope includes a pdf, Word, and HTML document.
@@ -32,13 +32,13 @@ This repo includes a powershell command-line application to demonstrate:
 1. **Send an envelope and upload its documents with multipart binary transfer.**
    [Source.](./examples/eSignature/eg010SendBinaryDocs.ps1)
    Binary transfer is 33% more efficient than using Base64 encoding.
-1. **Embedded sending.**
+1. **Use embedded sending.**
    [Source.](./examples/eSignature/eg011EmbeddedSending.ps1)
    Embeds the DocuSign web tool (NDSE) in your web app to finalize or update 
    the envelope and documents before they are sent.
 1. **Embedded DocuSign web tool (NDSE).**
    [Source.](./examples/eSignature/eg012EmbeddedConsole.ps1)
-1. **Embedded Signing Ceremony from a template with an added document.**
+1. **Use embedded signing from a template with an added document.**
    [Source.](./examples/eSignature/eg013AddDocToTemplate.ps1)
    This example sends an envelope based on a template.
    In addition to the template's document(s), the example adds an
@@ -152,7 +152,7 @@ Download or clone this repository to your workstation. Open a PowerShell termina
   * `INTEGRATION_KEY_AUTH_CODE` = Integration Key
   * `SECRET_KEY` = Secret Key
   * `GATEWAY_ACCOUNT_ID` = Account ID
-* **Signer name and email:** Remember to try the DocuSign signing ceremony using both a mobile phone and a regular
+* **Signer name and email:** Remember to try the DocuSign signing using both a mobile phone and a regular
   email client.
 
 

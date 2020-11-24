@@ -125,15 +125,15 @@ Write-Output "EnvelopeId: $envelopeId"
 # Save the envelope ID for use by other scripts
 Write-Output $envelopeId > .\config\ENVELOPE_ID
 
-# Step 6. Create a recipient view (a signing ceremony view)
+# Step 6. Create a recipient view (an embedded signing view)
 #         that the signer will directly open in their browser to sign
 #
 # The return URL is normally your own web app. DocuSign will redirect
-# the signer to the return URL when the signing ceremony completes.
+# the signer to the return URL when the DocuSign signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
-Write-Output "Requesting the url for the signing ceremony..."
+Write-Output "Requesting the url for the embedded signing..."
 
 @{
   returnUrl            = "http://httpbin.org/get";
@@ -156,11 +156,11 @@ Invoke-RestMethod `
 Write-Output "Response:"
 Get-Content $response
 
-$signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
+$signingUrl = $(Get-Content $response | ConvertFrom-Json).url
 
-Write-Output "The signing ceremony URL is $signingCeremonyUrl"
+Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
-Start-Process $signingCeremonyUrl
+Start-Process $signingUrl
 
 # cleanup
 Remove-Item $requestData

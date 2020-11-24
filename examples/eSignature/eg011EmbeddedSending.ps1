@@ -1,6 +1,6 @@
 $apiUri = "https://demo.docusign.net/restapi"
 
-# Embedded Sending:
+# Use embedded sending:
 # 1. create a draft envelope with three documents
 # 2. Open the sending view of the DocuSign web tool
 
@@ -146,7 +146,7 @@ $envelopeId = $envelop.envelopeId
 Write-Output "Requesting the sender view url"
 
 # The returnUrl is normally your own web app. DocuSign will redirect
-# the signer to returnUrl when the sending ceremony completes.
+# the signer to returnUrl when the embedded sending completes.
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 Invoke-RestMethod `
@@ -159,19 +159,19 @@ Invoke-RestMethod `
     -Body (@{ returnUrl = "http://httpbin.org/get"; } | ConvertTo-Json) `
     -OutFile $response
 
-$sendingCeremonyObj = $response | Get-Content | ConvertFrom-Json
-$sendingCeremonyUrl = $sendingCeremonyObj.url
+$sendingObj = $response | Get-Content | ConvertFrom-Json
+$sendingUrl = $sendingObj.url
 # Next, we update the returned url if we want to start with the Recipient
 # and Documents view
 if ($startingView -eq [ViewType]::RecipientsAndDocuments) {
-    $sendingCeremonyUrl = $sendingCeremonyUrl -replace "send=1", "send=0"
+    $sendingUrl = $sendingUrl -replace "send=1", "send=0"
 }
 # ***DS.snippet.0.end
 
-Write-Output "The sending ceremony URL is ${sendingCeremonyUrl}"
+Write-Output "The embedded sending URL is ${sendingUrl}"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 
-Start-Process $sendingCeremonyUrl
+Start-Process $sendingUrl
 
 # cleanup
 Remove-Item $requestData

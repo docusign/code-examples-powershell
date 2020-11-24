@@ -1,6 +1,6 @@
 $apiUri = "https://demo.docusign.net/restapi"
 
-# Embedded signing ceremony
+# Use embedded signing
 
 # Get required variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -99,11 +99,11 @@ Write-Output "EnvelopeId: $envelopeId"
 # The signer will directly open this link from the browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
-# the signer to returnUrl when the signing ceremony completes.
+# the signer to returnUrl when the signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
-Write-Output "Requesting the url for the signing ceremony..."
+Write-Output "Requesting the url for the embedded signing..."
 
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
@@ -114,7 +114,7 @@ $json = [ordered]@{
 } | ConvertTo-Json -Compress
 
 
-# Step 5. Create the recipient view and begin the signing ceremony
+# Step 5. Create the recipient view and begin the DocuSign signing
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -126,13 +126,13 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
-$signingCeremonyUrl = $(Get-Content $response | ConvertFrom-Json).url
+$signingUrl = $(Get-Content $response | ConvertFrom-Json).url
 
 # ***DS.snippet.0.end
-Write-Output "The signing ceremony URL is $signingCeremonyUrl"
+Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 
-Start-Process $signingCeremonyUrl
+Start-Process $signingUrl
 
 # cleanup
 Remove-Item $requestData

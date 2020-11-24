@@ -20,7 +20,7 @@ if (-not (Test-Path .\config\ENVELOPE_ID)) {
 $envelopeId = Get-Content .\config\ENVELOPE_ID
 
 # The returnUrl is normally your own web app. DocuSign will redirect
-# the signer to returnUrl when the signing ceremony completes.
+# the signer to returnUrl when the embedded signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 

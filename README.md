@@ -111,6 +111,15 @@ This repo includes a powershell command-line application to demonstrate:
    [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
    Firstly, creates a bulk send recipients list, and then creates an envelope. 
    After that, initiates bulk envelope sending.
+1. **Pausing a signature workflow Source.**
+   [Source.](./examples/eSignature/eg032PauseSignatureWorkflow.ps1)
+   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient.
+1. **Unpausing a signature workflow**
+   [Source.](./examples/eSignature/eg033UnpauseSignatureWorkflow.ps1)
+   This code example demonstrates how to resume an envelope workflow that has been paused
+1. **Using conditional recipients**
+   [Source.](./examples/eSignature/eg034UseConditionalRecipients.ps1)
+   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
 
  
 ## Rooms API 

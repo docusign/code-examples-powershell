@@ -2,7 +2,9 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$clientId,
   [Parameter(Mandatory = $true)]
-  [string]$clientSecret)
+  [string]$clientSecret,
+  [Parameter(Mandatory = $true)]
+  [string]$apiVersion)
 
 $PORT = '8080'
 $IP = 'localhost'
@@ -15,10 +17,12 @@ $state = [Convert]::ToString($(Get-Random -Maximum 1000000000), 16)
 if($apiVersion -eq "rooms"){
   $scopes = "signature%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
 }
-else {
+elseif ($apiVersion -eq "eSignature") {
   $scopes = "signature"
 }
-
+elseif ($apiVersion -eq "click") {
+  $scopes = "signature%20click.manage"
+}
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"

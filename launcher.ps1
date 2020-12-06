@@ -11,7 +11,7 @@ if ((Test-Path $configFile) -eq $False) {
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
 #ESign default will be overwritten if different selection is detected
-$global:apiVersion = "eSign"
+$apiVersion = ""
 function startLauncher {
     do {
         # Preparing list of Api
@@ -32,11 +32,20 @@ function startLauncher {
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
 
-        if ($listApiView -eq [listApi]::Exit) {
-            exit 1
-        }
-        else {
+        if ($listApiView -eq [listApi]::eSignature) {
+            $apiVersion = "eSignature"
             startAuth
+        }
+        elseif ($listApiView -eq [listApi]::Rooms) {
+            $apiVersion = "room"
+            startAuth
+        }
+        elseif ($listApiView -eq [listApi]::Click) {
+            $apiVersion = "click"
+            startAuth
+        }
+        elseif ($listApiView -eq [listApi]::Exit) {
+            exit 1
         }
     } until ($listApiView -eq [listApi]::Exit)
 }
@@ -63,21 +72,19 @@ function startAuth {
         startLauncher
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
-        . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY)
+        . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion)
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
-        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE)
+        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion)
     }
 
     if ($listApiView -eq [listApi]::eSignature) {
         startSignature
     }
     elseif ($listApiView -eq [listApi]::Rooms) {
-        $apiVersion = "rooms"
         startRooms
     }
     elseif ($listApiView -eq [listApi]::Click) {
-        $apiVersion = "click"
         startClick
     }
 }
@@ -348,22 +355,22 @@ function startClick {
         if ($listClickExamplesView -eq [listClickExamples]::createClickwraps) {
             powershell.exe -Command .\examples\Click\eg001CreateClickwrap.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
             powershell.exe -Command .\examples\Click\eg002ActivateClickwrap.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::testClickwrap) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::testClickwrap) {
             powershell.exe -Command .\examples\Click\eg003TestClickwrap.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::embedClickwraps) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::embedClickwraps) {
             powershell.exe -Command .\examples\Click\eg004EmbedClickwrap.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
             powershell.exe -Command .\examples\Click\eg005CreateNewClickwrapVersion.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
             powershell.exe -Command .\examples\Click\eg006GetListOfClickwraps.ps1
         }
-        elseif  ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
+        elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
             powershell.exe -Command .\examples\Click\eg007GetClickwrapResponses.ps1
         }
     } until ($listClickExamplesView -eq [listClickExamples]::Home)

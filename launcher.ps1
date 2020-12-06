@@ -328,7 +328,7 @@ function startRooms {
 function startClick {
     do {
         Enum listClickExamples {
-            createClickwraps = 1;
+            createClickwrap = 1;
             activateClickwrap = 2;
             testClickwrap = 3;
             embedClickwraps = 4;
@@ -341,7 +341,7 @@ function startClick {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listClickExamples]::createClickwraps)) Create Clickwraps"
+            Write-Output "$([int][listClickExamples]::createClickwrap)) Create Clickwrap"
             Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate Clickwrap"
             Write-Output "$([int][listClickExamples]::testClickwrap)) Test Clickwrap"
             Write-Output "$([int][listClickExamples]::embedClickwraps)) Embed Clickwraps"
@@ -352,7 +352,7 @@ function startClick {
             [int]$listClickExamplesView = Read-Host "Select the action"
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
 
-        if ($listClickExamplesView -eq [listClickExamples]::createClickwraps) {
+        if ($listClickExamplesView -eq [listClickExamples]::createClickwrap) {
             powershell.exe -Command .\examples\Click\eg001CreateClickwrap.ps1
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {

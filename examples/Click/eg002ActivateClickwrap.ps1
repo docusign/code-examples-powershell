@@ -1,7 +1,15 @@
 # Step 1. Get required environment variables from .\config\settings.json file
 $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
-$ClickWrapId = Get-Content .\config\CLICKWRAP_ID
+
+# Check that we have a Clickwrap ID
+if (Test-Path .\config\CLICKWRAP_ID) {
+    $ClickWrapId = Get-Content .\config\CLICKWRAP_ID
+  }
+  else {
+    Write-Output "PROBLEM: A Clickwrap ID is needed. Fix: execute step 1 - Create Clickwrap..."
+    exit 1
+}
 
 # Step 2. Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"

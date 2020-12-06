@@ -18,7 +18,8 @@ function startLauncher {
         Enum listApi {
             eSignature = 1;
             Rooms = 2;
-            Exit = 3;
+            Click = 3;
+            Exit = 4;
         }
 
         $listApiView = $null;
@@ -26,6 +27,7 @@ function startLauncher {
             Write-Output 'Choose API: '
             Write-Output "$([int][listApi]::eSignature)) eSignature"
             Write-Output "$([int][listApi]::Rooms)) Rooms"
+            Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -73,6 +75,10 @@ function startAuth {
     elseif ($listApiView -eq [listApi]::Rooms) {
         $apiVersion = "rooms"
         startRooms
+    }
+    elseif ($listApiView -eq [listApi]::Click) {
+        $apiVersion = "click"
+        startClick
     }
 }
 
@@ -308,8 +314,59 @@ function startRooms {
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateAnExternalFormFillSessionController) {
             powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
         }
-
     } until ($listRoomExamplesView -eq [listRoomExamples]::Home)
+    startLauncher
+}
+
+function startClick {
+    do {
+        Enum listRoomExamples {
+            createClickwraps = 1;
+            activateClickwrap = 2;
+            testClickwrap = 3;
+            embedClickwraps = 4;
+            clickwrapVersioning = 5;
+            retrieveClickwraps = 6;
+            getClickwrapResponses = 7;
+            Home = 8;
+        }
+        $listClickExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listRoomExamples]::createClickwraps)) Create Clickwraps"
+            Write-Output "$([int][listRoomExamples]::activateClickwrap)) Activate Clickwrap"
+            Write-Output "$([int][listRoomExamples]::testClickwrap)) Test Clickwrap"
+            Write-Output "$([int][listRoomExamples]::embedClickwraps)) Embed Clickwraps"
+            Write-Output "$([int][listRoomExamples]::clickwrapVersioning)) Clickwrap Versioning"
+            Write-Output "$([int][listRoomExamples]::retrieveClickwraps)) Retrieve Clickwraps"
+            Write-Output "$([int][listRoomExamples]::getClickwrapResponses)) Get Clickwrap Responses"
+            Write-Output "$([int][listRoomExamples]::Home)) Home"
+            [int]$listClickExamplesView = Read-Host "Select the action"
+        } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
+
+        if ($listClickExamplesView -eq [listClickExamples]::createClickwraps) {
+            powershell.exe -Command .\examples\Click\eg001CreateClickwrap.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
+            powershell.exe -Command .\examples\Click\eg002ActivateClickwrap.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::testClickwrap) {
+            powershell.exe -Command .\examples\Click\eg003TestClickwrap.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::embedClickwraps) {
+            powershell.exe -Command .\examples\Click\eg004EmbedClickwrap.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
+            powershell.exe -Command .\examples\Click\eg005CreateNewClickwrapVersion.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
+            powershell.exe -Command .\examples\Click\eg006GetListOfClickwraps.ps1
+        }
+        elseif  ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
+            powershell.exe -Command .\examples\Click\eg007GetClickwrapResponses.ps1
+        }
+    } until ($listClickExamplesView -eq [listClickExamples]::Home)
     startLauncher
 }
 

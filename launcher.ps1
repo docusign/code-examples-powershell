@@ -320,7 +320,7 @@ function startRooms {
 
 function startClick {
     do {
-        Enum listRoomExamples {
+        Enum listClickExamples {
             createClickwraps = 1;
             activateClickwrap = 2;
             testClickwrap = 3;
@@ -334,14 +334,14 @@ function startClick {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listRoomExamples]::createClickwraps)) Create Clickwraps"
-            Write-Output "$([int][listRoomExamples]::activateClickwrap)) Activate Clickwrap"
-            Write-Output "$([int][listRoomExamples]::testClickwrap)) Test Clickwrap"
-            Write-Output "$([int][listRoomExamples]::embedClickwraps)) Embed Clickwraps"
-            Write-Output "$([int][listRoomExamples]::clickwrapVersioning)) Clickwrap Versioning"
-            Write-Output "$([int][listRoomExamples]::retrieveClickwraps)) Retrieve Clickwraps"
-            Write-Output "$([int][listRoomExamples]::getClickwrapResponses)) Get Clickwrap Responses"
-            Write-Output "$([int][listRoomExamples]::Home)) Home"
+            Write-Output "$([int][listClickExamples]::createClickwraps)) Create Clickwraps"
+            Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate Clickwrap"
+            Write-Output "$([int][listClickExamples]::testClickwrap)) Test Clickwrap"
+            Write-Output "$([int][listClickExamples]::embedClickwraps)) Embed Clickwraps"
+            Write-Output "$([int][listClickExamples]::clickwrapVersioning)) Clickwrap Versioning"
+            Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve Clickwraps"
+            Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get Clickwrap Responses"
+            Write-Output "$([int][listClickExamples]::Home)) Home"
             [int]$listClickExamplesView = Read-Host "Select the action"
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
 

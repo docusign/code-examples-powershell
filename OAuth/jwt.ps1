@@ -101,6 +101,9 @@ $decJwtHeader = [ordered]@{
     'alg' = 'RS256'
 } | ConvertTo-Json -Compress
 
+# Remove %20 from scope string
+$scopes = $scopes -replace '%20',' '
+
 $decJwtPayLoad = [ordered]@{
     'iss'   = $INTEGRATION_KEY_JWT;
     'sub'   = $userId;

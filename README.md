@@ -157,7 +157,7 @@ This repo includes a powershell command-line application to demonstrate:
 1. **Test Clickwrap.**
    [Source.](./examples/Click/eg003TestClickwrap.ps1)
    This example shows how to test a newly create clickwrap.
-1. **Clickwrap Embeding.**
+1. **Clickwrap Embedding.**
    [Source.](./examples/Click/eg004EmbedClickwrap.ps1)
    This example shows how to embed a clickwrap into a page.
 1. **Clickwrap Versioning.**

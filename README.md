@@ -3,6 +3,10 @@
 ## Introduction
 This repo includes a powershell command-line application to demonstrate:
 
+## eSignature API
+
+For more information about the scopes used for obtaining authorization to use the eSignature API, see the [Required Scopes section](https://developers.docusign.com/docs/esign-rest-api/esign101/auth)
+
 1. **Use embedded signing.**
    [Source.](./eg001EmbeddedSigning.ps1)
    This example sends an envelope, and then uses embedded signing for the first signer.
@@ -123,6 +127,9 @@ This repo includes a powershell command-line application to demonstrate:
 
  
 ## Rooms API 
+
+For more information about the scopes used for obtaining authorization to use the Rooms API, see the [Required Scopes section](https://developers.docusign.com/docs/rooms-api/rooms101/auth/)
+
 **Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). 
 
 1. **Create room with Data.**
@@ -170,6 +177,7 @@ Download or clone this repository to your workstation. Open a PowerShell termina
 * create an RSA KeyPair on your **integration key** and copy the **private_key** into the file `config/private.key` and save it. Use JWT authentication if you intend to run a system account integration or to impersonate a different user.
 * OPTIONAL: If you intend to use JWT grant authentication, set **Impersonation_user_guid** by using your own **user_account_id** found on the same page used to set your [**integration key**](https://admindemo.docusign.com/api-integrator-key). 
 
+**Note:** Before you can make any API calls using JWT Grant, you must get your user’s consent for your app to impersonate them. To do this, the `impersonation` scope is added when requesting a JSON Web Token.
 
 ## OAuth Details
 

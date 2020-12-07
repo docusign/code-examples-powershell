@@ -144,6 +144,31 @@ This repo includes a powershell command-line application to demonstrate:
    [Source.](./examples/Rooms/eg006CreateAnExternalFormFillSessionController.ps1)
    This example create an external form that can be filled using DocuSign for a specific room in your DocuSign Rooms account.
   
+## Click API 
+**Note:** to use the Click API you must also be ready authenticate with one of the workflows (https://developers.docusign.com/docs/click-api/click101/auth). 
+
+
+1. **Create Clickwraps.**
+   [Source.](./examples/Click/eg001CreateClickwrap.ps1)
+   This example shows how to create a clickwrap.
+1. **Activate Clickwrap.**
+   [Source.](./examples/Click/eg002ActivateClickwrap.ps1)
+   This example shows how to activate a clickwrap.
+1. **Test Clickwrap.**
+   [Source.](./examples/Click/eg003TestClickwrap.ps1)
+   This example shows how to test a newly create clickwrap.
+1. **Clickwrap Embeding.**
+   [Source.](./examples/Click/eg004EmbedClickwrap.ps1)
+   This example shows how to embed a clickwrap into a page.
+1. **Clickwrap Versioning.**
+   [Source.](./examples/Click/eg005CreateNewClickwrapVersion.ps1)
+   This example shows how to create a new clickwrap version.
+1. **Retrieve Clickwraps.**
+   [Source.](./examples/Click/eg006GetListOfClickwraps.ps1)
+   This example shows how to get a list of clickwraps.
+1. **Get Clickwrap Responses.**
+   [Source.](./examples/Click/eg007GetClickwrapResponses.ps1)
+   This example shows how to get clickwrap responses.
 
 ## Installation
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**

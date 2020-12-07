@@ -23,13 +23,11 @@ $userId = $variables.IMPERSONATION_USER_GUID
 $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
 $timestamp = [int][double]::Parse((Get-Date -UFormat %s))
 
-if($apiVersion -eq "rooms"){
+if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
-  }
-  elseif ($apiVersion -eq "eSignature") {
+  } elseif ($apiVersion -eq "eSignature") {
     $scopes = "signature%20impersonation"
-  }
-  elseif ($apiVersion -eq "click") {
+  } elseif ($apiVersion -eq "click") {
     $scopes = "signature%20click.manage"
 }
 

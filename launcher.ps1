@@ -37,7 +37,7 @@ function startLauncher {
             startAuth
         }
         elseif ($listApiView -eq [listApi]::Rooms) {
-            $apiVersion = "room"
+            $apiVersion = "rooms"
             startAuth
         }
         elseif ($listApiView -eq [listApi]::Click) {

@@ -13,11 +13,11 @@ if (Test-Path .\config\CLICKWRAP_ID) {
     $ClickWrapId = Get-Content .\config\CLICKWRAP_ID
 } else {
     Write-Output "PROBLEM: A Clickwrap ID is needed. Fix: execute step 1 - Create Clickwrap..."
-    exit 
+    exit
 }
 
 # Check that the Clickwrap is activated
-$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/" 
+$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method GET
 $clickwrapStatus = $($result.Content | ConvertFrom-Json).status
 

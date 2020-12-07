@@ -39,7 +39,7 @@ $body = @"
 # Step 4. Call the Click API
 # a) Make a POST call to the clickwraps endpoint to create a clickwrap for an account
 # b) Display the JSON structure of the created clickwrap
-$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps" 
+$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method POST -Body $body
 $result.Content
 

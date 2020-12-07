@@ -18,7 +18,7 @@ $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
 # Step 3. Call the Click API
-# a) Make a GET call to the users endpoint to retrieve responses (acceptance) of a specific clickwrap for an account 
+# a) Make a GET call to the users endpoint to retrieve responses (acceptance) of a specific clickwrap for an account
 # b) Display the returned JSON structure of the responses
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method GET

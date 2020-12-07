@@ -22,13 +22,13 @@ $VersionNumber = "1"
 
 # Construct your clickwrap JSON body
 $body = @"
-{ 
-"status" : "active" 
+{
+"status" : "active"
 }
 "@
 
 # a) Make a POST call to the clickwraps endpoint to activate the clickwrap for an account
 # b) Display the JSON structure of the created clickwrap
-$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/versions/$VersionNumber" 
+$uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/versions/$VersionNumber"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method PUT -Body $body
 $result.Content

@@ -10,8 +10,7 @@ if ((Test-Path $configFile) -eq $False) {
 
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
-#ESign default will be overwritten if different selection is detected
-$apiVersion = ""
+
 function startLauncher {
     do {
         # Preparing list of Api

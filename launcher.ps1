@@ -32,16 +32,13 @@ function startLauncher {
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
 
         if ($listApiView -eq [listApi]::eSignature) {
-            $apiVersion = "eSignature"
-            startAuth
+            startAuth "eSignature"
         }
         elseif ($listApiView -eq [listApi]::Rooms) {
-            $apiVersion = "rooms"
-            startAuth
+            startAuth "rooms"
         }
         elseif ($listApiView -eq [listApi]::Click) {
-            $apiVersion = "click"
-            startAuth
+            startAuth "click"
         }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
@@ -49,7 +46,7 @@ function startLauncher {
     } until ($listApiView -eq [listApi]::Exit)
 }
 
-function startAuth {
+function startAuth ($apiVersion) {
     # Preparing a list of Authorization methods
     Enum AuthType {
         CodeGrant = 1;

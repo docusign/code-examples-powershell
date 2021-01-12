@@ -10,15 +10,15 @@ if ((Test-Path $configFile) -eq $False) {
 
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
-#ESign default will be overwritten if different selection is detected
-$global:apiVersion = "eSign"
+
 function startLauncher {
     do {
         # Preparing list of Api
         Enum listApi {
             eSignature = 1;
             Rooms = 2;
-            Exit = 3;
+            Click = 3;
+            Exit = 4;
         }
 
         $listApiView = $null;
@@ -26,20 +26,27 @@ function startLauncher {
             Write-Output 'Choose API: '
             Write-Output "$([int][listApi]::eSignature)) eSignature"
             Write-Output "$([int][listApi]::Rooms)) Rooms"
+            Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
 
-        if ($listApiView -eq [listApi]::Exit) {
-            exit 1
+        if ($listApiView -eq [listApi]::eSignature) {
+            startAuth "eSignature"
         }
-        else {
-            startAuth
+        elseif ($listApiView -eq [listApi]::Rooms) {
+            startAuth "rooms"
+        }
+        elseif ($listApiView -eq [listApi]::Click) {
+            startAuth "click"
+        }
+        elseif ($listApiView -eq [listApi]::Exit) {
+            exit 1
         }
     } until ($listApiView -eq [listApi]::Exit)
 }
 
-function startAuth {
+function startAuth ($apiVersion) {
     # Preparing a list of Authorization methods
     Enum AuthType {
         CodeGrant = 1;
@@ -61,18 +68,20 @@ function startAuth {
         startLauncher
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
-        . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY)
+        . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion)
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
-        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE)
+        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion)
     }
 
     if ($listApiView -eq [listApi]::eSignature) {
         startSignature
     }
     elseif ($listApiView -eq [listApi]::Rooms) {
-        $apiVersion = "rooms"
         startRooms
+    }
+    elseif ($listApiView -eq [listApi]::Click) {
+        startClick
     }
 }
 
@@ -308,8 +317,59 @@ function startRooms {
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateAnExternalFormFillSessionController) {
             powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
         }
-
     } until ($listRoomExamplesView -eq [listRoomExamples]::Home)
+    startLauncher
+}
+
+function startClick {
+    do {
+        Enum listClickExamples {
+            createClickwrap = 1;
+            activateClickwrap = 2;
+            testClickwrap = 3;
+            embedClickwraps = 4;
+            clickwrapVersioning = 5;
+            retrieveClickwraps = 6;
+            getClickwrapResponses = 7;
+            Home = 8;
+        }
+        $listClickExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listClickExamples]::createClickwrap)) Create Clickwrap"
+            Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate Clickwrap"
+            Write-Output "$([int][listClickExamples]::testClickwrap)) Test Clickwrap"
+            Write-Output "$([int][listClickExamples]::embedClickwraps)) Embed Clickwraps"
+            Write-Output "$([int][listClickExamples]::clickwrapVersioning)) Clickwrap Versioning"
+            Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve Clickwraps"
+            Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get Clickwrap Responses"
+            Write-Output "$([int][listClickExamples]::Home)) Home"
+            [int]$listClickExamplesView = Read-Host "Select the action"
+        } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
+
+        if ($listClickExamplesView -eq [listClickExamples]::createClickwrap) {
+            powershell.exe -Command .\examples\Click\eg001CreateClickwrap.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
+            powershell.exe -Command .\examples\Click\eg002ActivateClickwrap.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::testClickwrap) {
+            powershell.exe -Command .\examples\Click\eg003TestClickwrap.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::embedClickwraps) {
+            powershell.exe -Command .\examples\Click\eg004EmbedClickwrap.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
+            powershell.exe -Command .\examples\Click\eg005CreateNewClickwrapVersion.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
+            powershell.exe -Command .\examples\Click\eg006GetListOfClickwraps.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
+            powershell.exe -Command .\examples\Click\eg007GetClickwrapResponses.ps1
+        }
+    } until ($listClickExamplesView -eq [listClickExamples]::Home)
     startLauncher
 }
 

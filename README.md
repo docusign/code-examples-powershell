@@ -157,25 +157,19 @@ For more information about the scopes used for obtaining authorization to use th
 
 1. **Create Clickwraps.**
    [Source.](./examples/Click/eg001CreateClickwrap.ps1)
-   This example shows how to create a clickwrap.
+   Demonstrates how to create a Clickwrap that you can embed in your website or app.
 1. **Activate Clickwrap.**
    [Source.](./examples/Click/eg002ActivateClickwrap.ps1)
-   This example shows how to activate a clickwrap.
-1. **Test Clickwrap.**
-   [Source.](./examples/Click/eg003TestClickwrap.ps1)
-   This example shows how to test a newly create clickwrap.
-1. **Clickwrap Embedding.**
-   [Source.](./examples/Click/eg004EmbedClickwrap.ps1)
-   This example shows how to embed a clickwrap into a page.
+   Demonstrates how to activate a new Clickwrap. By default, new Clickwraps are inactive. You must activate your Clickwrap before you can use it.
 1. **Clickwrap Versioning.**
-   [Source.](./examples/Click/eg005CreateNewClickwrapVersion.ps1)
-   This example shows how to create a new clickwrap version.
+   [Source.](./examples/Click/eg003CreateNewClickwrapVersion.ps1)
+   Demonstrates how to use the Click API to create a new version of a Clickwrap.
 1. **Retrieve Clickwraps.**
-   [Source.](./examples/Click/eg006GetListOfClickwraps.ps1)
-   This example shows how to get a list of clickwraps.
+   [Source.](./examples/Click/eg004GetListOfClickwraps.ps1)
+   Demonstrates how to get a list of Clickwraps associated with a specific DocuSign user.
 1. **Get Clickwrap Responses.**
-   [Source.](./examples/Click/eg007GetClickwrapResponses.ps1)
-   This example shows how to get clickwrap responses.
+   [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
+   Demonstrates how to get user responses to your Clickwrap agreements.
 
 ## Installation
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**

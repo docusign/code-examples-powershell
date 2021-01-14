@@ -326,12 +326,10 @@ function startClick {
         Enum listClickExamples {
             createClickwrap = 1;
             activateClickwrap = 2;
-            testClickwrap = 3;
-            embedClickwraps = 4;
-            clickwrapVersioning = 5;
-            retrieveClickwraps = 6;
-            getClickwrapResponses = 7;
-            Home = 8;
+            clickwrapVersioning = 3;
+            retrieveClickwraps = 4;
+            getClickwrapResponses = 5;
+            Home = 6;
         }
         $listClickExamplesView = $null;
         do {
@@ -339,8 +337,6 @@ function startClick {
             Write-Output 'Select the action: '
             Write-Output "$([int][listClickExamples]::createClickwrap)) Create Clickwrap"
             Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate Clickwrap"
-            Write-Output "$([int][listClickExamples]::testClickwrap)) Test Clickwrap"
-            Write-Output "$([int][listClickExamples]::embedClickwraps)) Embed Clickwraps"
             Write-Output "$([int][listClickExamples]::clickwrapVersioning)) Clickwrap Versioning"
             Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve Clickwraps"
             Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get Clickwrap Responses"
@@ -354,20 +350,14 @@ function startClick {
         elseif ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
             powershell.exe -Command .\examples\Click\eg002ActivateClickwrap.ps1
         }
-        elseif ($listClickExamplesView -eq [listClickExamples]::testClickwrap) {
-            powershell.exe -Command .\examples\Click\eg003TestClickwrap.ps1
-        }
-        elseif ($listClickExamplesView -eq [listClickExamples]::embedClickwraps) {
-            powershell.exe -Command .\examples\Click\eg004EmbedClickwrap.ps1
-        }
         elseif ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
-            powershell.exe -Command .\examples\Click\eg005CreateNewClickwrapVersion.ps1
+            powershell.exe -Command .\examples\Click\eg003CreateNewClickwrapVersion.ps1
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
-            powershell.exe -Command .\examples\Click\eg006GetListOfClickwraps.ps1
+            powershell.exe -Command .\examples\Click\eg004GetListOfClickwraps.ps1
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
-            powershell.exe -Command .\examples\Click\eg007GetClickwrapResponses.ps1
+            powershell.exe -Command .\examples\Click\eg005GetClickwrapResponses.ps1
         }
     } until ($listClickExamplesView -eq [listClickExamples]::Home)
     startLauncher

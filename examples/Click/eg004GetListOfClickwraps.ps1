@@ -12,5 +12,5 @@ $headers.add("Content-Type", "application/json")
 # a) Make a GET call to the clickwraps endpoint to retrieve all clickwraps for an account
 # b) Display the JSON structure of the returned clickwraps
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps"
-$result = Invoke-WebRequest -headers $headers -Uri $uri -Method GET
+$result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method GET
 $result.Content

@@ -32,7 +32,7 @@ $docBase64 = New-TemporaryFile
 # Fetch docs and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
-$AccessCode = Read-Host "Please enter a an access code for recipient authentication"
+$AccessCode = Read-Host "Please enter an access code for recipient authentication"
 
 # Construct your envelope JSON body
 $body = @"

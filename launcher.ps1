@@ -123,7 +123,8 @@ function startSignature {
             Pause_Signature_Workflow = 32;
             Unpause_Signature_Workflow = 33;
             Use_Conditional_Recipients = 34;
-            Home = 35;
+            SMS_Delivery = 35;
+            Home = 36;
         }
 
         $ApiExamplesView = $null;
@@ -164,6 +165,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Pause_Signature_Workflow)) Pause_Signature_Workflow"
             Write-Output "$([int][ApiExamples]::Unpause_Signature_Workflow)) Unpause_Signature_Workflow"
             Write-Output "$([int][ApiExamples]::Use_Conditional_Recipients)) Use_Conditional_Recipients"
+            Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
             Write-Output "$([int][ApiExamples]::Home)) Home"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -269,6 +271,9 @@ function startSignature {
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Conditional_Recipients) {
             powershell.exe .\examples\eSignature\eg034UseConditionalRecipients.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::SMS_Delivery) {
+            powershell.exe .\examples\eSignature\eg035SMSDelivery.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Home)
     startLauncher

@@ -151,6 +151,25 @@ For more information about the scopes used for obtaining authorization to use th
    [Source.](./examples/Rooms/eg006CreateAnExternalFormFillSessionController.ps1)
    This example create an external form that can be filled using DocuSign for a specific room in your DocuSign Rooms account.
   
+## Click API 
+**Note:** To use the Click API include the <code>click_manage</code> scope. Review the [Click API 101 Auth Guide](https://developers.docusign.com/docs/click-api/click101/auth) for more details. 
+
+
+1. **Create clickwraps.**
+   [Source.](./examples/Click/eg001CreateClickwrap.ps1)
+   Creates a clickwrap that you can embed in your website or app.
+1. **Activate clickwrap.**
+   [Source.](./examples/Click/eg002ActivateClickwrap.ps1)
+   Activates a new clickwrap. By default, new clickwraps are inactive. You must activate your clickwrap before you can use it.
+1. **Clickwrap Versioning.**
+   [Source.](./examples/Click/eg003CreateNewClickwrapVersion.ps1)
+   Demonstrates how to use the Click API to create a new version of a clickwrap.
+1. **Retrieve clickwraps.**
+   [Source.](./examples/Click/eg004GetListOfClickwraps.ps1)
+   Demonstrates how to get a list of clickwraps associated with a specific DocuSign user.
+1. **Get clickwrap Responses.**
+   [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
+   Demonstrates how to get user responses to your clickwrap agreements.
 
 ## Installation
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**

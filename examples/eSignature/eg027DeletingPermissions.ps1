@@ -13,7 +13,7 @@ if (Test-Path .\config\PROFILE_ID) {
     $profileID = Get-Content .\config\PROFILE_ID
 }
 else {
-    Write-Output "PROBLEM: A profile id is needed. Fix: execute step 24 - Creating Permissions Profiles"
+    Write-Output "A profile id is needed. Fix: execute step 24 - Creating Permissions Profiles"
     exit 1
 }
 

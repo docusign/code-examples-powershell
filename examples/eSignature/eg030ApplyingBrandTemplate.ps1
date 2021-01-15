@@ -20,7 +20,7 @@ if (Test-Path .\config\TEMPLATE_ID) {
     $templateID = Get-Content .\config\TEMPLATE_ID
 }
 else {
-    Write-Output "PROBLEM: A template id is needed. Fix: execute step 8 - Create Template"
+    Write-Output "A template id is needed. Fix: execute step 8 - Create Template"
     exit 1
 }
 
@@ -29,7 +29,7 @@ if (Test-Path .\config\BRAND_ID) {
     $brandId = Get-Content .\config\BRAND_ID
 }
 else {
-    Write-Output "PROBLEM: A brand id is needed. Fix: execute step 28 - Creating a brand"
+    Write-Output "A brand id is needed. Fix: execute step 28 - Creating a brand"
     exit 1
 }
 

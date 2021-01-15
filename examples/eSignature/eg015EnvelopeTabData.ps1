@@ -15,7 +15,7 @@ if (Test-Path .\config\ENVELOPE_ID) {
   $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-  Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
+  Write-Output "An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
   exit 1
 }
 

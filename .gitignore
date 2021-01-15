@@ -6,3 +6,4 @@ settings.txt
 config/
 .vs/*
 .vscode/*
+debug.log

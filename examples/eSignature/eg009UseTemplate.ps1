@@ -18,7 +18,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Check that we have a template id
 if (-not (Test-Path .\config\TEMPLATE_ID)) {
-    Write-Output "PROBLEM: A template id is needed. Fix: execute step 8 - Create_Template"
+    Write-Output "A template id is needed. Fix: execute step 8 - Create_Template"
     exit 0
 }
 

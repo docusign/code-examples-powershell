@@ -19,7 +19,7 @@ if (Test-Path .\config\TEMPLATE_ID) {
     $templateId = Get-Content .\config\TEMPLATE_ID
 }
 else {
-    Write-Output "PROBLEM: A templateId is needed. Fix: execute step 8 - Create_Template"
+    Write-Output "A templateId is needed. Fix: execute step 8 - Create_Template"
     exit 0
 }
 

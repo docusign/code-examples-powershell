@@ -28,7 +28,7 @@ if ($apiVersion -eq "rooms") {
   } elseif ($apiVersion -eq "eSignature") {
     $scopes = "signature%20impersonation"
   } elseif ($apiVersion -eq "click") {
-    $scopes = "signature%20click.manage"
+    $scopes = "click.manage"
 }
 
 # Step 1. Request application consent

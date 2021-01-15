@@ -21,7 +21,7 @@ elseif ($apiVersion -eq "eSignature") {
   $scopes = "signature"
 }
 elseif ($apiVersion -eq "click") {
-  $scopes = "signature%20click.manage"
+  $scopes = "click.manage"
 }
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"

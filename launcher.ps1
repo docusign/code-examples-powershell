@@ -335,11 +335,11 @@ function startClick {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listClickExamples]::createClickwrap)) Create Clickwrap"
-            Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate Clickwrap"
-            Write-Output "$([int][listClickExamples]::clickwrapVersioning)) Clickwrap Versioning"
-            Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve Clickwraps"
-            Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get Clickwrap Responses"
+            Write-Output "$([int][listClickExamples]::createClickwrap)) Create clickwrap"
+            Write-Output "$([int][listClickExamples]::activateClickwrap)) Activate clickwrap"
+            Write-Output "$([int][listClickExamples]::clickwrapVersioning)) clickwrap Versioning"
+            Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve clickwraps"
+            Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get clickwrap Responses"
             Write-Output "$([int][listClickExamples]::Home)) Home"
             [int]$listClickExamplesView = Read-Host "Select the action"
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));

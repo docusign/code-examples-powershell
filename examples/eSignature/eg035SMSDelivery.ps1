@@ -1,3 +1,4 @@
+#SMS Delivery
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send an envelope with three documents

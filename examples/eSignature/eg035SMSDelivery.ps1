@@ -6,14 +6,9 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
+#    Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
@@ -53,7 +48,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
-# Concatenate the different parts of the request
+# Step 2. Create the envelope definition
 @{
     emailSubject = "Please sign this document set";
     documents    = @(

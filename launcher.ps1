@@ -14,7 +14,7 @@ $config = Get-Content $configFile -Raw | ConvertFrom-Json
 # Fill in Quickstart Carbon Copy config values
 if($config.CC_EMAIL  -eq "{CC_EMAIL}" ){
     Write-Output "It looks like this is your first time running the launcher from Quickstart. "
-    $config.CC_EMAIL = Read-Host "Enter a CC email address to recieve copies of envelopes"
+    $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
     $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
     $config.SIGNER_NOT_CHECKED_EMAIL = "Enter an email address to route to when the checkbox is not checked"
     $config.SIGNER_NOT_CHECKED_NAME = "Enter a name address to route to when the checkbox is not checked"

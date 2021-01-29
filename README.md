@@ -125,7 +125,7 @@ For more information about the scopes used for obtaining authorization to use th
    [Source.](./examples/eSignature/eg034UseConditionalRecipients.ps1)
    This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
 1. **Request a signature by SMS**
-   [Source.](./app/eSignature/examples/eg035SMSDelivery.ps1)
+   [Source.](./examples/eSignature/eg035SMSDelivery.ps1)
    This code example demonstrates how to send a signature request for a signer to read and sign via an SMS message.
  
 ## Rooms API 

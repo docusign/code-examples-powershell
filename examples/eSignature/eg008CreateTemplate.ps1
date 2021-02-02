@@ -63,7 +63,7 @@ Write-Output "Sending the template create request to DocuSign..."
 
 # Concatenate the different parts of the request
 @{
-    description = "Example template created via the API";
+    description = "Example template created via the eSignature API";
     name        = "Example Signer and CC template";
     shared      = "false";
     documents                  = @(

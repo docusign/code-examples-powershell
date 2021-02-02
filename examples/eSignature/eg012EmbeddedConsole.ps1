@@ -12,7 +12,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Check that we have an envelope id
 if (-not (Test-Path .\config\ENVELOPE_ID)) {
-    Write-Output "PROBLEM: An envelope id is needed. Fix: execute script eg002SigningViaEmail.ps1"
+    Write-Output "An envelope id is needed. Fix: execute script eg002SigningViaEmail.ps1"
     exit -1
 }
 

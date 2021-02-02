@@ -17,7 +17,7 @@ if (Test-Path .\config\ENVELOPE_ID) {
     $envelopeID = Get-Content .\config\ENVELOPE_ID
 }
 else {
-    Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 32 - Pause_Signature_Workflow"
+    Write-Output "An envelope id is needed. Fix: execute step 32 - Pause_Signature_Workflow"
     exit 1
 }
 

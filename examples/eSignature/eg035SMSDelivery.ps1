@@ -6,12 +6,15 @@ $apiUri = "https://demo.docusign.net/restapi"
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 
-# Step 1: Obtain your OAuth token
-# Note: Substitute these values with your own
+# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
+#    They occur and re-occur multiple times below.
+# 2. Obtain an OAuth access token from
+#    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# Set up variables for full code example
-# Note: Substitute these values with your own
+# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
+#    the drop down on the upper right corner of the screen by your picture or
+#    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # ***DS.snippet.0.start
@@ -37,6 +40,13 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\doc_1.html"))) > $doc1Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
+
+
+$SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer"
+$SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
+$SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient"
+$SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient"
+
 
 Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
@@ -71,14 +81,33 @@ Write-Output "Results:"
                 name         = $variables.CC_NAME;
                 recipientId  = "2";
                 routingOrder = "2";
+                additionalNotifications =  @(
+                    @{
+                        secondaryDeliveryMethod =  "SMS";
+                        phoneNumber = @{
+                            countryCode =  $SMSCCCountryPrefix;
+                            number = $SMSNumberCC;
+                        }
+                    }
+                );
             };
         );
+
         signers      = @(
             @{
                 email        = $variables.SIGNER_EMAIL;
                 name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
+                additionalNotifications =  @(
+                    @{
+                        secondaryDeliveryMethod =  "SMS";
+                        phoneNumber = @{
+                            countryCode =  $SMSCountryPrefix;
+                            number = $SMSNumber;
+                        }
+                    }
+                );
                 tabs         = @{
                     signHereTabs = @(
                         @{

@@ -21,7 +21,7 @@ if (Test-Path .\config\ENVELOPE_ID) {
   $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-  Write-Output "PROBLEM: An envelope id is needed. Fix: execute step 16 - Set_Tab_Values"
+  Write-Output "An envelope id is needed. Fix: execute step 16 - Set_Tab_Values"
   exit 1
 }
 

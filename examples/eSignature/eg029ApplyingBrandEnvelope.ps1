@@ -18,7 +18,7 @@ if (Test-Path .\config\BRAND_ID) {
 	$brandID = Get-Content .\config\BRAND_ID
 }
 else {
-	Write-Output "PROBLEM: A brand id is needed. Fix: execute step 28 - Creating a brand"
+	Write-Output "A brand id is needed. Fix: execute step 28 - Creating a brand"
 	exit 1
 }
 

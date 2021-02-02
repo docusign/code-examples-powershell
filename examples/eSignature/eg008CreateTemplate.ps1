@@ -63,6 +63,9 @@ Write-Output "Sending the template create request to DocuSign..."
 
 # Concatenate the different parts of the request
 @{
+    description = "Example template created via the API";
+    name        = "Example Signer and CC template";
+    shared      = "false";
     documents                  = @(
         @{
             documentBase64 = "$(Get-Content $doc1Base64)";
@@ -72,11 +75,6 @@ Write-Output "Sending the template create request to DocuSign..."
         };
     );
     emailSubject               = "Please sign this document";
-    envelopeTemplateDefinition = @{
-        description = "Example template created via the API";
-        name        = "Example Signer and CC template";
-        shared      = "false";
-    };
     recipients                 = @{
         carbonCopies = @(
             @{recipientId = "2"; roleName = "cc"; routingOrder = "2"; };

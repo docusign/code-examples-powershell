@@ -124,9 +124,9 @@ For more information about the scopes used for obtaining authorization to use th
 1. **Using conditional recipients**
    [Source.](./examples/eSignature/eg034UseConditionalRecipients.ps1)
    This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
-1. **Request a signature by SMS**
+1. **Request a signature by SMS delivery**
    [Source.](./app/eSignature/examples/eg035SMSDelivery.ps1)
-   This code example demonstrates how to send a signature request for a signer to read and sign via an SMS message.
+   This code example demonstrates how to send a signature request via an SMS message using the [Envelopes: create](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
  
 ## Rooms API 
 

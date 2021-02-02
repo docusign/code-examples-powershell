@@ -1,3 +1,4 @@
+#SMS Delivery
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send an envelope with three documents
@@ -5,14 +6,9 @@ $apiUri = "https://demo.docusign.net/restapi"
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
-
-# 1. Search for and update '{USER_EMAIL}' and '{USER_FULLNAME}'.
-#    They occur and re-occur multiple times below.
-# 2. Obtain an OAuth access token from
-#    https://developers.docusign.com/oauth-token-generator
 $accessToken = Get-Content .\config\ds_access_token.txt
 
-# 3. Obtain your accountId from demo.docusign.net -- the account id is shown in
+#    Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
@@ -41,18 +37,16 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
+Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
+Write-Output "Results:"
 
+# Step 2. Create the envelope definition
 $SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer"
 $SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
 $SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient"
 $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient"
 
-
-Write-Output "Sending the envelope request to DocuSign..."
-Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
-Write-Output "Results:"
-
-# Concatenate the different parts of the request
 @{
     emailSubject = "Please sign this document set";
     documents    = @(

@@ -2,8 +2,7 @@
 *.key
 ENVELOPE_ID
 TEMPLATE_ID
-settings.txt
-config/
 .vs/*
 .vscode/*
 debug.log
+config/settings.json

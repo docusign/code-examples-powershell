@@ -18,10 +18,8 @@ $accountID = Get-Content .\config\API_ACCOUNT_ID
 # Step 2. Create the envelope definition.
 # The signer recipient includes a clientUserId setting
 #
-#  document 1 (pdf) has tag /sn1/
-#  The envelope has two recipients.
+#  document 1 (PDF) has tag /sn1/
 #  recipient 1 - signer
-#  recipient 2 - cc
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
@@ -47,14 +45,6 @@ Write-Output "Sending the envelope request to DocuSign..."
         };
     );
     recipients   = @{
-        carbonCopies = @(
-            @{
-                email        = $variables.CC_EMAIL;
-                name         = $variables.CC_NAME;
-                recipientId  = "2";
-                routingOrder = "2";
-            };
-        );
         signers      = @(
             @{
                 email        = $variables.SIGNER_EMAIL;

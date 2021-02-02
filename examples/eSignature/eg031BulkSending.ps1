@@ -277,8 +277,7 @@ if ($continue -eq $true) {
 # Step 8. Confirm successful batch send
 # Confirm successful batch send
 # Note: Depending on the number of Bulk Recipients, it may take some time for the Bulk Send to complete. For 2000 recipients this can take ~1 hour.
-$uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/bulk_envelopes/$bulkBatchId"
-
+$uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/bulk_send_batch/$bulkBatchId"
 if ($continue -eq $true) {
 	$response = $null
 	try {

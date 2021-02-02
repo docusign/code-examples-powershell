@@ -302,7 +302,10 @@ function startRooms {
             AddFormsToRoomController = 4;
             GetRoomsWithFiltersController = 5;
             CreateAnExternalFormFillSessionController = 6;
-            Home = 7;
+            CreateFormGroup = 7;
+            AccessFormGroup = 8;
+            AssignFormGroup = 9;
+            Home = 10;
         }
         $listRoomExamplesView = $null;
         do {
@@ -314,6 +317,9 @@ function startRooms {
             Write-Output "$([int][listRoomExamples]::AddFormsToRoomController)) Add forms to room controller"
             Write-Output "$([int][listRoomExamples]::GetRoomsWithFiltersController)) Get rooms with filters controller"
             Write-Output "$([int][listRoomExamples]::CreateAnExternalFormFillSessionController)) Create an external form fill session controller"
+            Write-Output "$([int][listRoomExamples]::CreateFormGroup)) Create a form group"
+            Write-Output "$([int][listRoomExamples]::AccessFormGroup)) Grant office access to a form group"
+            Write-Output "$([int][listRoomExamples]::AssignFormGroup)) Assign a form to a form group"
             Write-Output "$([int][listRoomExamples]::Home)) Home"
             [int]$listRoomExamplesView = Read-Host "Select the action"
         } while (-not [listRoomExamples]::IsDefined([listRoomExamples], $listRoomExamplesView));
@@ -335,6 +341,15 @@ function startRooms {
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateAnExternalFormFillSessionController) {
             powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
+        }
+        elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateFormGroup) {
+            powershell.exe -Command .\examples\Rooms\eg007CreateFormGroup.ps1
+        }
+        elseif ($listRoomExamplesView -eq [listRoomExamples]::AccessFormGroup) {
+            powershell.exe -Command .\examples\Rooms\eg008AccessFormGroup.ps1
+        }
+        elseif ($listRoomExamplesView -eq [listRoomExamples]::AssignFormGroup) {
+            powershell.exe -Command .\examples\Rooms\eg009AssignFormGroup.ps1
         }
     } until ($listRoomExamplesView -eq [listRoomExamples]::Home)
     startLauncher

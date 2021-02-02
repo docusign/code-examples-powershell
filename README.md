@@ -152,6 +152,15 @@ For more information about the scopes used for obtaining authorization to use th
 1. **Create an external form fillable session.**
    [Source.](./examples/Rooms/eg006CreateAnExternalFormFillSessionController.ps1)
    This example create an external form that can be filled using DocuSign for a specific room in your DocuSign Rooms account.
+1. **Create a form group.**
+   [Source.](./examples/Rooms/eg007CreateFormGroup.ps1)
+   This example demonstrates how to create a form group for your DocuSign Rooms for Real Estate account.
+1. **Grant office access to a form group.**
+   [Source.](./examples/Rooms/eg008AccessFormGroup.ps1)
+   This example demonstrates how to assign an office to a form group for your DocuSign Rooms for Real Estate account. 
+1. **Assign a form to a form group.**
+   [Source.](./examples/Rooms/eg009AssignFormGroup.ps1)
+   This example demonstrates how to assign a form to a form group for your DocuSign Rooms for Real Estate account.
   
 ## Click API 
 **Note:** To use the Click API include the <code>click_manage</code> scope. Review the [Click API 101 Auth Guide](https://developers.docusign.com/docs/click-api/click101/auth) for more details. 

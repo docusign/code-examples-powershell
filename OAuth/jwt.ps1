@@ -21,7 +21,7 @@ $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 $userId = $variables.IMPERSONATION_USER_GUID
 $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
-$timestamp = [int][double]::Parse((Get-Date -UFormat %s))
+$timestamp = [int][double]::Parse((Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
 
 if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
@@ -157,5 +157,12 @@ try {
     Write-Output "Account id has been written to $accountIdFile file..."
 }
 catch {
-    Write-Error $_
+    $int = 0
+    foreach($header in $_.Exception.Response.Headers){
+        if($header -eq "X-DocuSign-TraceToken")
+        { write-host "TraceToken : " $_.Exception.Response.Headers[$int]}
+        $int++
+    }
+    write-host "Error : $_.ErrorDetails.Message"
+    write-host "Command : $_.InvocationInfo.Line"
 }

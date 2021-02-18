@@ -15,21 +15,21 @@ $complete=$false
 $cursorValue=""
 $iterations=0
 # You must provide an access token that impersonates a user with permissions to access the Monitor API endpoint
-if (($accessToken -eq "") -or ($accessToken -eq $null))
+if (($accessToken -eq "") -or ($null -eq $accessToken))
 {
 	Write-Output "You must provide an access token"
 	$complete = $true
 }
-	
+
 # Step 3: Get monitoring data
 # First call the endpoint with no cursor to get the first records.
-# After each call, save the cursor and use it to make the next 
+# After each call, save the cursor and use it to make the next
 # call from the point where the previous one left off when iterating through
 # the monitoring records
 DO{
 	 $iterations++
 
-	Write-Output "" 
+	Write-Output ""
 	try{
 		 Invoke-RestMethod `
 		  -Uri "https://lens-d.docusign.net/api/v2.0/datasets/monitor/stream?cursor=${cursorValue}&limit=2000" `
@@ -53,10 +53,10 @@ DO{
 		 Write-Output "endCursorValue is:"
 		 Write-Output $endCursorValue
 		 Write-Output "cursorValue is:"
-		 Write-Output $cursorValue 
-		 
+		 Write-Output $cursorValue
+
 		 # If the endCursor from the response is the same as the one that you already have,
-		 # it means that you have reached the 
+		 # it means that you have reached the
 		 # end of the records
 		 if ( $endCursorValue -eq $cursorValue )
 		{
@@ -73,13 +73,13 @@ DO{
 	catch{
 		$int = 0
 		foreach($header in $_.Exception.Response.Headers){
-			if($header -eq "X-DocuSign-TraceToken"){ write-host "TraceToken : " $_.Exception.Response.Headers[$int]}
+			if($header -eq "X-DocuSign-TraceToken"){ Write-Output "TraceToken : " $_.Exception.Response.Headers[$int]}
 			$int++
 		}
-		write-host "Error : "$_.ErrorDetails.Message
-		write-host "Command : "$_.InvocationInfo.Line
+		Write-Output "Error : "$_.ErrorDetails.Message
+		Write-Output "Command : "$_.InvocationInfo.Line
                 $complete = $true
-	} 
+	}
 
 } While ($complete -eq $false )
 

@@ -13,8 +13,12 @@ Install-NugetPackage PemUtils '3.0.0.82'
 
 New-Item "config\ds_access_token.txt" -Force
 
-$privateKeyPath = [System.IO.Path]::Combine($PSScriptRoot, "..\config\private.key") | Resolve-Path
-$outputFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt") | Resolve-Path
+if (!(test-path "..\config\private.key")){
+  Write-Error "`n Error: First create an RSA keypair on your integration key and copy the private_key into the file `config/private.key` and save it" -ErrorAction Stop
+  exit 1
+}
+$privateKeyPath = [System.IO.Path]::Combine($PSScriptRoot, "..\config\private.key") | Resolve-Path 
+$outputFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt") | Resolve-Path 
 $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID")
 
 # Get required variables from .\config\settings.json file
@@ -29,7 +33,10 @@ if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation"
   } elseif ($apiVersion -eq "click") {
     $scopes = "click.manage"
-}
+  }
+  elseif ($apiVersion -eq "monitor") {
+  $scopes = "signature impersonation"
+  }
 
 # Step 1. Request application consent
 $PORT = '8080'

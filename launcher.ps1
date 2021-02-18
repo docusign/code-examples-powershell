@@ -32,7 +32,8 @@ function startLauncher {
             eSignature = 1;
             Rooms = 2;
             Click = 3;
-            Exit = 4;
+            Monitor = 4;
+            Exit = 5;
         }
 
         $listApiView = $null;
@@ -41,6 +42,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::eSignature)) eSignature"
             Write-Output "$([int][listApi]::Rooms)) Rooms"
             Write-Output "$([int][listApi]::Click)) Click"
+            Write-Output "$([int][listApi]::Monitor)) Monitor"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -53,6 +55,9 @@ function startLauncher {
         }
         elseif ($listApiView -eq [listApi]::Click) {
             startAuth "click"
+        }
+        elseif ($listApiView -eq [listApi]::Monitor) {
+            startAuth "monitor"
         }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
@@ -96,6 +101,9 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::Click) {
         startClick
+    }
+    elseif ($listApiView -eq [listApi]::Monitor) {
+        startMonitor
     }
 }
 
@@ -394,6 +402,28 @@ function startClick {
             powershell.exe -Command .\examples\Click\eg005GetClickwrapResponses.ps1
         }
     } until ($listClickExamplesView -eq [listClickExamples]::Home)
+    startLauncher
+}
+
+function startMonitor {
+    do {
+        Enum listMonitorExamples {
+            getMonitoringData = 1;
+            Home = 2;
+        }
+        $listMonitorExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listMonitorExamples]::getMonitoringData)) Get Monitoring Data"
+            Write-Output "$([int][listMonitorExamples]::Home)) Home"
+            [int]$listMonitorExamplesView = Read-Host "Select the action"
+        } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));
+
+        if ($listMonitorExamplesView -eq [listMonitorExamples]::getMonitoringData) {
+            powershell.exe -Command .\examples\Monitor\eg001getMonitoringData.ps1
+        }
+    } until ($listMonitorExamplesView -eq [listMonitorExamples]::Home)
     startLauncher
 }
 

@@ -182,6 +182,17 @@ For more information about the scopes used for obtaining authorization to use th
    [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
    Demonstrates how to get user responses to your clickwrap agreements.
 
+## Monitor API 
+
+For more information about the scopes used for obtaining authorization to use the Monitor API, see the [Required Scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/)
+
+**Note:** to use the Monitor API you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/). 
+
+1. **Get Monitoring Data.**
+   [Source.](./examples/Monitor/eg001GetMonitoringData.ps1)
+   This example get and display all of your organization’s monitoring data.
+
+
 ## Installation
 **Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**
 Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 

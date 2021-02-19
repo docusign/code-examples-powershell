@@ -182,8 +182,15 @@ For more information about the scopes used for obtaining authorization to use th
    [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
    Demonstrates how to get user responses to your clickwrap agreements.
 
+## Prerequisites
+1. A DocuSign developer account (email and password) on demo.docusign.net. Create a free account.
+1. PowerShell 5 or later
+
+**Note:** The Quickstart creates and configures a new Integration Key to use in the resulting project. If you later intend to create and customize your own integration and eventually migrate to production using our Go-Live process, you would need to update the Quickstart’s configuration values.
+
+
 ## Installation
-**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**
+**Note:** If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.
 Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 
 
 ## Collect your Integration information

@@ -71,7 +71,7 @@ DO {
       foreach($header in $_.Exception.Response.Headers) {
         if ($header -eq "X-DocuSign-TraceToken") {
           Write-Output "TraceToken : " $_.Exception.Response.Headers[$int]
-		}
+	}
         $int++
       }
       Write-Output "Error : "$_.ErrorDetails.Message

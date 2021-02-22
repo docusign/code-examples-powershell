@@ -190,7 +190,7 @@ For more information about the scopes used for obtaining authorization to use th
 
 
 ## Installation
-**Note:** If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.
+**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to [Running the examples](#running-the-examples). The next step has been automatically performed for you.**
 Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 
 
 ## Collect your Integration information
@@ -225,7 +225,7 @@ These OAuth scripts are integrated into the launcher and hardcode the location f
 Do not delete or change the name of the private.key file located in the config directory as this will cause problems with jwt authentication. 
 
 ## Running the examples
-You can see each of the various examples in action by running `powershell launcher.ps1` and pressing the number six to get to the option to edit your form data. To use the Rooms API, select Rooms API at the selection prompt just after running `powershell launcher.ps1`.
+You can see the code examples in action by going to opening the extracted Quickstart folder or the code-examples-powershell folder, right-clicking on the **launcher** file, selecting **Run with PowerShell**, selecting **Open** when prompted by the dialog box, and selecting an API when prompted in Windows Powershell.
 
 Log in to your DocuSign account using either Authorization Code Grant or using JWT to gain an OAuth token. From there, you can pick the number that corresponds to a setting or feature you wish to try out. 
 
@@ -241,7 +241,7 @@ The source files for each example are located in the `/examples` directory.
 ### Payments code example
 To use the payments code example, first create a test payments gateway in your account.
 Follow the instructions in the
-[PAYMENTS_INSTALLATION.md](https://github.com/docusign/code-examples-powershell/blob/master/PAYMENTS_INSTALLATION.md)
+[PAYMENTS_INSTALLATION](./PAYMENTS_INSTALLATION.md)
 file.
 
 Then add the payment gateway id to the code example file.

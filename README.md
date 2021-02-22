@@ -209,7 +209,7 @@ These OAuth scripts are integrated into the launcher and hardcode the location f
 Do not delete or change the name of the private.key file located in the config directory as this will cause problems with jwt authentication. 
 
 ## Running the examples
-You can see each of the various examples in action by going to opening the extracted Quickstart folder or the code-examples-powershell folder, right-clicking on the **launcher** file, selecting **Run with PowerShell**, selecting **Open** when prompted by the dialog box, and selecting an API when prompted in Windows Powershell.
+You can see the code examples in action by going to opening the extracted Quickstart folder or the code-examples-powershell folder, right-clicking on the **launcher** file, selecting **Run with PowerShell**, selecting **Open** when prompted by the dialog box, and selecting an API when prompted in Windows Powershell.
 
 Log in to your DocuSign account using either Authorization Code Grant or using JWT to gain an OAuth token. From there, you can pick the number that corresponds to a setting or feature you wish to try out. 
 

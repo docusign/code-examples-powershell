@@ -2,21 +2,16 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
+# Step 2 Start
 # Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+# Step 2 End
 
-# Get form group ID from the .\config\FORM_GROUP_ID file
-if (Test-Path .\config\FORM_GROUP_ID) {
-  $formGroupID = Get-Content .\config\FORM_GROUP_ID
-}
-else {
-  Write-Output "A form group ID is needed. Fix: execute step 7 - Create a form group..."
-  exit 1
-}
 
+# Step 3 Start
 # Get an office ID
 $base_path = "https://demo.rooms.docusign.com"
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/offices"
@@ -40,7 +35,31 @@ catch {
   Write-Output "Error : "$_.ErrorDetails.Message
   Write-Output "Command : "$_.InvocationInfo.Line
 }
+# Step 3 End
 
+# Step 4 Start
+# Get form group ID from the .\config\FORM_GROUP_ID file
+if (Test-Path .\config\FORM_GROUP_ID) {
+  $formGroupID = Get-Content .\config\FORM_GROUP_ID
+}
+else {
+  # try {
+  #   $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups/D"
+  #   Write-Output "Response:"
+  #   $response = Invoke-WebRequest -uri $uri -headers $headers -method GET
+  #   $response.Content
+  # }
+  # catch {
+  #   Write-Output "Unable to select form group IDs"
+  # }
+
+  Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
+  exit 1
+}
+# Step 4 End
+
+
+# Step 5 Start
 # Call the Rooms API
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups/$formGroupID/grant_office_access/$officeID"
 
@@ -66,3 +85,4 @@ catch {
   Write-Output "Error : "$_.ErrorDetails.Message
   Write-Output "Command : "$_.InvocationInfo.Line
 }
+# Step 5 End

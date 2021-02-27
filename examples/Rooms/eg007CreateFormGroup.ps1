@@ -2,19 +2,25 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
+
+# Step 2 Start
 # Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+# Step 2 End
 
+# Step 3 Start
 # Construct the request body
 $body = @"
   {
     "name": "Sample Room Form Group"
   }
 "@
+# Step 3 End
 
+# Step 4 Start
 # Call the Rooms API
 $base_path = "https://demo.rooms.docusign.com"
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups"
@@ -40,3 +46,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+# Step 4 End

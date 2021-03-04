@@ -38,11 +38,9 @@ catch {
 # Step 3 End
 
 # Get form group ID from the .\config\FORM_GROUP_ID file
-# Step 4 Start
 if (Test-Path .\config\FORM_GROUP_ID) {
   $formGroupID = Get-Content .\config\FORM_GROUP_ID
 }
-# Step 4 End
 else {
 
   Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."

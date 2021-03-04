@@ -42,7 +42,6 @@ if (Test-Path .\config\FORM_GROUP_ID) {
   $formGroupID = Get-Content .\config\FORM_GROUP_ID
 }
 else {
-
   Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
   exit 1
 }

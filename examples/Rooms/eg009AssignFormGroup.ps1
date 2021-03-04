@@ -64,15 +64,7 @@ if (Test-Path .\config\FORM_GROUP_ID) {
     $formGroupID = Get-Content .\config\FORM_GROUP_ID
   }
   else {
-    # try {
-    #   $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups/D"
-    #   Write-Output "Response:"
-    #   $response = Invoke-WebRequest -uri $uri -headers $headers -method GET
-    #   $response.Content
-    # }
-    # catch {
-    #   Write-Output "Unable to select form group IDs"
-    # }
+
     Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
     exit 1
   }

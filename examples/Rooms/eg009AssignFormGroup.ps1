@@ -65,7 +65,7 @@ if (Test-Path .\config\FORM_GROUP_ID) {
   }
   else {
     # try {
-    #   $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups/D"
+    #   $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups"
     #   Write-Output "Response:"
     #   $response = Invoke-WebRequest -uri $uri -headers $headers -method GET
     #   $response.Content

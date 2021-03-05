@@ -13,18 +13,12 @@ $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/roles"
 $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 $roleId = $($response.Content | ConvertFrom-Json).roles[0].roleid
 
-# Get Office ID
-$uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/offices"
-$response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
-$officeId = $($response.Content | ConvertFrom-Json).officeSummaries.officeId
-
 # - Construct the request body for your room
 $body = @"
 {
   "name": "Sample Room Creation",
   "roleId": "$roleId",
   "transactionSideId": "listbuy",
-  "officeId": "$officeId",
   "fieldData": {
     "data" : {
      "address1": "123 EZ Street",

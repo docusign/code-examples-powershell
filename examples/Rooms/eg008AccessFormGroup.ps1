@@ -22,7 +22,7 @@ try {
   $response.Content
   # Retrieve the form group ID
   $obj = $response.Content | ConvertFrom-Json
-  $officeID = $obj[0].officeSummaries.officeId
+  $officeID = $obj.officeSummaries[0].officeId
 }
 catch {
   Write-Output "Unable to retrieve an office ID"

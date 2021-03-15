@@ -6,7 +6,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 # can be manually created.
 
 
-# Step 1. Obtain your Oauth access token
+# Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
@@ -22,7 +22,7 @@ if (Test-Path .\config\ENVELOPE_ID) {
     $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-    Write-Output "An envelope id is needed. Fix: execute step 2 - Signing_Via_Email"
+    Write-Output "An envelope id is needed. Fix: execute code example 2 - Signing_Via_Email"
     exit 1
 }
 
@@ -67,8 +67,8 @@ else {
 }
 
 Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
-# ***DS.snippet.0.start
-# Step 3. Call the eSignature API
+# Call the eSignature API
+# Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
     -Method 'GET' `
@@ -77,6 +77,6 @@ Invoke-RestMethod `
     'Content-Type'  = "application/json";
 } `
     -OutFile ${outputFile}${outputFileExtension}
-# ***DS.snippet.0.end
+# Step 3 end
 Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
 Write-Output "Done."

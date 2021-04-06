@@ -165,7 +165,6 @@ For more information about the scopes used for obtaining authorization to use th
 ## Click API 
 **Note:** To use the Click API include the <code>click_manage</code> scope. Review the [Click API 101 Auth Guide](https://developers.docusign.com/docs/click-api/click101/auth) for more details. 
 
-
 1. **Create clickwraps.**
    [Source.](./examples/Click/eg001CreateClickwrap.ps1)
    Creates a clickwrap that you can embed in your website or app.
@@ -182,70 +181,65 @@ For more information about the scopes used for obtaining authorization to use th
    [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
    Demonstrates how to get user responses to your clickwrap agreements.
 
-## Prerequisites
-1. A DocuSign developer account (email and password) on demo.docusign.net. Create a free account.
-1. PowerShell 5 or later
-
-**Note:** The Quickstart creates and configures a new Integration Key to use in the resulting project. If you later intend to create and customize your own integration and eventually migrate to production using our Go-Live process, you would need to update the Quickstart’s configuration values.
-
 
 ## Installation
-**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to [Running the examples](#running-the-examples). The next step has been automatically performed for you.**
-Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 
+### Prerequisites
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip item 1 below as it was automatically performed for you.
 
-## Collect your Integration information
+1. A free [DocuSign developer account](https://go.docusign.com/o/sandbox/); create one if you don't already have one.
+1. A DocuSign app and integration key that is configured for authentication to use either [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) or [JWT Grant](https://developers.docusign.com/platform/auth/jwt/).
 
-* Create a [DocuSign developer account](https://account-d.docusign.com/#/username) if you have not yet done so.
-* Once you have a DocuSign account created, make a new [**integration key**](https://admindemo.docusign.com/api-integrator-key).
-* Add in the following **redirect uri** `http://localhost:8080/authorization-code/callback`
-* Find your **API Account Id:** on the same page you used to setup your [**integration key**](https://admindemo.docusign.com/api-integrator-key).
-* Update `config/settings.json` with the credentials from DocuSign developer account:
-  * `IMPERSONATION_USER_GUID` = API Account ID
-  * `INTEGRATION_KEY_JWT` = Integration Key
-  * `INTEGRATION_KEY_AUTH_CODE` = Integration Key
-  * `SECRET_KEY` = Secret Key
-  * `GATEWAY_ACCOUNT_ID` = Account ID
-* **Signer name and email:** Remember to try the DocuSign signing using both a mobile phone and a regular
-  email client.
+This [video](https://www.youtube.com/watch?v=eiRI4fe5HgM) demonstrates how to obtain an integration key.
+
+   To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.
+
+   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the **API Username** GUID of the impersonated user. See [Configure the launcher to use JWT Grant](#configure-the-launcher-to-use-jwt-grant) below for details.
+
+   For both authentication flows:
+   
+   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:8080/authorization-code/callback
+
+   If you host this launcher on a remote web server, set your redirect URI as:
+   
+   {base_url}/authorization-code/callback  
+	
+	where {base_url} is the URL for the web app.
+   
+1. PowerShell 5 or later
 
 
-## JWT Authentication
+### Installation steps
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/)  from the DocuSign Developer Center, skip Step 3 as it was automatically performed for you.
 
-* create an RSA KeyPair on your **integration key** and copy the **private_key** into the file `config/private.key` and save it. Use JWT authentication if you intend to run a system account integration or to impersonate a different user.
-* OPTIONAL: If you intend to use JWT grant authentication, set **Impersonation_user_guid** by using your own **user_account_id** found on the same page used to set your [**integration key**](https://admindemo.docusign.com/api-integrator-key). 
+1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
+1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
+1. To configure the launcher, create a copy of the file config/settings.example.json and save the copy as config/settings.json.
+   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/api-integrator-key) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_AUTH_CODE`.
+   1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in settings.json as your `SECRET_KEY`.
+   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
+   1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.
+**Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
+1. Run the launcher:
+In the root folder, right-click the launcher file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
 
-**Note:** Before you can make any API calls using JWT Grant, you must get your user’s consent for your app to impersonate them. To do this, the `impersonation` scope is added when requesting a JSON Web Token.
 
-## OAuth Details
-
-This launcher is a collection of powershell scripts with an included http listener script.  The listener script works on **port 8080** in order to receive the redirect callback from successful authorization with DocuSign servers that include the Authorization code or an access token in the response payload. Confirm that port 8080 is not in use by other applications so that the OAuth mechanism functions properly.  
-
-These OAuth scripts are integrated into the launcher and hardcode the location for the RSA private key in the case of the JWT php scripts.  
-
-Do not delete or change the name of the private.key file located in the config directory as this will cause problems with jwt authentication. 
-
-## Running the examples
-You can see the code examples in action by going to opening the extracted Quickstart folder or the code-examples-powershell folder, right-clicking on the **launcher** file, selecting **Run with PowerShell**, selecting **Open** when prompted by the dialog box, and selecting an API when prompted in Windows Powershell.
-
-Log in to your DocuSign account using either Authorization Code Grant or using JWT to gain an OAuth token. From there, you can pick the number that corresponds to a setting or feature you wish to try out. 
-
-If you make a mistake, simply run the settings option again. Each code example is a standalone file, but can be reached using the launcher.ps1 file.
-
-Use the powershell terminal to run the examples. 
-
-The examples have been tested on Windows but can conceivably be used with MacOS and Linux systems.
-
-The source files for each example are located in the `/examples` directory.
+### Configure the launcher to use JWT Grant
+1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/api-integrator-key) page, under **My Account Information**, copy the **API Username** and save it in config/settings.json as your `IMPERSONATION_USER_GUID`.
+   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/api-integrator-key) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
+   1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key and save it in a new file named config/private.key.
+   1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
+   1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.
+**Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
+1. Run the launcher:
+In the root folder, right-click the launcher file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
+1. Select JSON Web Token when authenticating your account.
 
 
 ### Payments code example
-To use the payments code example, first create a test payments gateway in your account.
-Follow the instructions in the
-[PAYMENTS_INSTALLATION](./PAYMENTS_INSTALLATION.md)
-file.
+To use the payments code example, create a test payments gateway in your developer account. See [PAYMENTS_INSTALLATION](./PAYMENTS_INSTALLATION.md)
+for details.
 
-Then add the payment gateway id to the code example file.
-
+Then add the payment gateway ID to settings.json.
 
 
 ## License and additional information

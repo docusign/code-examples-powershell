@@ -184,7 +184,7 @@ For more information about the scopes used for obtaining authorization to use th
 
 ## Installation
 ### Prerequisites
-**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip item 1 below as it was automatically performed for you.
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip item 1 as it was automatically performed for you.
 
 1. A free [DocuSign developer account](https://go.docusign.com/o/sandbox/); create one if you don't already have one.
 1. A DocuSign app and integration key that is configured for authentication to use either [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) or [JWT Grant](https://developers.docusign.com/platform/auth/jwt/).
@@ -209,7 +209,7 @@ For more information about the scopes used for obtaining authorization to use th
 
 
 ### Installation steps
-**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/)  from the DocuSign Developer Center, skip Step 3 as it was automatically performed for you.
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip Step 3 as it was automatically performed for you.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
 1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.

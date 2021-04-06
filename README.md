@@ -189,21 +189,21 @@ For more information about the scopes used for obtaining authorization to use th
 1. A free [DocuSign developer account](https://go.docusign.com/o/sandbox/); create one if you don't already have one.
 1. A DocuSign app and integration key that is configured for authentication to use either [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) or [JWT Grant](https://developers.docusign.com/platform/auth/jwt/).
 
-This [video](https://www.youtube.com/watch?v=eiRI4fe5HgM) demonstrates how to obtain an integration key.
+   This [video](https://www.youtube.com/watch?v=eiRI4fe5HgM) demonstrates how to obtain an integration key.  
 
-   To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.
+   To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.  
 
-   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the **API Username** GUID of the impersonated user. See [Configure the launcher to use JWT Grant](#configure-the-launcher-to-use-jwt-grant) below for details.
+   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the **API Username** GUID of the impersonated user. See [Configure the launcher to use JWT Grant](#configure-the-launcher-to-use-jwt-grant) below for details.  
 
-   For both authentication flows:
+   For both authentication flows:  
    
-   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:8080/authorization-code/callback
+   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:8080/authorization-code/callback  
 
-   If you host this launcher on a remote web server, set your redirect URI as:
+   If you host this launcher on a remote web server, set your redirect URI as:  
    
-   {base_url}/authorization-code/callback  
-	
-	where {base_url} is the URL for the web app.
+   {base_url}/authorization-code/callback   
+   
+   where {base_url} is the URL for the web app.  
    
 1. PowerShell 5 or later
 

@@ -224,7 +224,7 @@ For more information about the scopes used for obtaining authorization to use th
 
 ### Configure the launcher to use JWT Grant
 1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **API Username** and save it in config/settings.json as your `IMPERSONATION_USER_GUID`.
-   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/api-integrator-key) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
+   1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
    1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key and save it in a new file named config/private.key.
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
    1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  

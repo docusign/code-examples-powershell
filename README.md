@@ -220,6 +220,7 @@ For more information about the scopes used for obtaining authorization to use th
    1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
 1. Run the launcher. In the root folder, right-click the launcher file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
+1. Select Authorization Code Grant when authenticating your account.
 
 
 ### Configure the launcher to use JWT Grant
@@ -237,7 +238,7 @@ For more information about the scopes used for obtaining authorization to use th
 To use the payments code example, create a test payments gateway in your developer account. See [PAYMENTS_INSTALLATION](./PAYMENTS_INSTALLATION.md)
 for details.
 
-Then add the payment gateway ID to settings.json.
+Then save the Gateway Account ID as `GATEWAY_ACCOUNT_ID` in settings.json.
 
 
 ## License and additional information

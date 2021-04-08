@@ -13,7 +13,7 @@ DocuSign offers built-in connections to multiple payment gateways. The payments 
 
    An enabled Stripe payment gateway is now associated with your DocuSign developer account and is shown under  **Payment Gateway**.
 
-1. Configure the code example launcher configuration file with the **Gateway Account ID**.
+1. Save the **Gateway Account ID** GUID to the code example launcher configuration file.
 
 
 ## Additional documentation

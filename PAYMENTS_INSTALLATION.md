@@ -1,4 +1,4 @@
-# Configure a DocuSign payments gateway
+# Configure a DocuSign payment gateway
 
 DocuSign offers built-in connections to multiple payment gateways. The payments code example uses a developer account via the Stripe gateway service.
 

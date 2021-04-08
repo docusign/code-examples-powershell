@@ -217,7 +217,7 @@ For more information about the scopes used for obtaining authorization to use th
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_AUTH_CODE`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in settings.json as your `SECRET_KEY`.
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
-   1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
+   1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
 1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
 1. Select **Authorization Code Grant** when authenticating your account.
@@ -230,7 +230,7 @@ For more information about the scopes used for obtaining authorization to use th
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
    1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key and save it in a new file named config/private.key.
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
-   1. Set a name and email for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
+   1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
 1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
 1. Select **JSON Web Token** when authenticating your account.

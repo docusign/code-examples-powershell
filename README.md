@@ -197,7 +197,9 @@ For more information about the scopes used for obtaining authorization to use th
 
    For both authentication flows:  
    
-   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:8080/authorization-code/callback.  
+   If you use this launcher on your own workstation, the integration key must include a redirect URI of   
+
+http://localhost:8080/authorization-code/callback.  
 
    If you host this launcher on a remote web server, set your redirect URI as   
    

@@ -194,13 +194,15 @@ For more information about the scopes used for obtaining authorization to use th
 
    To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.  
 
-   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the API Username GUID of the impersonated user. See [Configure the launcher to use JWT Grant](#configure-the-launcher-to-use-jwt-grant) for details.  
+   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the API Username GUID of the impersonated user. See [Installation steps for JWT Grant Authentication](#installation-steps-for-jwt-grant-authentication) for details.  
 
    For both authentication flows:  
    
-   If you use this launcher on your own workstation, the integration key must include a redirect URI of http://localhost:8080/authorization-code/callback.  
+   If you use this launcher on your own workstation, the integration key must include a redirect URI of  
 
-   If you host this launcher on a remote web server, set your redirect URI as:  
+   http://localhost:8080/authorization-code/callback  
+
+   If you host this launcher on a remote web server, set your redirect URI as   
    
    {base_url}/authorization-code/callback   
    
@@ -220,12 +222,17 @@ For more information about the scopes used for obtaining authorization to use th
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
-1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
+1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**.
+1. Select an API when prompted in Windows PowerShell.
 1. Select **Authorization Code Grant** when authenticating your account.
 1. Select your desired code example.
 
 
-### Configure the launcher to use JWT Grant
+### Installation steps for JWT Grant Authentication
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you.
+
+1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
+1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
 1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file config/settings.example.json and save the copy as config/settings.json.
    1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **API Username** GUID and save it in settings.json as your `IMPERSONATION_USER_GUID`.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
@@ -233,7 +240,8 @@ For more information about the scopes used for obtaining authorization to use th
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
-1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**; then select an API when prompted in Windows PowerShell.
+1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**
+1. Select an API when prompted in Windows PowerShell.
 1. Select **JSON Web Token** when authenticating your account.
 1. Select your desired code example.
 

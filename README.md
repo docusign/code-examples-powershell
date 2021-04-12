@@ -194,7 +194,7 @@ For more information about the scopes used for obtaining authorization to use th
 
    To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.  
 
-   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the API Username GUID of the impersonated user. See [Installation steps for JWT Grant Authentication](#installation-steps-for-jwt-grant-authentication) for details.  
+   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the API Username GUID of the impersonated user. See [Installation steps for JWT Grant authentication](#installation-steps-for-jwt-grant-authentication) for details.  
 
    For both authentication flows:  
    
@@ -228,7 +228,7 @@ For more information about the scopes used for obtaining authorization to use th
 1. Select your desired code example.
 
 
-### Installation steps for JWT Grant Authentication
+### Installation steps for JWT Grant authentication
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
@@ -246,7 +246,7 @@ For more information about the scopes used for obtaining authorization to use th
 1. Select your desired code example.
 
 
-### Payments code example
+## Payments code example
 To use the payments code example, create a test payment gateway on the [**Payments**](https://admindemo.docusign.com/authenticate?goTo=payments) page in your developer account. See [Configure a payment gateway](./PAYMENTS_INSTALLATION.md) for details.
 
 Once you've created a payment gateway, save the **Gateway Account ID** GUID to settings.json.

@@ -1,7 +1,7 @@
 # DocuSign PowerShell Code Examples
 
 ## Introduction
-This repo includes a powershell command-line application to demonstrate:
+This repo includes a PowerShell command-line application to demonstrate:
 
 ## eSignature API
 

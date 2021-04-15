@@ -74,14 +74,20 @@ function startAuth ($apiVersion) {
     }
 
     $AuthTypeView = $null;
-    do {
-        Write-Output ""
-        Write-Output 'Choose an OAuth Strategy: '
-        Write-Output "$([int][AuthType]::CodeGrant)) Authorization Code Grant"
-        Write-Output "$([int][AuthType]::JWT)) Json Web Token"
-        Write-Output "$([int][AuthType]::Exit)) Exit"
-        [int]$AuthTypeView = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
-    } while (-not [AuthType]::IsDefined([AuthType], $AuthTypeView));
+    if ($apiVersion -eq "monitor")
+    {
+        $AuthTypeView = [AuthType]::JWT; # Monitor API only supports JWT
+    }
+    else {
+        do {
+            Write-Output ""
+            Write-Output 'Choose an OAuth Strategy: '
+            Write-Output "$([int][AuthType]::CodeGrant)) Authorization Code Grant"
+            Write-Output "$([int][AuthType]::JWT)) Json Web Token (JWT)"
+            Write-Output "$([int][AuthType]::Exit)) Exit"
+            [int]$AuthTypeView = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
+        } while (-not [AuthType]::IsDefined([AuthType], $AuthTypeView));
+    }
 
     if ($AuthTypeView -eq [AuthType]::Exit) {
         startLauncher

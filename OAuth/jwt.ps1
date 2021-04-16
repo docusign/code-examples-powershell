@@ -13,6 +13,12 @@ Install-NugetPackage PemUtils '3.0.0.82'
 
 New-Item "config\ds_access_token.txt" -Force
 
+
+if (!(test-path ".\config\private.key")){
+  Write-Error "`n Error: First create an RSA keypair on your integration key and copy the private_key into the file `config/private.key` and save it" -ErrorAction Stop
+  exit 1
+}
+
 $privateKeyPath = [System.IO.Path]::Combine($PSScriptRoot, "..\config\private.key") | Resolve-Path
 $outputFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\ds_access_token.txt") | Resolve-Path
 $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT_ID")
@@ -21,7 +27,7 @@ $accountIdFile = [System.IO.Path]::Combine($PSScriptRoot, "..\config\API_ACCOUNT
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 $userId = $variables.IMPERSONATION_USER_GUID
 $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
-$timestamp = [int][double]::Parse((Get-Date -UFormat %s))
+$timestamp = [int][double]::Parse((Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
 
 if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
@@ -29,7 +35,10 @@ if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation"
   } elseif ($apiVersion -eq "click") {
     $scopes = "click.manage"
-}
+  }
+  elseif ($apiVersion -eq "monitor") {
+  $scopes = "signature%20impersonation"
+  }
 
 # Step 1. Request application consent
 $PORT = '8080'
@@ -88,7 +97,7 @@ while ($http.IsListening) {
         $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream HTML to browser
         $context.Response.OutputStream.Close() # Close the response
 
-        Start-Sleep 10
+        Start-Sleep 4
         $http.Stop()
     }
 }
@@ -140,6 +149,7 @@ try {
     $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
     $tokenResponse = Invoke-WebRequest `
         -Uri "$authorizationEndpoint/token" `
+        -UseBasicParsing `
         -Method "POST" `
         -Body "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwtToken"
     $accessToken = ($tokenResponse | ConvertFrom-Json).access_token
@@ -149,6 +159,7 @@ try {
     Write-Output "Getting an account id..."
     $userInfoResponse = Invoke-RestMethod `
         -Uri "$authorizationEndpoint/userinfo" `
+        -UseBasicParsing `
         -Method "GET" `
         -Headers @{ "Authorization" = "Bearer $accessToken" }
     $accountId = $userInfoResponse.accounts[0].account_id

@@ -93,7 +93,7 @@ function startAuth ($apiVersion) {
         startLauncher
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
-        . .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion)
+        powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion)
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
         powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion)

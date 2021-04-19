@@ -23,6 +23,9 @@ elseif ($apiVersion -eq "eSignature") {
 elseif ($apiVersion -eq "click") {
   $scopes = "click.manage"
 }
+elseif ($apiVersion -eq "monitor") {
+  $scopes = "signature impersonation"
+}
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"

@@ -22,7 +22,7 @@ try {
   $response.Content
   # Retrieve the form group ID
   $obj = $response.Content | ConvertFrom-Json
-  $officeID = $obj[0].officeSummaries.officeId
+  $officeID = $obj.officeSummaries[0].officeId
 }
 catch {
   Write-Output "Unable to retrieve an office ID"
@@ -38,13 +38,10 @@ catch {
 # Step 3 End
 
 # Get form group ID from the .\config\FORM_GROUP_ID file
-# Step 4 Start
 if (Test-Path .\config\FORM_GROUP_ID) {
   $formGroupID = Get-Content .\config\FORM_GROUP_ID
 }
-# Step 4 End
 else {
-
   Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
   exit 1
 }

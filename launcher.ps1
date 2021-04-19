@@ -23,8 +23,6 @@ if($config.CC_EMAIL  -eq "{CC_EMAIL}" ){
 
 }
 
-
-
 function startLauncher {
     do {
         # Preparing list of Api
@@ -36,7 +34,24 @@ function startLauncher {
         }
 
         $listApiView = $null;
+
+        # Load via Quickstart
+        if($config.QUICKSTART  -eq "true" ){
+            if ($null -eq $firstPassComplete){
+            Write-Output ''
+            Write-Output "Quickstart Enabled, please wait"
+            write-Output ''
+             .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") | powershell.exe -Command .\eg001EmbeddedSigning.ps1 
+            
+            # This is to prevent getting stuck on the 
+            # first example after trying it the first time
+            $firstPassComplete = "true"
+            startSignature
+            }
+        }
+
         do {
+            Write-Output ''
             Write-Output 'Choose API: '
             Write-Output "$([int][listApi]::eSignature)) eSignature"
             Write-Output "$([int][listApi]::Rooms)) Rooms"

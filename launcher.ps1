@@ -45,9 +45,9 @@ function startLauncher {
             Write-Output ''
             Write-Output "Quickstart Enabled, please wait"
             write-Output ''
-             .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") | powershell.exe -Command .\eg001EmbeddedSigning.ps1 
-            
-            # This is to prevent getting stuck on the 
+             .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") | powershell.exe -Command .\eg001EmbeddedSigning.ps1
+
+            # This is to prevent getting stuck on the
             # first example after trying it the first time
             $firstPassComplete = "true"
             startSignature

@@ -194,13 +194,6 @@ For more information about the scopes used for obtaining authorization to use th
 
 
 ## Installation
-**Note: If you downloaded this code using Quickstart from the DocuSign Developer Center, skip to Running the examples, the next step has been automatically performed for you.**
-Download or clone this repository to your workstation. Open a PowerShell terminal window and navigate to this repo's folder. 
-
-## Collect your Integration information
-=======
-
-## Installation
 ### Prerequisites
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip items 1 and 2 as they were automatically performed for you.
 

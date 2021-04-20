@@ -28,7 +28,6 @@ if (($accessToken -eq "") -or ($null -eq $accessToken)) {
 DO {
    $iterations++
    Write-Output ""
-
    try {
       Invoke-RestMethod `
       -Uri "https://lens-d.docusign.net/api/v2.0/datasets/monitor/stream?cursor=${cursorValue}&limit=2000" `
@@ -38,13 +37,11 @@ DO {
          'Content-Type'  = "application/json";
       } `
       -OutFile $response
-
       # Display the data
       Write-Output "Iteration:"
       Write-Output $iterations
       Write-Output "Results:"
       Get-Content $response
-
       # Get the endCursor value from the response. This lets you resume
       # getting records from the spot where this call left off
       $endCursorValue = (Get-Content $response | ConvertFrom-Json).endCursor

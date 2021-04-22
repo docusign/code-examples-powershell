@@ -63,7 +63,7 @@ Write-Output "added by using Composite Templates"
                             };
                         );
                     };
-                    sequence   = "1";
+                    sequence   = "2";
                 };
             );
             serverTemplates     = @(
@@ -111,7 +111,7 @@ Write-Output "added by using Composite Templates"
                             };
                         );
                     };
-                    sequence   = "2";
+                    sequence   = "1";
                 };
             );
         };

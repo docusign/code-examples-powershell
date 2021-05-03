@@ -2,6 +2,9 @@
 *.key
 ENVELOPE_ID
 TEMPLATE_ID
+FORM_GROUP_ID
+API_ACCOUNT_ID
+ds_access_token.txt
 .vs/*
 .vscode/*
 debug.log

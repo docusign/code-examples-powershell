@@ -220,7 +220,7 @@ For more information about the scopes used for obtaining authorization to use th
    
 1. PowerShell 5 or later
 1. PowerShell script files (PS1) downloaded from the internet that are not digitally signed are considered a security risk. By default, PowerShell blocks execution of such scripts. To bypass this limitation, you will need to run the following command at the Windows PowerShell command line: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`  
-   After executing this command, you can run the downloaded PowerShell script.   
+   After executing this command, you can run the downloaded PowerShell script.  
    
 
 ### Installation steps

@@ -9,6 +9,17 @@ $oAuthAccessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Get required environment variables from .\config\settings.json file
+$configFile = ".\config\settings.json"
+$config = Get-Content $configFile -Raw | ConvertFrom-Json
+
+if($config.SIGNER_NOT_CHECKED_EMAIL  -eq "{SIGNER_NOT_CHECKED_EMAIL}" ){
+    $config.SIGNER_NOT_CHECKED_EMAIL = Read-Host "Enter an email address to route to when the checkbox is not checked"
+    $config.SIGNER_NOT_CHECKED_NAME = Read-Host "Enter a name to route to when the checkbox is not checked"
+    Write-Output ""
+    write-output $config | ConvertTo-Json | Set-Content $configFile
+    }
+
+# Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 $SIGNER1_EMAIL = $variables.CC_EMAIL
 $SIGNER1_NAME = $variables.CC_NAME
@@ -90,6 +101,7 @@ $response = New-TemporaryFile
                                                 tabId       = "ApprovalTab";
                                                 operator    = "equals";
                                                 value       = "false";
+                                                tabType     = "checkbox";
                                                 tabLabel    = "ApproveWhenChecked"
                                             };
                                         );
@@ -105,6 +117,7 @@ $response = New-TemporaryFile
                                                 tabId       = "ApprovalTab";
                                                 operator    = "equals";
                                                 value       = "true";
+                                                tabType     = "checkbox";
                                                 tabLabel    = "ApproveWhenChecked"
                                             };
                                         );

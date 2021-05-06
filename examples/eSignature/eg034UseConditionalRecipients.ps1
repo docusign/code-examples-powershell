@@ -21,8 +21,8 @@ if($config.SIGNER_NOT_CHECKED_EMAIL  -eq "{SIGNER_NOT_CHECKED_EMAIL}" ){
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-$SIGNER1_EMAIL = $variables.CC_EMAIL
-$SIGNER1_NAME = $variables.CC_NAME
+$SIGNER1_EMAIL = $variables.SIGNER_EMAIL
+$SIGNER1_NAME = $variables.SIGNER_NAME
 $SIGNER_WHEN_CHECKED_EMAIL = $variables.CC_EMAIL
 $SIGNER_WHEN_CHECKED_NAME = $variables.CC_NAME
 $SIGNER_NOT_CHECKED_EMAIL = $variables.SIGNER_NOT_CHECKED_EMAIL

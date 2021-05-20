@@ -59,8 +59,14 @@ $http = New-Object System.Net.HttpListener
 # Hostname and port to listen on
 $http.Prefixes.Add($redirectURI + "/")
 
-# Start the Http Server
-$http.Start()
+try {
+  # Start the Http Server
+  $http.Start()
+
+  }
+  catch {
+      Write-Error "OAuth listener failed. Is port 8080 in use by another program?" -ErrorAction Stop
+  }
 
 if ($http.IsListening) {
     Write-Output "Open the following URL in a browser to continue:" $authorizationURL

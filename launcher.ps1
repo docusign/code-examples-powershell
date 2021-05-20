@@ -43,15 +43,23 @@ function startLauncher {
             Write-Output ''
             Write-Output "Quickstart Enabled, please wait"
             write-Output ''
-             .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") | powershell.exe -Command .\eg001EmbeddedSigning.ps1
+            powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature")
+
+
+            if ((Test-Path "./config/ds_access_token.txt") -eq $true) {
+            powershell.exe -Command .\eg001EmbeddedSigning.ps1
 
             # This is to prevent getting stuck on the
             # first example after trying it the first time
             $firstPassComplete = "true"
+
             startSignature
             }
+            else {
+                Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
+            }
         }
-
+    }
         do {
             Write-Output ''
             Write-Output 'Choose API: '
@@ -110,9 +118,15 @@ function startAuth ($apiVersion) {
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
         powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion)
+        if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
+            Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
+        }
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
         powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion)
+        if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
+            Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
+        }
     }
 
     if ($listApiView -eq [listApi]::eSignature) {

@@ -1,197 +1,45 @@
-# DocuSign PowerShell Code Examples
+# PowerShell Launcher Code Examples
+
+### GitHub repo: [code-examples-powershell](./)
+
+This GitHub repo includes code example bash scripts for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, select the desired option from the menu when prompted.
+
 
 ## Introduction
-This repo includes a PowerShell command-line application to demonstrate:
+
+This repo includes a PowerShell command-line that supports the following authentication workflows:
+
+* Authentication with DocuSign via [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode).
+When the token expires, the user is asked to re-authenticate. The refresh token is not used.
+
+* Authentication with DocuSign via [JSON Web Token (JWT) Grant](https://developers.docusign.com/platform/auth/jwt/).
+When the token expires, it updates automatically.
+
 
 ## eSignature API
 
-For more information about the scopes used for obtaining authorization to use the eSignature API, see the [Required Scopes section](https://developers.docusign.com/docs/esign-rest-api/esign101/auth)
+For more information about the scopes used for obtaining authorization to use the eSignature API, see [Required scopes](https://developers.docusign.com/docs/esign-rest-api/esign101/auth#required-scopes).
 
-1. **Use embedded signing.**
-   [Source.](./eg001EmbeddedSigning.ps1)
-   This example sends an envelope, and then uses embedded signing for the first signer.
-   With embedded signing, the DocuSign signing is initiated from your website.
-1. **Request a signature by email (Remote Signing).**
-   [Source.](./examples/eSignature/eg002SigningViaEmail.ps1)
-   The envelope includes a pdf, Word, and HTML document.
-   Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
-1. **List envelopes in the user's account.**
-   [Source.](./examples/eSignature/eg003ListEnvelopes.ps1)
-1. **Get an envelope's basic information.**
-   [Source.](./examples/eSignature/eg004EnvelopeInfo.ps1)
-   The example lists the basic information about an envelope, including its overall status.
-1. **List an envelope's recipients** 
-   [Source.](./examples/eSignature/eg005EnvelopeRecipients.ps1)
-   Includes current recipient status.
-1. **List an envelope's documents.**
-   [Source.](./examples/eSignature/eg006EnvelopeDocs.ps1)
-1. **Download an envelope's documents.** 
-   [Source.](./examples/eSignature/eg007EnvelopeGetDoc.ps1)
-   The example can download individual
-   documents, the documents concatenated together, or a zip file of the documents.
-1. **Programmatically create a template.**
-   [Source.](./examples/eSignature/eg008CreateTemplate.ps1)
-1. **Request a signature by email using a template.**
-   [Source.](./examples/eSignature/eg009UseTemplate.ps1)
-1. **Send an envelope and upload its documents with multipart binary transfer.**
-   [Source.](./examples/eSignature/eg010SendBinaryDocs.ps1)
-   Binary transfer is 33% more efficient than using Base64 encoding.
-1. **Use embedded sending.**
-   [Source.](./examples/eSignature/eg011EmbeddedSending.ps1)
-   Embeds the DocuSign web tool (NDSE) in your web app to finalize or update 
-   the envelope and documents before they are sent.
-1. **Embedded DocuSign web tool (NDSE).**
-   [Source.](./examples/eSignature/eg012EmbeddedConsole.ps1)
-1. **Use embedded signing from a template with an added document.**
-   [Source.](./examples/eSignature/eg013AddDocToTemplate.ps1)
-   This example sends an envelope based on a template.
-   In addition to the template's document(s), the example adds an
-   additional document to the envelope by using the
-   [Composite Templates](https://developers.docusign.com/esign-rest-api/guides/features/templates#composite-templates)
-   feature.
-1. **Payments Example.**
-   [Source.](./examples/eSignature/eg014CollectPayment.ps1)
-   An order form, with online payment by credit card.
-1. **Get the envelope tab data.**
-   Retrieve the tab (field) values for all of the envelope's recipients.
-   [Source.](./examples/eSignature/eg015EnvelopeTabData.ps1)
-1. **Set envelope tab values.**
-   The example creates an envelope and sets the initial values for its tabs (fields). Some of the tabs
-   are set to be read-only, others can be updated by the recipient. The example also stores
-   metadata with the envelope.
-   [Source.](./examples/eSignature/eg016SetTabValues.ps1)
-1. **Set template tab values.**
-   The example creates an envelope using a template and sets the initial values for its tabs (fields).
-   The example also stores metadata with the envelope.
-   [Source.](./examples/eSignature/eg017SetTemplateTabValues.ps1)
-1. **Get the envelope custom field data (metadata).**
-   The example retrieves the custom metadata (custom data fields) stored with the envelope.
-   [Source.](./examples/eSignature/eg018EnvelopeCustomFieldData.ps1)
-1. **Requiring an Access Code for a Recipient**   
-   [Source.](./examples/eSignature/eg019SigningViaEmailWithAccessCode.ps1)
-   This example sends an envelope using remote (email) signing requiring the recipient to enter an access code.
-1. **Send an envelope with a remote (email) signer using SMS authentication.**
-   [Source.](./examples/eSignature/eg020SigningViaEmailWithSmsAuthentication.ps1)
-   This example sends an envelope using remote (email) signing requiring the recipient to supply a verification code sent to them via SMS.
-1. **Send an envelope with a remote (email) signer using Phone authentication.**
-   [Source.](./examples/eSignature/eg021SigningViaEmailWithPhoneAuthentication.ps1)
-   This example sends an envelope using remote (email) signing requiring the recipient to supply a verification code sent to them via a phone call.
-1. **Send an envelope with a remote (email) signer using Knowledge-Based authentication.**
-   [Source.](./examples/eSignature/eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1)
-   This example sends an envelope using remote (email) signing requiring the recipient to validate their identity via Knowledge-Based authentication.
-1. **Send an envelope with a remote (email) signer using Identity Verification.**
-   [Source.](./examples/eSignature/eg023SigningViaEmailWithIDVAuthentication.ps1)
-   This example sends an envelope using remote (email) signing requiring the recipient to validate their identity via a government issued ID.
-1. **Creating a permission profile**
-   [Source.](./examples/eSignature/eg024CreatingPermissionProfiles.ps1)
-   This code example demonstrates how to create a permission profile using the [Create Permission Profile](https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountPermissionProfiles/create) method.
-1. **Setting a permission profile**
-   [Source.](./examples/eSignature/eg025SettingPermissionProfiles.ps1)
-   This code example demonstrates how to set a user group’s permission profile using the [Update Group](https://developers.docusign.com/esign-rest-api/reference/UserGroups/Groups/update) method. 
-   You must have already created the permissions profile and the group of users.
-1. **Updating individual permission settings**
-   [Source.](./examples/eSignature/eg026UpdatingIndividualPermission.ps1)
-   This code example demonstrates how to edit individual permission settings on a permissions profile using the [Update Permission Profile](https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountPermissionProfiles/update) method.
-1. **Deleting a permission profile**
-   [Source.](./examples/eSignature/eg027DeletingPermissions.ps1)
-   This code example demonstrates how to delete a permission profile using the [Delete Permission Profile](https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountPermissionProfiles/create) method.
-1. **Creating a brand**
-   [Source.](./examples/eSignature/eg028CreatingABrand.ps1)
-   This example creates brand profile for an account using the [Create Brand](https://developers.docusign.com/esign-rest-api/reference/Accounts/AccountBrands/create) method.
-1. **Applying a brand to an envelope**
-   [Source.](./examples/eSignature/eg029ApplyingBrandEnvelope.ps1)
-   This code example demonstrates how to apply a brand you've created to an envelope using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
-   First, creates the envelope and then applies the brand to it.
-   Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
-1. **Applying a brand to a template**
-   [Source.](./examples/eSignature/eg030ApplyingBrandTemplate.ps1)
-   This code example demonstrates how to apply a brand you've created to a template using using the [Create Envelope](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method. 
-   You must have already created the template and the brand.
-   Anchor text ([AutoPlace](https://support.docusign.com/en/guides/AutoPlace-New-DocuSign-Experience)) is used to position the signing fields in the documents.
-1. **Bulk sending envelopes to multiple recipients**
-   [Source.](./examples/eSignature/eg031BulkSending.ps1)
-   This code example demonstrates how to send envelopes in bulk to multiple recipients using these methods:
-   [Create Bulk Send List](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendList), 
-   [Create Bulk Send Request](https://developers.docusign.com/esign-rest-api/reference/BulkEnvelopes/BulkSend/createBulkSendRequest).
-   Firstly, creates a bulk send recipients list, and then creates an envelope. 
-   After that, initiates bulk envelope sending.
-1. **Pausing a signature workflow Source.**
-   [Source.](./examples/eSignature/eg032PauseSignatureWorkflow.ps1)
-   This code example demonstrates how to create an envelope where the workflow is paused before the envelope is sent to a second recipient.
-1. **Unpausing a signature workflow**
-   [Source.](./examples/eSignature/eg033UnpauseSignatureWorkflow.ps1)
-   This code example demonstrates how to resume an envelope workflow that has been paused
-1. **Using conditional recipients**
-   [Source.](./examples/eSignature/eg034UseConditionalRecipients.ps1)
-   This code example demonstrates how to create an envelope where the workflow is routed to different recipients based on the value of a transaction.
-1. **Request a signature by SMS delivery**
-   [Source.](./examples/eSignature/eg035SMSDelivery.ps1)
-   This code example demonstrates how to send a signature request via an SMS message using the [Envelopes: create](https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create) method.
+For a list of code examples that use the eSignature API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/esign-rest-api/how-to/code-launchers#examples-and-languages) on the DocuSign Developer Center.
+
+## Rooms API
+
+**Note:** To use the Rooms API you must also [create your Rooms developer account](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). Examples 4 and 6 require that you have the DocuSign Forms feature enabled in your Rooms for Real Estate account.  
+For more information about the scopes used for obtaining authorization to use the Rooms API, see [Required scopes](https://developers.docusign.com/docs/rooms-api/rooms101/auth/). 
+
+For a list of code examples that use the Rooms API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/rooms-api/how-to/code-launchers#examples-and-languages) on the DocuSign Developer Center.
  
-## Rooms API 
+## Click API
 
-For more information about the scopes used for obtaining authorization to use the Rooms API, see the [Required Scopes section](https://developers.docusign.com/docs/rooms-api/rooms101/auth/)
+For more information about the scopes used for obtaining authorization to use the Click API, see [Required scopes](https://developers.docusign.com/docs/click-api/click101/auth/#required-scopes).
 
-**Note:** to use the Rooms API you must also [create your DocuSign Developer Account for Rooms](https://developers.docusign.com/docs/rooms-api/rooms101/create-account). 
+For a list of code examples that use the Click API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/click-api/how-to/code-launchers#examples-and-languages) on the DocuSign Developer Center.
 
-1. **Create room with Data.**
-   [Source.](./examples/Rooms/eg001CreateRoomWithDataController.ps1)
-   This example creates a new room in your DocuSign Rooms account to be used for a transaction.
-1. **Create a room from a template.**
-   [Source.](./examples/Rooms/eg002CreateRoomWithTemplateController.ps1)
-   This example creates a new room using a template.
-1. **Create room with Data.**
-   [Source.](./examples/Rooms/eg003ExportDataFromRoomController.ps1))
-   This example exports all the avialalble data from a specific room in your DocuSign Rooms account.
-1. **Add forms to a room.**
-   [Source.](./examples/Rooms/eg004AddFormsToRoomController.ps1)
-   This example adds a standard real estate related form to a specific room in your DocuSign Rooms account.
-1. **How to search for rooms with filters.**
-   [Source.](./examples/Rooms/eg005GetRoomsWithFiltersController.ps1)
-   This example searches for rooms in your DocuSign Rooms account using a specific filter. 
-1. **Create an external form fillable session.**
-   [Source.](./examples/Rooms/eg006CreateAnExternalFormFillSessionController.ps1)
-   This example create an external form that can be filled using DocuSign for a specific room in your DocuSign Rooms account.
-1. **Create a form group.**
-   [Source.](./examples/Rooms/eg007CreateFormGroup.ps1)
-   This example demonstrates how to create a form group for your DocuSign Rooms for Real Estate account.
-1. **Grant office access to a form group.**
-   [Source.](./examples/Rooms/eg008AccessFormGroup.ps1)
-   This example demonstrates how to assign an office to a form group for your DocuSign Rooms for Real Estate account. 
-1. **Assign a form to a form group.**
-   [Source.](./examples/Rooms/eg009AssignFormGroup.ps1)
-   This example demonstrates how to assign a form to a form group for your DocuSign Rooms for Real Estate account.
-  
-## Click API 
-**Note:** To use the Click API include the <code>click_manage</code> scope. Review the [Click API 101 Auth Guide](https://developers.docusign.com/docs/click-api/click101/auth) for more details. 
+## Monitor API
+**Note:** To use the Monitor API, you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/).   
+For information about the scopes used for obtaining authorization to use the Monitor API, see the [scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
 
-1. **Create clickwraps.**
-   [Source.](./examples/Click/eg001CreateClickwrap.ps1)
-   Creates a clickwrap that you can embed in your website or app.
-1. **Activate clickwrap.**
-   [Source.](./examples/Click/eg002ActivateClickwrap.ps1)
-   Activates a new clickwrap. By default, new clickwraps are inactive. You must activate your clickwrap before you can use it.
-1. **Clickwrap Versioning.**
-   [Source.](./examples/Click/eg003CreateNewClickwrapVersion.ps1)
-   Demonstrates how to use the Click API to create a new version of a clickwrap.
-1. **Retrieve clickwraps.**
-   [Source.](./examples/Click/eg004GetListOfClickwraps.ps1)
-   Demonstrates how to get a list of clickwraps associated with a specific DocuSign user.
-1. **Get clickwrap Responses.**
-   [Source.](./examples/Click/eg005GetClickwrapResponses.ps1)
-   Demonstrates how to get user responses to your clickwrap agreements.
-
-## Monitor API 
-
-**Note:** To use the Monitor API you must also [enable DocuSign Monitor for your organization](https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/). 
-
-For more information about the scopes used for obtaining authorization to use the Monitor API, see the [scopes section](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
-
-1. **Get Monitoring Data.**
-   [Source.](./examples/Monitor/eg001GetMonitoringData.ps1)
-   
-   Demonstrates how to get and display all of your organization’s monitoring data.
-
+For a list of code examples that use the Monitor API, select the Python tab under [Examples and languages](https://developers.docusign.com/docs/monitor-api/how-to/code-launchers/#examples-and-languages) on the DocuSign Developer Center.
 
 ## Installation
 ### Prerequisites

@@ -2,7 +2,7 @@
 
 ### GitHub repo: [code-examples-powershell](./README.md)
 
-This GitHub repo includes code example bash scripts for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, select the desired option from the menu when prompted.
+This GitHub repo includes code example PowerShell scripts for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, select the desired option from the menu when prompted.
 
 
 ## Introduction
@@ -75,7 +75,8 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
-1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
+1. In your command-line environment, switch to the folder:  
+   `cd <Quickstart folder>` or `cd code-examples-powershell`
 1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file config/settings.example.json and save the copy as config/settings.json.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_AUTH_CODE`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in settings.json as your `SECRET_KEY`.
@@ -89,7 +90,7 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 
 
 ### Installation steps for JWT Grant authentication
-**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you.
+**Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you. Also, in order to select JSON Web Token authentication in the launcher, in config/settings.json, change the `quickstart` setting to `"false"`.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
 1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
@@ -103,6 +104,7 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**
 1. Select an API when prompted in Windows PowerShell.
 1. Select **JSON Web Token** when authenticating your account.
+1. When prompted, log in to your DocuSign developer account. If this is your first time using the app, select **ACCEPT** at the consent window. 
 1. Select your desired code example.
 
 

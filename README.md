@@ -52,7 +52,7 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 
    To use [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/), you will need an integration key and a secret key. See [Installation steps](#installation-steps) for details.  
 
-   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the API Username GUID of the impersonated user. See [Installation steps for JWT Grant authentication](#installation-steps-for-jwt-grant-authentication) for details.  
+   To use [JWT Grant](https://developers.docusign.com/platform/auth/jwt/), you will need an integration key, an RSA key pair, and the User ID GUID of the impersonated user. See [Installation steps for JWT Grant authentication](#installation-steps-for-jwt-grant-authentication) for details.  
 
    For both authentication flows:  
    
@@ -75,8 +75,7 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you.
 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
-1. In your command-line environment, switch to the folder:  
-   `cd <Quickstart folder>` or `cd code-examples-powershell`
+1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
 1. To configure the launcher for [Authorization Code Grant](https://developers.docusign.com/platform/auth/authcode/) authentication, create a copy of the file config/settings.example.json and save the copy as config/settings.json.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_AUTH_CODE`.
    1. Generate a secret key, if you don’t already have one. Under **Authentication**, select **+ ADD SECRET KEY**. Copy the secret key and save it in settings.json as your `SECRET_KEY`.
@@ -95,12 +94,12 @@ For a list of code examples that use the Monitor API, select the PowerShell tab 
 1. Extract the Quickstart ZIP file or download or clone the code-examples-powershell repository.
 1. In File Explorer, open your Quickstart folder or your code-examples-powershell folder.
 1. To configure the launcher for [JWT Grant](https://developers.docusign.com/platform/auth/jwt/) authentication, create a copy of the file config/settings.example.json and save the copy as config/settings.json.
-   1. Add your API Username. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **API Username** GUID and save it in settings.json as your `IMPERSONATION_USER_GUID`.
+   1. Add your User ID. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **My Account Information**, copy the **User ID** GUID and save it in settings.json as your `IMPERSONATION_USER_GUID`.
    1. Add your integration key. On the [Apps and Keys](https://admindemo.docusign.com/authenticate?goTo=apiIntegratorKey) page, under **Apps and Integration Keys**, choose the app to use, then select **Actions** > **Edit**. Under **General Info**, copy the **Integration Key** GUID and save it in settings.json as your `INTEGRATION_KEY_JWT`.
    1. Generate an RSA key pair, if you don’t already have one. Under **Authentication**, select **+ GENERATE RSA**. Copy the private key and save it in a new file named config/private.key.
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
-**Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
+**Note:** Protect your personal information. Please make sure that your settings.json and private.key files will not be stored in your source code repository.
 1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**
 1. Select an API when prompted in Windows PowerShell.
 1. Select **JSON Web Token** when authenticating your account.

@@ -11,18 +11,48 @@ if ((Test-Path $configFile) -eq $False) {
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
 
-function checkCC{
+function checkCC {
 
-# Fill in Quickstart Carbon Copy config values
-if($config.CC_EMAIL  -eq "{CC_EMAIL}" ){
-    Write-Output "It looks like this is your first time running the launcher from Quickstart. "
-    $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
-    $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
-    Write-Output ""
-    write-output $config | ConvertTo-Json | Set-Content $configFile
+    # Fill in Quickstart Carbon Copy config values
+    if ($config.CC_EMAIL -eq "{CC_EMAIL}" ) {
+        Write-Output "It looks like this is your first time running the launcher from Quickstart. "
+        $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
+        $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
+        Write-Output ""
+        write-output $config | ConvertTo-Json | Set-Content $configFile
     }
 
 }
+
+function  checkOrgId {
+
+    if ($config.ORGANIZATION_ID -eq "{ORGANIZATION_ID}" ) {
+        Write-Output "No Organization Id in the config file. Looking for one via the API"
+        # Get required environment variables from .\config\settings.json file
+        $accessToken = Get-Content .\config\ds_access_token.txt
+
+        $base_path = "https://api-d.docusign.net/management"
+
+        $response = New-TemporaryFile
+        Invoke-RestMethod `
+            -Uri "$base_path/v2/organizations" `
+            -Method 'GET' `
+            -Headers @{
+            'Authorization' = "Bearer $accessToken";
+            'Content-Type'  = "application/json";
+        } `
+            -OutFile $response
+
+        $organizationId = $(Get-Content $response | ConvertFrom-Json).organizations[0].id
+
+        $config.ORGANIZATION_ID = $organizationId
+        write-output $config | ConvertTo-Json | Set-Content $configFile
+        Write-Output "Organization id has been written to config file..."
+        Remove-Item $response
+
+    }
+}
+
 
 function startLauncher {
     do {
@@ -32,34 +62,35 @@ function startLauncher {
             Rooms = 2;
             Click = 3;
             Monitor = 4;
-            Exit = 5;
+            Admin = 5;
+            Exit = 6;
         }
 
         $listApiView = $null;
 
         # Load via Quickstart
-        if($config.QUICKSTART  -eq "true" ){
-            if ($null -eq $firstPassComplete){
-            Write-Output ''
-            Write-Output "Quickstart Enabled, please wait"
-            write-Output ''
-            powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature")
+        if ($config.QUICKSTART -eq "true" ) {
+            if ($null -eq $firstPassComplete) {
+                Write-Output ''
+                Write-Output "Quickstart Enabled, please wait"
+                write-Output ''
+                powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature")
 
 
-            if ((Test-Path "./config/ds_access_token.txt") -eq $true) {
-            powershell.exe -Command .\eg001EmbeddedSigning.ps1
+                if ((Test-Path "./config/ds_access_token.txt") -eq $true) {
+                    powershell.exe -Command .\eg001EmbeddedSigning.ps1
 
-            # This is to prevent getting stuck on the
-            # first example after trying it the first time
-            $firstPassComplete = "true"
+                    # This is to prevent getting stuck on the
+                    # first example after trying it the first time
+                    $firstPassComplete = "true"
 
-            startSignature
-            }
-            else {
-                Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
+                    startSignature
+                }
+                else {
+                    Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
+                }
             }
         }
-    }
         do {
             Write-Output ''
             Write-Output 'Choose API: '
@@ -67,6 +98,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Rooms)) Rooms"
             Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Monitor)) Monitor"
+            Write-Output "$([int][listApi]::Admin)) Admin"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -83,6 +115,9 @@ function startLauncher {
         elseif ($listApiView -eq [listApi]::Monitor) {
             startAuth "monitor"
         }
+        elseif ($listApiView -eq [listApi]::Admin) {
+            startAuth "admin"
+        }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
         }
@@ -98,8 +133,7 @@ function startAuth ($apiVersion) {
     }
 
     $AuthTypeView = $null;
-    if ($apiVersion -eq "monitor")
-    {
+    if ($apiVersion -eq "monitor") {
         $AuthTypeView = [AuthType]::JWT; # Monitor API only supports JWT
     }
     else {
@@ -140,6 +174,9 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::Monitor) {
         startMonitor
+    }
+    elseif ($listApiView -eq [listApi]::Admin) {
+        startAdmin
     }
 }
 
@@ -472,6 +509,55 @@ function startMonitor {
             powershell.exe -Command .\examples\Monitor\eg001getMonitoringData.ps1
         }
     } until ($listMonitorExamplesView -eq [listMonitorExamples]::Home)
+    startLauncher
+}
+
+function startAdmin {
+    do {
+        Enum listAdminExamples {
+            createNewUserWithActiveStatus = 1;
+            createActiveCLMEsignUser = 2;
+            bulkExportUserData = 3;
+            addUsersViaBulkImport = 4;
+            auditUsers = 5
+            Home = 6;
+        }
+        $listAdminExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listAdminExamples]::createNewUserWithActiveStatus)) Create a new user with active status"
+            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create an active CLM and ESign user"
+            Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
+            Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
+            Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
+            Write-Output "$([int][listAdminExamples]::Home)) Home"
+            [int]$listAdminExamplesView = Read-Host "Select the action"
+        } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
+
+        if ($listAdminExamplesView -eq [listAdminExamples]::createNewUserWithActiveStatus) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg001CreateNewUserWithActiveStatus.ps1
+
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::createActiveCLMEsignUser) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg002createActiveCLMEsignUser.ps1
+
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::bulkExportUserData) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg003BulkExportUserData.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::addUsersViaBulkImport) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg004AddUsersViaBulkImport.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::auditUsers) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg005AuditUsers.ps1
+        }
+    } until ($listAdminExamplesView -eq [listAdminExamples]::Home)
     startLauncher
 }
 

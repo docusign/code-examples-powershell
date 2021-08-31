@@ -26,14 +26,15 @@ elseif ($apiVersion -eq "click") {
 elseif ($apiVersion -eq "monitor") {
   $scopes = "signature impersonation"
 }
+elseif ($apiVersion -eq "admin") {
+  $scopes = "signature%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read"
+}
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
 $authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=$scopes&client_id=$clientId&state=$state&redirect_uri=$redirectUriEscaped"
 
-Write-Output "The authorization URL is:"
-Write-Output $authorizationURL
 
 # Request the authorization code
 # Use Http Server

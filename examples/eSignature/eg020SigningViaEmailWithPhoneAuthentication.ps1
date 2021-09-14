@@ -32,6 +32,9 @@ $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
+$SIGNER_NAME = Read-Host "Please enter name for the signer"
+
+$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
 
 $SIGNER_COUNTRY_CODE = Read-Host "Please enter a country country code for recipient authentication for the signer"
 

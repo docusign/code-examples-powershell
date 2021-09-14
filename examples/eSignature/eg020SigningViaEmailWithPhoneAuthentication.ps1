@@ -36,7 +36,7 @@ $SIGNER_NAME = Read-Host "Please enter name for the signer"
 
 $SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
 
-$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country country code for recipient authentication for the signer"
+$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
 
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body

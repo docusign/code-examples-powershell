@@ -33,7 +33,7 @@ $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
 
-$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country country code for recipient authentication for the signer"
+$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
 
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body

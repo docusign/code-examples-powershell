@@ -73,7 +73,6 @@ $body = @"
 			"templateAccessCodeRequired": null,
 			"deliveryMethod": "email",
 			"recipientId": "1",
-			"requireIdLookup": true,
 			"identityVerification":{
 				"workflowId":"c368e411-1592-4001-a3df-dca94ac539ae",
 				"steps":null,"inputOptions":[

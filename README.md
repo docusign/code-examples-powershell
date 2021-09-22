@@ -2,7 +2,7 @@
 
 ### GitHub repo: [code-examples-powershell](./README.md)
 
-This GitHub repo includes code example PowerShell scripts for the DocuSign eSignature REST API, Rooms API, Click API, and Monitor API. To switch between API code examples, select the desired option from the menu when prompted.
+This GitHub repo includes code examples for the DocuSign Admin API, Click API, eSignature REST API, Monitor API, and Rooms API. To switch between API code examples, select the desired option from the menu when prompted.
 
 
 ## Introduction
@@ -37,7 +37,7 @@ For a list of code examples that use the Click API, select the PowerShell tab un
 
 ## Admin API 
 
-**Note:** To use the Admin API, you must [create an organization](https://support.docusign.com/en/guides/org-admin-guide-create-org) in your DocuSign account. Also, to run the DocuSign CLM code example, [CLM must be enabled for your organization](https://support.docusign.com/en/articles/DocuSign-and-SpringCM).
+**Note:** To use the Admin API, you must [create an organization](https://support.docusign.com/en/guides/org-admin-guide-create-org) in your DocuSign developer account. Also, to run the DocuSign CLM code example, [CLM must be enabled for your organization](https://support.docusign.com/en/articles/DocuSign-and-SpringCM).
 
 For more information about the scopes used for obtaining authorization to use the Admin API, see the [scopes section](https://developers.docusign.com/docs/admin-api/admin101/auth/).
 

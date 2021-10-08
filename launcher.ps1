@@ -203,8 +203,7 @@ function startSignature {
             Set_Template_Tab_Values = 17;
             Envelope_Custom_Field_Data = 18;
             Signing_Via_Email_With_Access_Code = 19;
-            Signing_Via_Email_With_Sms_Authentication = 20;
-            Signing_Via_Email_With_Phone_Authentication = 21;
+            Signing_Via_Email_With_Phone_Authentication = 20;
             Signing_Via_Email_With_Knowledge_Based_Authentication = 22;
             Signing_Via_Email_With_IDV_Authentication = 23;
             Creating_Permission_Profiles = 24;
@@ -245,7 +244,6 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Set_Template_Tab_Values)) Set_Template_Tab_Values"
             Write-Output "$([int][ApiExamples]::Envelope_Custom_Field_Data)) Envelope_Custom_Field_Data"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Access_Code)) Signing_Via_Email_With_Access_Code"
-            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Sms_Authentication)) Signing_Via_Email_With_Sms_Authentication"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Phone_Authentication)) Signing_Via_Email_With_Phone_Authentication"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication)) Signing_Via_Email_With_Knowledge_Based_Authentication"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_IDV_Authentication)) Signing_Via_Email_With_IDV_Authentication"
@@ -329,11 +327,8 @@ function startSignature {
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
             powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
         }
-        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Sms_Authentication) {
-            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithSmsAuthentication.ps1
-        }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Phone_Authentication) {
-            powershell.exe .\examples\eSignature\eg021SigningViaEmailWithPhoneAuthentication.ps1
+            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
             powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1

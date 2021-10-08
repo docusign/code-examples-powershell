@@ -32,10 +32,13 @@ $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
+$SIGNER_NAME = Read-Host "Please enter name for the signer"
 
-$PHONE_NUMBER = $(Read-Host "Please enter a phone number for recipient authentication [415-555-1212]"
-if ($PHONE_NUMBER) {$PHONE_NUMBER} else {'415-555-1212'}
-)
+$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
+
+$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
+
+$SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body
 $body = @"
 {
@@ -70,15 +73,19 @@ $body = @"
 			"templateAccessCodeRequired": null,
 			"deliveryMethod": "email",
 			"recipientId": "1",
-			"phoneAuthentication": {
-				"recordVoicePrint": false,
-				"validateRecipProvidedNumber": false,
-				"recipMayProvideNumber": true,
-				"senderProvidedNumbers": ["$PHONE_NUMBER"]
-			},
-			"smsAuthentication": null,
-			"idCheckConfigurationName": "Phone Auth $",
-			"requireIdLookup": true
+			"identityVerification":{
+				"workflowId":"c368e411-1592-4001-a3df-dca94ac539ae",
+				"steps":null,"inputOptions":[
+					{"name":"phone_number_list",
+					"valueType":"PhoneNumberList",
+					"phoneNumberList":[
+						{
+							"countryCode":"$SIGNER_COUNTRY_CODE",
+							"number":"$SIGNER_PHONE_NUMBER"
+						}
+						]
+					}]
+				}			
 			}]
 		},
 	"status": "Sent"

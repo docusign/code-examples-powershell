@@ -22,12 +22,11 @@ $base_path = "https://api-d.docusign.net/management"
 $organizationId = $variables.ORGANIZATION_ID
 
 # Get groups and permission profile IDs
-# Step 3 start
+
 $uri = "${base_path}/v2/organizations/${organizationId}/accounts/${accountId}/permissions"
 $result = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 
 $permissionsObj = $($result.Content  | ConvertFrom-Json).permissions
-# Step 3 end
 
 # Setup a temporary menu option to pick a permission profile
 $menu = @{}
@@ -39,12 +38,12 @@ $menu = @{}
   } while ($selection -gt $permissionsObj.count -or $selection -lt 1);
   $permissionsId = $menu.Item($selection)
 
-# Step 4 start
+
 $uri = "${base_path}/v2/organizations/${organizationId}/accounts/${accountId}/groups"
 $result = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 
 $groupsObj = $($result.Content  | ConvertFrom-Json).groups
-# Step 4 end
+
 
 # Setup a temporary menu option to pick a group
 $menu = @{}
@@ -56,13 +55,15 @@ $menu = @{}
   } while ($selection -gt $groupsObj.count -or $selection -lt 1);
   $groupId = $menu.Item($selection)
 
+
+
 $userName = Read-Host "Enter a username for the new user"
 $firstName = Read-Host "Enter the first name of the new user"
 $lastName = Read-Host "Enter the last name of the new user"
 $userEmail = Read-Host "Enter an email for the new user"
 
 # Construct the request body for the new user
-# Step 5 start
+# Step 3 start
 $body = @"
 {
   "user_name": "$userName",
@@ -85,12 +86,12 @@ $body = @"
   ]
 }
 "@
-# Step 5 end
+# Step 3 end
 
 $result = ""
 # Call the DocuSign Admin API
-# Step 6 start
+# Step 4 start
 $uri = "${base_path}/v2/organizations/${organizationId}/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method POST
 $result.Content
-# Step 6 end
+# Step 4 end

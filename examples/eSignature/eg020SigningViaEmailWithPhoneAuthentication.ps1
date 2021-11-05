@@ -47,7 +47,10 @@ $result.content
 $workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "Phone Authentication"}).workflowId
 # Step 3 end
 
-
+if ($null -eq $workflowId)
+{
+	throw "Please contact https://support.docusign.com to enable recipient phone authentication in your account."
+}
 
 $SIGNER_NAME = Read-Host "Please enter name for the signer"
 

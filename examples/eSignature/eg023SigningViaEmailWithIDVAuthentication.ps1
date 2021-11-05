@@ -48,6 +48,11 @@ $result.content
 $workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "DocuSign ID Verification"}).workflowId
 # Step 3 end
 
+if ($null -eq $workflowId)
+{
+	throw "Please contact https://support.docusign.com to enable IDV in your account."
+}
+
 # - Construct your envelope JSON body
 # Note: If you did not successfully obtain your workflow ID, this step will fail.
 # Step 4 start

@@ -53,6 +53,10 @@ if ($null -eq $workflowId)
 	throw "Please contact https://support.docusign.com to enable IDV in your account."
 }
 
+$SIGNER_NAME = Read-Host "Please enter name for the signer"
+
+$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
+
 # - Construct your envelope JSON body
 # Note: If you did not successfully obtain your workflow ID, this step will fail.
 # Step 4 start

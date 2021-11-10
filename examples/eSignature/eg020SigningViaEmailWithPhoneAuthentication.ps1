@@ -27,10 +27,30 @@ $docBase64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
 # Construct your API headers
+# Step 2 start
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+# Step 2 end
+
+# - Obtain your workflow ID
+# Step 3 start
+$uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/identity_verification"
+
+Write-Output "Attempting to retrieve your account's workflow ID"
+
+Write-Output "Response:"
+$result = Invoke-RestMethod -uri $uri -headers $headers -method GET
+$result.content
+#Obtain the workflow ID from the API response
+$workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "Phone Authentication"}).workflowId
+# Step 3 end
+
+if ($null -eq $workflowId)
+{
+	throw "Please contact https://support.docusign.com to enable recipient phone authentication in your account."
+}
 
 $SIGNER_NAME = Read-Host "Please enter name for the signer"
 
@@ -40,6 +60,7 @@ $SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient auth
 
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body
+# Step 4 start
 $body = @"
 {
 	"documents": [{
@@ -66,15 +87,15 @@ $body = @"
 					"pageNumber": "1",
 					"recipientId": "1",
 					"tabLabel": "SignHereTab",
-					"xPosition": "75",
-					"yPosition": "572"
+					"xPosition": "200",
+					"yPosition": "160"
 				}]
 			},
 			"templateAccessCodeRequired": null,
 			"deliveryMethod": "email",
 			"recipientId": "1",
 			"identityVerification":{
-				"workflowId":"c368e411-1592-4001-a3df-dca94ac539ae",
+				"workflowId":"$workflowId",
 				"steps":null,"inputOptions":[
 					{"name":"phone_number_list",
 					"valueType":"PhoneNumberList",
@@ -91,12 +112,14 @@ $body = @"
 	"status": "Sent"
 }
 "@
+# Step 4 end
 Write-Output ""
 Write-Output "Request: "
 Write-Output $body
 
 # a) Make a POST call to the createEnvelopes endpoint to create a new envelope.
 # b) Display the JSON structure of the created envelope
+# Step 5 start
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 try {
 	Write-Output "Response:"
@@ -112,6 +135,7 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
+# Step 5 end
 
 # cleanup
 Remove-Item $docBase64

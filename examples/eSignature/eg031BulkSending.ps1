@@ -23,6 +23,7 @@ $doc1Base64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
 
+# Step 2 start
 # Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
@@ -30,9 +31,11 @@ $headers.add("Accept", "application/json, text/plain, */*")
 $headers.add("Content-Type", "application/json;charset=UTF-8")
 $headers.add("Accept-Encoding", "gzip, deflate, br")
 $headers.add("Accept-Language", "en-US,en;q=0.9")
+# Step 2 end
 
 $continue = $true
 
+# Step 3 start
 # Step 3. Submit a bulk list
 # Submit the Bulk List
 # Create a temporary file to store the JSON body
@@ -96,7 +99,8 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
-
+# Step 3 end
+# Step 4 start
 # Step 4. Create an envelope
 # Create your draft envelope
 $body = @"
@@ -171,7 +175,8 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
-
+# Step 4 end
+# Step 5 start
 # Step 5. Attach your bulk list ID to the envelope
 # Add an envelope custom field set to the value of your listId
 # This Custom Field is used for tracking your Bulk Send via the Envelopes::Get method
@@ -209,7 +214,8 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
-
+# Step 5 start
+# Step 5 end
 # Step 6. Initiate bulk send
 # Initiate the Bulk Send
 # Target endpoint: {ACCOUNT_ID}/bulk_send_lists/{LIST_ID}/send
@@ -244,7 +250,8 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
-
+# Step 6 end
+# Step 7 start
 # Step 7. Confirm successful batch send
 # Confirm successful batch send
 # Note: Depending on the number of Bulk Recipients, it may take some time for the Bulk Send to complete. For 2000 recipients this can take ~1 hour.
@@ -271,3 +278,4 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
+# Step 7 end

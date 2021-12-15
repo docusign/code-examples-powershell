@@ -10,10 +10,18 @@ $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-$CC_EMAIL = $variables.CC_EMAIL
-$CC_NAME = $variables.CC_NAME
-$SIGNER_EMAIL = $variables.SIGNER_EMAIL
-$SIGNER_NAME = $variables.SIGNER_NAME
+$SIGNER1_EMAIL = Read-Host "Please enter Bulk copy #1 signer email address"
+$SIGNER1_NAME = Read-Host "Please enter Bulk copy #1 signer name"
+$CC1_EMAIL = Read-Host "Please enter Bulk copy #1 carbon copy email address"
+$CC1_NAME = Read-Host "Please enter Bulk copy #1 carbon copy name"
+$SIGNER2_EMAIL = Read-Host "Please enter Bulk copy #2 signer email address"
+$SIGNER2_NAME = Read-Host "Please enter Bulk copy #2 signer name"
+$CC2_EMAIL = Read-Host "Please enter Bulk copy #2 carbon copy email address"
+$CC2_NAME = Read-Host "Please enter Bulk copy #2 carbon copy name"
+
+$doc1Base64 = New-TemporaryFile
+# Fetch doc and encode
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
 
 # Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -34,35 +42,27 @@ $body = @"
 	"name": "sample.csv",
 	"bulkCopies": [{
 		"recipients": [{
-			"recipientId": "39542944",
-			"role": "signer",
-			"tabs": [],
-			"name": "${SIGNER_NAME}",
-			"email": "${SIGNER_EMAIL}"
+			"roleName": "signer",
+			"name": "${SIGNER1_NAME}",
+			"email": "${SIGNER1_EMAIL}"
 		},
 		{
-			"recipientId": "84754526",
-			"role": "cc",
-			"tabs": [],
-			"name": "${CC_NAME}",
-			"email": "${CC_EMAIL}"
+			"roleName": "cc",
+			"name": "${CC1_NAME}",
+			"email": "${CC1_EMAIL}"
 		}],
 		"customFields": []
 	},
 {
 		"recipients": [{
-			"recipientId": "39542944",
-			"role": "signer",
-			"tabs": [],
-			"name": "${SIGNER_NAME}",
-			"email": "${SIGNER_EMAIL}"
+			"roleName": "signer",
+			"name": "${SIGNER2_NAME}",
+			"email": "${SIGNER2_EMAIL}"
 		},
 		{
-			"recipientId": "84754526",
-			"role": "cc",
-			"tabs": [],
-			"name": "${CC_NAME}",
-			"email": "${CC_EMAIL}"
+			"roleName": "cc",
+			"name": "${CC2_NAME}",
+			"email": "${CC2_EMAIL}"
 		}],
 		"customFields": []
 	}]
@@ -99,20 +99,48 @@ catch {
 
 # Step 4. Create an envelope
 # Create your draft envelope
-$base = "DQoNCg0KCQkJCXRleHQgZG9jDQoNCg0KDQoNCg0KUk0gIwlSTSAjCVJNICMNCg0KDQoNClxzMVwNCg0KLy9hbmNoMSANCgkvL2FuY2gyDQoJCS8vYW5jaDM="
 $body = @"
 {
 	"documents": [{
-		"documentBase64": "$base",
+		"documentBase64": "$(Get-Content $doc1Base64)",
 		"documentId": "1",
 		"fileExtension": "txt",
 		"name": "NDA"
 	}],
 	"envelopeIdStamping": "true",
 	"emailSubject": "Please sign",
-	"cdse_mode": "true",
 	"recipients": {
-	},
+		"signers": [{
+			"name": "Multi Bulk Recipient::signer",
+			"email": "multiBulkRecipients-signer@docusign.com",
+			"roleName": "signer",
+			"routingOrder": "1",
+			"recipientId" : "1",
+			"recipientType" : "signer",
+			"delieveryMethod" : "Email",
+			"status": "created",
+			"tabs": {
+				"signHereTabs": [{
+					"documentId": "1",
+					"name": "SignHereTab",
+					"pageNumber": "1",
+					"recipientId": "1",
+					"tabLabel": "SignHereTab",
+					"xPosition": "200",
+					"yPosition": "160"
+				}]}
+			}],
+		"carbonCopies": [{
+			"name": "Multi Bulk Recipient::cc",
+			"email": "multiBulkRecipients-cc@docusign.com",
+			"roleName": "cc",
+			"routingOrder": "2",
+			"recipientId" : "2",
+			"recipientType" : "cc",
+			"delieveryMethod" : "Email",
+			"status": "created"
+			}]
+		},
 	"status": "created"
 }
 "@
@@ -182,64 +210,7 @@ catch {
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
 
-# Step 6. Add placeholder recipients
-# Add placeholder recipients.
-# Note: The name / email format used is:
-#		Name: Multi Bulk Recipients::{rolename}
-#		Email: MultiBulkRecipients-{rolename}@docusign.com
-$body = @"
-{
-	"signers": [{
-		"name": "Multi Bulk Recipient::cc",
-		"email": "multiBulkRecipients-cc@docusign.com",
-		"roleName": "cc",
-		"routingOrder": 1,
-		"status": "created",
-		"templateAccessCodeRequired": null,
-		"deliveryMethod": "email",
-		"recipientId": "84754526",
-		"recipientType": "signer"
-	},
-	{
-		"name": "Multi Bulk Recipient::signer",
-		"email": "multiBulkRecipients-signer@docusign.com",
-		"roleName": "signer",
-		"routingOrder": 1,
-		"status": "created",
-		"templateAccessCodeRequired": null,
-		"deliveryMethod": "email",
-		"recipientId": "39542944",
-		"recipientType": "signer"
-	}]
-}
-"@
-
-$uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes/$envelopeId/recipients"
-
-if ($continue -eq $true) {
-	try {
-		Write-Output @"
-
-        Adding placeholder recipients to the envelope
-"@
-		$response = Invoke-RestMethod -uri $uri -headers $headers -body $body -method POST
-		$response | ConvertTo-Json
-	}
-	catch {
-		Write-Output "Adding placeholder recipients has failed"
-		#On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error        #On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
-		$continue = $false
-		$int = 0
-		foreach ($header in $_.Exception.Response.Headers) {
-			if ($header -eq "X-DocuSign-TraceToken") { Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] }
-			$int++
-		}
-		Write-Output "Error : "$_.ErrorDetails.Message
-		Write-Output "Command : "$_.InvocationInfo.Line
-	}
-}
-
-# Step 7. Initiate bulk send
+# Step 6. Initiate bulk send
 # Initiate the Bulk Send
 # Target endpoint: {ACCOUNT_ID}/bulk_send_lists/{LIST_ID}/send
 $body = @"
@@ -274,7 +245,7 @@ if ($continue -eq $true) {
 	}
 }
 
-# Step 8. Confirm successful batch send
+# Step 7. Confirm successful batch send
 # Confirm successful batch send
 # Note: Depending on the number of Bulk Recipients, it may take some time for the Bulk Send to complete. For 2000 recipients this can take ~1 hour.
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/bulk_send_batch/$bulkBatchId"

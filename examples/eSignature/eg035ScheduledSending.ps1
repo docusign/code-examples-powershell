@@ -16,10 +16,9 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 # ***DS.snippet.0.start
 #  document 1 (pdf) has tag /sn1/
 #
-#  The envelope has two recipients.
+#  The envelope has one recipient.
 #  recipient 1 - signer
-#  The envelope will be sent first to the signer.
-#  After it is signed, a copy is sent to the cc person.
+#  The envelope will be scheduled to go to the signer.
 
 
 # temp files:

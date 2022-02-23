@@ -379,7 +379,7 @@ function startSignature {
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
             checkCC
-            powershell.exe .\examples\eSignature\eg036ScheduledSending.ps1
+            powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Delayed_Routing) {
             checkCC

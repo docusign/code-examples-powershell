@@ -34,7 +34,7 @@ Write-Output "The envelope has one document. Processing time will be about 15 se
 Write-Output "Results:"
 
 # Step 2. Create the envelope definition
-$ResumeDate = Read-Host "Please enter the date you want to scheduled this envelope (Resume Date) "
+$ResumeDate = Read-Host "Please enter the future date for when you want to schedule this envelope as YYYY-MM-DD: "
 
 @{
     emailSubject = "Please sign this document set";

@@ -38,7 +38,7 @@ Write-Output "Results:"
 # Step 2. Create the envelope definition
 $Signer2Email = Read-Host "Please enter the email address for the second signer: "
 $Signer2Name = Read-Host "Please enter the name for the second signer: "
-$DelayInHours= Read-Host "Please enter the time lapse (in hours): "
+$DelayInHours= Read-Host "Please enter the delay (in hours): "
 $DelayTimeSpan = New-TimeSpan -Hours $DelayInHours -Minutes 0
 
 @{

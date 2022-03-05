@@ -217,8 +217,10 @@ function startSignature {
             Pause_Signature_Workflow = 32;
             Unpause_Signature_Workflow = 33;
             Use_Conditional_Recipients = 34;
-            SMS_Delivery = 35;
-            Home = 36;
+            Scheduled_Sending = 35;
+            Delayed_Routing = 36;
+            SMS_Delivery = 37;
+            Home = 38;
         }
 
         $ApiExamplesView = $null;
@@ -258,6 +260,8 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Pause_Signature_Workflow)) Pause_Signature_Workflow"
             Write-Output "$([int][ApiExamples]::Unpause_Signature_Workflow)) Unpause_Signature_Workflow"
             Write-Output "$([int][ApiExamples]::Use_Conditional_Recipients)) Use_Conditional_Recipients"
+            Write-Output "$([int][ApiExamples]::Scheduled_Sending)) Scheduled_Sending"
+            Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
             Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
             Write-Output "$([int][ApiExamples]::Home)) Home"
             [int]$ApiExamplesView = Read-Host "Select the action"
@@ -373,9 +377,17 @@ function startSignature {
             checkCC
             powershell.exe .\examples\eSignature\eg034UseConditionalRecipients.ps1
         }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
+            checkCC
+            powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Delayed_Routing) {
+            checkCC
+            powershell.exe .\examples\eSignature\eg036DelayedRouting.ps1
+        }
         elseif ($ApiExamplesView -eq [ApiExamples]::SMS_Delivery) {
             checkCC
-            powershell.exe .\examples\eSignature\eg035SMSDelivery.ps1
+            powershell.exe .\examples\eSignature\eg037SMSDelivery.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Home)
     startLauncher

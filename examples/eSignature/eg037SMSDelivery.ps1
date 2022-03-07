@@ -71,37 +71,25 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
     recipients   = @{
         carbonCopies = @(
             @{
-                email        = $variables.CC_EMAIL;
+                phoneNumber = @{
+                    countryCode =  $SMSCCCountryPrefix;
+                    number = $SMSNumberCC;
+                }
                 name         = $variables.CC_NAME;
                 recipientId  = "2";
                 routingOrder = "2";
-                additionalNotifications =  @(
-                    @{
-                        secondaryDeliveryMethod =  "SMS";
-                        phoneNumber = @{
-                            countryCode =  $SMSCCCountryPrefix;
-                            number = $SMSNumberCC;
-                        }
-                    }
-                );
             };
         );
 
         signers      = @(
             @{
-                email        = $variables.SIGNER_EMAIL;
+                phoneNumber = @{
+                    countryCode =  $SMSCountryPrefix;
+                    number = $SMSNumber;
+                }
                 name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
-                additionalNotifications =  @(
-                    @{
-                        secondaryDeliveryMethod =  "SMS";
-                        phoneNumber = @{
-                            countryCode =  $SMSCountryPrefix;
-                            number = $SMSNumber;
-                        }
-                    }
-                );
                 tabs         = @{
                     signHereTabs = @(
                         @{

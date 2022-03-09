@@ -47,7 +47,6 @@ $ResumeDate = Read-Host "Please enter the future date for when you want to sched
         }; );
     workflow = @{
             scheduledSending =  @{
-            status =  "pending";
             rules =  @(
             @{
                 resumeDate =  $ResumeDate;

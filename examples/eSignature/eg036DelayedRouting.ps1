@@ -56,7 +56,6 @@ $DelayTimeSpan = New-TimeSpan -Hours $DelayInHours -Minutes 0
                 action = "pause_before";
                 triggerOnItem = "routing_order";
                 itemId = "2";
-                status = "pending";
                 delayedRouting = @{
                     rules = @(
                         @{

@@ -36,6 +36,7 @@ Write-Output "Results:"
 # Step 2. Create the envelope definition
 $ResumeDate = Read-Host "Please enter the future date for when you want to schedule this envelope as YYYY-MM-DD: "
 
+# Step 2 start
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -81,8 +82,10 @@ $ResumeDate = Read-Host "Please enter the future date for when you want to sched
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+# Step 2 end
 
 # Step 3. Create and send the envelope
+# Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -94,6 +97,7 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
+# Step 3 end
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId

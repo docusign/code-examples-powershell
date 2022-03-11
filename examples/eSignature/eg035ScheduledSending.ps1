@@ -13,7 +13,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
 #  document 1 (pdf) has tag /sn1/
 #
 #  The envelope has one recipient.
@@ -33,9 +32,9 @@ Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has one document. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
-# Step 2. Create the envelope definition
 $ResumeDate = Read-Host "Please enter the future date for when you want to schedule this envelope as YYYY-MM-DD: "
 
+# Create the envelope definition
 # Step 2 start
 @{
     emailSubject = "Please sign this document set";
@@ -84,7 +83,7 @@ $ResumeDate = Read-Host "Please enter the future date for when you want to sched
 } | ConvertTo-Json -Depth 32 > $requestData
 # Step 2 end
 
-# Step 3. Create and send the envelope
+# Create and send the envelope
 # Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -102,7 +101,6 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 
-# ***DS.snippet.0.end
 # Save the envelope id for use by other scripts
 Write-Output "EnvelopeId: $envelopeId"
 Write-Output $envelopeId > .\config\ENVELOPE_ID

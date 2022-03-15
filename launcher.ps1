@@ -93,7 +93,7 @@ function startLauncher {
         }
         do {
             Write-Output ''
-            Write-Output 'Choose API: '
+            Write-Output 'Choose an API: '
             Write-Output "$([int][listApi]::eSignature)) eSignature"
             Write-Output "$([int][listApi]::Rooms)) Rooms"
             Write-Output "$([int][listApi]::Click)) Click"
@@ -220,7 +220,7 @@ function startSignature {
             Scheduled_Sending = 35;
             Delayed_Routing = 36;
             SMS_Delivery = 37;
-            Home = 38;
+            Pick_An_API = 38;
         }
 
         $ApiExamplesView = $null;
@@ -263,7 +263,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Scheduled_Sending)) Scheduled_Sending"
             Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
             Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
-            Write-Output "$([int][ApiExamples]::Home)) Home"
+            Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_Api"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
 
@@ -389,7 +389,7 @@ function startSignature {
             checkCC
             powershell.exe .\examples\eSignature\eg037SMSDelivery.ps1
         }
-    } until ($ApiExamplesView -eq [ApiExamples]::Home)
+    } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher
 }
 
@@ -405,7 +405,7 @@ function startRooms {
             CreateFormGroup = 7;
             AccessFormGroup = 8;
             AssignFormGroup = 9;
-            Home = 10;
+            Pick_An_API = 10;
         }
         $listRoomExamplesView = $null;
         do {
@@ -420,7 +420,7 @@ function startRooms {
             Write-Output "$([int][listRoomExamples]::CreateFormGroup)) Create a form group"
             Write-Output "$([int][listRoomExamples]::AccessFormGroup)) Grant office access to a form group"
             Write-Output "$([int][listRoomExamples]::AssignFormGroup)) Assign a form to a form group"
-            Write-Output "$([int][listRoomExamples]::Home)) Home"
+            Write-Output "$([int][listRoomExamples]::Pick_An_API)) Pick_An_API"
             [int]$listRoomExamplesView = Read-Host "Select the action"
         } while (-not [listRoomExamples]::IsDefined([listRoomExamples], $listRoomExamplesView));
 
@@ -451,7 +451,7 @@ function startRooms {
         elseif ($listRoomExamplesView -eq [listRoomExamples]::AssignFormGroup) {
             powershell.exe -Command .\examples\Rooms\eg009AssignFormGroup.ps1
         }
-    } until ($listRoomExamplesView -eq [listRoomExamples]::Home)
+    } until ($listRoomExamplesView -eq [listRoomExamples]::Pick_An_API)
     startLauncher
 }
 
@@ -463,7 +463,7 @@ function startClick {
             clickwrapVersioning = 3;
             retrieveClickwraps = 4;
             getClickwrapResponses = 5;
-            Home = 6;
+            Pick_An_API = 6;
         }
         $listClickExamplesView = $null;
         do {
@@ -474,7 +474,7 @@ function startClick {
             Write-Output "$([int][listClickExamples]::clickwrapVersioning)) clickwrap Versioning"
             Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve clickwraps"
             Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get clickwrap Responses"
-            Write-Output "$([int][listClickExamples]::Home)) Home"
+            Write-Output "$([int][listClickExamples]::Pick_An_API)) Pick_An_API"
             [int]$listClickExamplesView = Read-Host "Select the action"
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
 
@@ -493,7 +493,7 @@ function startClick {
         elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
             powershell.exe -Command .\examples\Click\eg005GetClickwrapResponses.ps1
         }
-    } until ($listClickExamplesView -eq [listClickExamples]::Home)
+    } until ($listClickExamplesView -eq [listClickExamples]::Pick_An_API)
     startLauncher
 }
 
@@ -501,21 +501,21 @@ function startMonitor {
     do {
         Enum listMonitorExamples {
             getMonitoringData = 1;
-            Home = 2;
+            Pick_An_API = 2;
         }
         $listMonitorExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listMonitorExamples]::getMonitoringData)) Get Monitoring Data"
-            Write-Output "$([int][listMonitorExamples]::Home)) Home"
+            Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMonitorExamplesView = Read-Host "Select the action"
         } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));
 
         if ($listMonitorExamplesView -eq [listMonitorExamples]::getMonitoringData) {
             powershell.exe -Command .\examples\Monitor\eg001getMonitoringData.ps1
         }
-    } until ($listMonitorExamplesView -eq [listMonitorExamples]::Home)
+    } until ($listMonitorExamplesView -eq [listMonitorExamples]::Pick_An_API)
     startLauncher
 }
 
@@ -527,7 +527,7 @@ function startAdmin {
             bulkExportUserData = 3;
             addUsersViaBulkImport = 4;
             auditUsers = 5
-            Home = 6;
+            Pick_An_API = 6;
         }
         $listAdminExamplesView = $null;
         do {
@@ -538,7 +538,7 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
-            Write-Output "$([int][listAdminExamples]::Home)) Home"
+            Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
 
@@ -564,7 +564,7 @@ function startAdmin {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg005AuditUsers.ps1
         }
-    } until ($listAdminExamplesView -eq [listAdminExamples]::Home)
+    } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher
 }
 

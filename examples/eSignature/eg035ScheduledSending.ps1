@@ -32,9 +32,9 @@ Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has one document. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
+# Step 2. Create the envelope definition
 $ResumeDate = Read-Host "Please enter the future date for when you want to schedule this envelope as YYYY-MM-DD: "
 
-# Create the envelope definition
 # Step 2 start
 @{
     emailSubject = "Please sign this document set";
@@ -83,7 +83,7 @@ $ResumeDate = Read-Host "Please enter the future date for when you want to sched
 } | ConvertTo-Json -Depth 32 > $requestData
 # Step 2 end
 
-# Create and send the envelope
+# Step 3. Create and send the envelope
 # Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `

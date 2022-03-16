@@ -37,15 +37,11 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
-Write-Output "Sending the envelope request to DocuSign..."
-Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
-Write-Output "Results:"
-
 # Step 2. Create the envelope definition
-$SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer"
-$SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
-$SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient"
-$SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient"
+$SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer: "
+$SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer: "
+$SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient: "
+$SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient: "
 
 @{
     emailSubject = "Please sign this document set";
@@ -111,6 +107,11 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+
+Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
+Write-Output "Results:"
+Write-Output $requestData
 
 # Step 3. Create and send the envelope
 Invoke-RestMethod `

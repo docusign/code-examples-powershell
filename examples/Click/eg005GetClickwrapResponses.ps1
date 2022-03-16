@@ -22,4 +22,5 @@ $headers.add("Content-Type", "application/json")
 # b) Display the returned JSON structure of the responses
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method GET
+Write-Output "Response: "
 $result.Content

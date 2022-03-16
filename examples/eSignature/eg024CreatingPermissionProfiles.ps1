@@ -8,7 +8,7 @@ $oAuthAccessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
-$PROFILE_NAME = Read-Host "Please enter a new permission profile name"
+$PROFILE_NAME = Read-Host "Please enter a new permission profile name: "
 $PROFILE_NAME > .\config\PROFILE_NAME
 
 # Construct your API headers

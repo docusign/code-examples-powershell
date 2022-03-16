@@ -53,4 +53,5 @@ $body = @"
 # b) Display the returned JSON structure of the versioned clickwrap
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/versions"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -body $body -Method POST
+Write-Output "Response: "
 $result.Content

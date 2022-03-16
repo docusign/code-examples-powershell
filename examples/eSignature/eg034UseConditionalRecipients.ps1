@@ -28,6 +28,9 @@ $SIGNER_WHEN_CHECKED_NAME = $variables.CC_NAME
 $SIGNER_NOT_CHECKED_EMAIL = $variables.SIGNER_NOT_CHECKED_EMAIL
 $SIGNER_NOT_CHECKED_NAME = $variables.SIGNER_NOT_CHECKED_NAME
 
+Write-Output "SIGNER_NOT_CHECKED_EMAIL is $SIGNER_NOT_CHECKED_EMAIL"
+Write-Output "SIGNER_NOT_CHECKED_NAME is $SIGNER_NOT_CHECKED_NAME"
+
 # Step 2. Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
@@ -196,6 +199,8 @@ $response = New-TemporaryFile
 
 # Step 4. Call the eSignature API
 try {
+    Write-Output "Request: "
+    Write-Output $requestData
     $uri = "https://demo.docusign.net/restapi/v2.1/accounts/${APIaccountId}/envelopes"
     Invoke-RestMethod `
         -Uri $uri `

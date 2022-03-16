@@ -29,4 +29,4 @@ $(Invoke-RestMethod `
   } `
     -Body @{ "from_date" = ${fromDate} }).envelopes
 
-Write-Output "Done..."
+Write-Output "Done."

@@ -263,7 +263,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Scheduled_Sending)) Scheduled_Sending"
             Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
             Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
-            Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_Api"
+            Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
 

@@ -13,7 +13,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
 #  document 1 (pdf) has tag /sn1/
 #
 #  The envelope has one recipient.
@@ -102,7 +101,6 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 
-# ***DS.snippet.0.end
 # Save the envelope id for use by other scripts
 Write-Output "EnvelopeId: $envelopeId"
 Write-Output $envelopeId > .\config\ENVELOPE_ID

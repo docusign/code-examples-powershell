@@ -25,7 +25,6 @@ $body = @"
    "displaySettings": {
       "displayName": "Terms of Service v2",
       "mustRead": true,
-      "mustView": false,
       "requireAccept": false,
       "downloadable": false,
       "sendToEmail": false,

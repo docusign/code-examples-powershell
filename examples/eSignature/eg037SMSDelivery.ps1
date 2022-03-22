@@ -13,7 +13,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 #    the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
 #  document 3 (pdf) has tag /sn1/
@@ -41,12 +40,13 @@ Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
-# Step 2. Create the envelope definition
-$SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer"
-$SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
-$SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient"
-$SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient"
+# Create the envelope definition
+$SMSCountryPrefix = Read-Host "Enter signer phone country code (U.S. is 1): "
+$SMSNumber = Read-Host "Enter signer phone number: "
+$SMSCCCountryPrefix = Read-Host "Enter CC phone country code (U.S. is 1): "
+$SMSNumberCC = Read-Host "Enter CC phone number: "
 
+# Step 2 start
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -111,8 +111,10 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+# Step 2 end
 
-# Step 3. Create and send the envelope
+# Create and send the envelope
+# Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -124,11 +126,11 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
+# Step 3 end
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 
-# ***DS.snippet.0.end
 # Save the envelope id for use by other scripts
 Write-Output "EnvelopeId: $envelopeId"
 Write-Output $envelopeId > .\config\ENVELOPE_ID

@@ -1,9 +1,8 @@
 # https://developers.docusign.com/docs/esign-rest-api/how-to/require-access-code-recipient/
 
-# Get required environment variables from .\config\settings.json file
-$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-$SIGNER_EMAIL = $variables.SIGNER_EMAIL
-$SIGNER_NAME = $variables.SIGNER_NAME
+# Get email and name from the user
+$SIGNER_EMAIL = Read-Host "Please enter a signer email address: "
+$SIGNER_NAME = Read-Host "Please enter a signer name: "
 
 # Get the envelope's custom field data
 # This script uses the envelope ID stored in ../envelope_id.

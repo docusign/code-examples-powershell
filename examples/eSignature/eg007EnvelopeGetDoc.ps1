@@ -22,7 +22,7 @@ if (Test-Path .\config\ENVELOPE_ID) {
     $envelopeId = Get-Content .\config\ENVELOPE_ID
 }
 else {
-    Write-Output "An envelope id is needed. Fix: execute code example 2 - Signing_Via_Email"
+    Write-Output "PROBLEM: An envelope id is needed. Fix: execute code example 2 - Signing_Via_Email"
     exit 1
 }
 
@@ -40,7 +40,7 @@ Enum listDocs {
 
 $listDocsView = $null;
 do {
-    Write-Output 'Select the initial sending view: '
+    Write-Output 'Select a document or document set to download:'
     Write-Output "$([int][listDocs]::Document1) - Document 1"
     Write-Output "$([int][listDocs]::Document2) - Document 2"
     Write-Output "$([int][listDocs]::Document3) - Document 3"

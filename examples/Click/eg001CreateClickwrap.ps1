@@ -18,7 +18,6 @@ $body = @"
     "format": "modal",
     "hasAccept": true,
     "mustRead": true,
-    "mustView": true,
     "requireAccept": true,
     "size": "medium",
     "documentDisplay": "document"

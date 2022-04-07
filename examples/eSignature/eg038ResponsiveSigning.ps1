@@ -27,6 +27,13 @@ $doc_html = New-TemporaryFile
 # Fetch doc
 [IO.File]::ReadAllText(".\demo_documents\order_form.html") > $doc_html
 
+# Insert inner HTML
+
+((Get-Content $doc_html) `
+    -replace '/sn1/', '<ds-signature data-ds-role="Signer"/>' `
+    -replace '/l1q/', '<input data-ds-type="number"/>' `
+    -replace '/l2q/', '<input data-ds-type="number"/>') | Set-Content $doc_html
+
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
@@ -49,22 +56,7 @@ Write-Output "Sending the envelope request to DocuSign..."
                 recipientId  = "1";
                 routingOrder = "1";
                 clientUserId = "1000";
-                tabs         = @{
-                    signHereTabs = @(
-                        @{
-                            stampType   = "signature";
-                            name        = "SignHere";
-                            tabLabel    = "signatureTab";
-                            scaleValue  = "1";
-                            optional    = "false";
-                            documentId  = "1";
-                            recipientId = "1";
-                            pageNumber  = "1";
-                            xPosition   = "140";
-                            yPosition   = "355";
-                        };
-                    );
-                };
+                roleName     = "Signer";
             };
         );
         carbonCopies = @(

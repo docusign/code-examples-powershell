@@ -2,6 +2,8 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
+$clickwrapName = Read-Host "Please input a name for the clickwrap: "
+
 # Step 2. Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
@@ -30,7 +32,7 @@ $body = @"
       "order": 0
     }
   ],
-  "name": "Terms of Service",
+  "name": "$clickwrapName",
   "requireReacceptance": true
 }
 "@

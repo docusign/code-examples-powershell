@@ -8,8 +8,8 @@ $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
-$BeginDate = Read-Host "Please enter the beginning date after which you want to query results as YYYY-MM-DD: "
-$EndDate = Read-Host "Please enter the ending date before which you want to query results as YYYY-MM-DD: "
+$beginDate = Read-Host "Please enter the beginning date after which you want to query results as YYYY-MM-DD: "
+$endDate = Read-Host "Please enter the ending date before which you want to query results as YYYY-MM-DD: "
 
 # You must provide an access token that impersonates a user with permissions to access the Monitor API endpoint
 if (($accessToken -eq "") -or ($null -eq $accessToken)) {
@@ -23,8 +23,8 @@ $body = @"
   "filters": [
     {
       "FilterName": "Time",
-      "BeginTime": "$BeginDate",
-      "EndTime": "$EndDate"
+      "BeginTime": "$beginDate",
+      "EndTime": "$endDate"
     },
     {
       "FilterName": "Has",

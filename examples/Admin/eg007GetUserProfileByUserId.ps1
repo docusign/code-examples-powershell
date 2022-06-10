@@ -1,6 +1,5 @@
 # Get required environment variables from .\config\settings.json file
 $accessToken = Get-Content .\config\ds_access_token.txt
-$accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Construct your API headers
 # Step 2 start
@@ -21,7 +20,7 @@ if (!$variables.ORGANIZATION_ID) {
 $base_path = "https://api-d.docusign.net/management"
 $organizationId = $variables.ORGANIZATION_ID
 
-$userId = Read-Host "Enter an ID(GUID) of the user"
+$userId = Read-Host "Enter the user's User ID"
 
 $result = ""
 # Call the DocuSign Admin API

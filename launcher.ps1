@@ -532,8 +532,10 @@ function startAdmin {
             createActiveCLMEsignUser = 2;
             bulkExportUserData = 3;
             addUsersViaBulkImport = 4;
-            auditUsers = 5
-            Pick_An_API = 6;
+            auditUsers = 5;
+            getUserDSProfilesByEmail = 6;
+            getUserProfileByUserId = 7;
+            Pick_An_API = 8;
         }
         $listAdminExamplesView = $null;
         do {
@@ -544,6 +546,8 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
+            Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's DocuSign profile using an email address"
+            Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -569,6 +573,14 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::auditUsers) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg005AuditUsers.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserDSProfilesByEmail) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg006GetUserProfileByEmail.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserProfileByUserId) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg007GetUserProfileByUserId.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

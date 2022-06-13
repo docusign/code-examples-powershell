@@ -35,7 +35,7 @@ $body = @"
   "aggregations": [
     {
       "aggregationName": "Raw",
-      "limit": "1",
+      "limit": "100",
       "orderby": [
         "Timestamp, desc"
       ]

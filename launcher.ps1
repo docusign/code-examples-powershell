@@ -515,7 +515,7 @@ function startMonitor {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listMonitorExamples]::getMonitoringData)) Get Monitoring Data"
-            Write-Output "$([int][listMonitorExamples]::postWebQuery)) Web query endpoint"
+            Write-Output "$([int][listMonitorExamples]::postWebQuery)) Query Monitoring Data with Filters"
             Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMonitorExamplesView = Read-Host "Select the action"
         } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));

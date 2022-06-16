@@ -507,19 +507,23 @@ function startMonitor {
     do {
         Enum listMonitorExamples {
             getMonitoringData = 1;
-            Pick_An_API = 2;
+            postWebQuery = 2;
+            Pick_An_API = 3;
         }
         $listMonitorExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listMonitorExamples]::getMonitoringData)) Get Monitoring Data"
+            Write-Output "$([int][listMonitorExamples]::postWebQuery)) Query Monitoring Data with Filters"
             Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMonitorExamplesView = Read-Host "Select the action"
         } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));
 
         if ($listMonitorExamplesView -eq [listMonitorExamples]::getMonitoringData) {
             powershell.exe -Command .\examples\Monitor\eg001getMonitoringData.ps1
+        } elseif ($listMonitorExamplesView -eq [listMonitorExamples]::postWebQuery) {
+            powershell.exe -Command .\examples\Monitor\eg002WebQueryEndpoint.ps1
         }
     } until ($listMonitorExamplesView -eq [listMonitorExamples]::Pick_An_API)
     startLauncher

@@ -539,7 +539,9 @@ function startAdmin {
             auditUsers = 5;
             getUserDSProfilesByEmail = 6;
             getUserProfileByUserId = 7;
-            Pick_An_API = 8;
+            updateUserProductPermissionProfile = 8;
+            deleteUserProductPermissionProfile = 9;
+            Pick_An_API = 10;
         }
         $listAdminExamplesView = $null;
         do {
@@ -552,6 +554,8 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
             Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's DocuSign profile using an email address"
             Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
+            Write-Output "$([int][listAdminExamples]::updateUserProductPermissionProfile)) Update user product permission profiles using an email address"
+            Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -585,6 +589,14 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserProfileByUserId) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg007GetUserProfileByUserId.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::updateUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg008UpdateUserProductPermissionProfile.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

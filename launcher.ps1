@@ -14,9 +14,15 @@ $config = Get-Content $configFile -Raw | ConvertFrom-Json
 function checkCC {
 
     # Fill in Quickstart Carbon Copy config values
-    if ($config.CC_EMAIL -eq "{CC_EMAIL}" ) {
+    if (($config.CC_EMAIL -eq "{CC_EMAIL}" ) -or ($config.CC_EMAIL -eq "" )) {
         Write-Output "It looks like this is your first time running the launcher from Quickstart. "
         $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
+        if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.CC_EMAIL, 
+        "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+        "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
+            Write-Output ("Invalid email address - run again and try again");
+            exit 0;
+        }
         $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
         Write-Output ""
         write-output $config | ConvertTo-Json | Set-Content $configFile

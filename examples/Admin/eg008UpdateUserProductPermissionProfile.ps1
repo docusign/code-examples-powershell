@@ -11,8 +11,20 @@ $organizationId=$variables.ORGANIZATION_ID
 # Check that we have an email address of created user
 if (Test-Path $emailAddressFile) {
     $emailAddress = Get-Content $emailAddressFile
-  }
-  else {
+
+    try {
+      $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+      $headers.add("Authorization", "Bearer $accessToken")
+      $headers.add("Content-Type", "application/json")
+
+      $uri = "${base_path}/v2.1/organizations/${organizationId}/users/dsprofile?email=${emailAddress}"
+      $response = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method GET
+    } catch {
+      Write-Output "The user with stored email address is not present in the account."
+      Write-Output "Please run example 2: 'Create an active CLM and ESign user' before running this code example"
+      exit 1
+    }
+} else {
     Write-Output "Please run example 2: 'Create an active CLM and ESign user' before running this code example"
     exit 1
 }
@@ -24,17 +36,20 @@ $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 
 try {
-  # Display the JSON response
+  # Get all permission profiles
   Write-Output "Getting permission profiles..."
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/permission_profiles"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
-  
-  Write-Output ""
-  Write-Output "Response:"
-  $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 4
-  Write-Output ""
-
   $productProfiles = $($response.Content | ConvertFrom-Json).product_permission_profiles
+
+  # Get and showcase permission profiles that are currently added to the user
+  $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/permission_profiles/users?email=${emailAddress}"
+  $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
+  
+  Write-Output "Response:"
+  Write-Output ""
+  Write-Output $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 5
+  Write-Output ""
 }
 catch {
   Write-Output "Error:"

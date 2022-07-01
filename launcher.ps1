@@ -1,11 +1,18 @@
 $ErrorActionPreference = "Stop" # force stop on failure
 
 $configFile = ".\config\settings.json"
+$emailAddressFile = ".\config\ESIGN_CLM_USER_EMAIL"
 
 if ((Test-Path $configFile) -eq $False) {
     Write-Output "Error: "
     Write-Output "First copy the file '.\config\settings.example.json' to '$configFile'."
     Write-Output "Next, fill in your API credentials, Signer name and email to continue."
+}
+
+# Check that we have an email address stored after running the 2 Admin code example
+# in case the file was created before - delete it
+if (Test-Path $emailAddressFile) {
+    Remove-Item $emailAddressFile
 }
 
 # Get required environment variables from .\config\settings.json file

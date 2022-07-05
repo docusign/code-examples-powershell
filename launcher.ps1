@@ -555,7 +555,7 @@ function startAdmin {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listAdminExamples]::createNewUserWithActiveStatus)) Create a new user with active status"
-            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create an active CLM and ESign user"
+            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create a new active CLM and eSignature user"
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"

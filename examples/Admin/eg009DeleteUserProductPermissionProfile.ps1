@@ -99,7 +99,7 @@ foreach ($productProfile in $productProfiles) {
 if ($null -eq $userHasProductPermissions) {
   Write-Output ""
   Write-Output "This user was already removed from this product."
-  Write-Output "Please, try another product or run example 2: 'Create an active CLM and ESign user' to create a user with both product accesses."
+  Write-Output "Please, try another product or run example 2: 'Create a new active CLM and eSignature user' to create a user with both product accesses."
   Write-Output ""
 } else {
   # Construct the request body

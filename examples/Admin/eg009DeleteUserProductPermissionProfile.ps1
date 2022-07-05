@@ -21,11 +21,11 @@ if (Test-Path $emailAddressFile) {
     $response = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method GET
   } catch {
     Write-Output "The user with stored email address is not present in the account."
-    Write-Output "Please run example 2: 'Create an active CLM and ESign user' before running this code example"
+    Write-Output "Please run example 2: 'Create a new active CLM and eSignature user' before running this code example"
     exit 1
   }
 } else {
-  Write-Output "Please run example 2: 'Create an active CLM and ESign user' before running this code example"
+  Write-Output "Please run example 2: 'Create a new active CLM and eSignature user' before running this code example"
   exit 1
 }
 

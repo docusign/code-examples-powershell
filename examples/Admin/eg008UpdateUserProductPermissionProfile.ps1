@@ -104,7 +104,7 @@ if ($listProductChoicesView -eq [listProductChoices]::CLM) {
     }
 
     do {
-        [int]$selection = Read-Host 'Select a CLM permission profile to add'
+        [int]$selection = Read-Host 'Select a CLM permission profile to update'
     } while ($selection -gt $clmPermissionProfiles.count -or $selection -lt 1);
     
     $permissionProfileId = $menu.Item($selection)
@@ -119,7 +119,7 @@ if ($listProductChoicesView -eq [listProductChoices]::CLM) {
     }
 
     do {
-        [int]$selection = Read-Host 'Select an eSignature permission profile to add'
+        [int]$selection = Read-Host 'Select an eSignature permission profile to update'
     } while ($selection -gt $esignPermissionProfiles.count -or $selection -lt 1);
     
     $permissionProfileId = $menu.Item($selection)

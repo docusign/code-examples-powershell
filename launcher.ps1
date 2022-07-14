@@ -1,11 +1,18 @@
 $ErrorActionPreference = "Stop" # force stop on failure
 
 $configFile = ".\config\settings.json"
+$emailAddressFile = ".\config\ESIGN_CLM_USER_EMAIL"
 
 if ((Test-Path $configFile) -eq $False) {
     Write-Output "Error: "
     Write-Output "First copy the file '.\config\settings.example.json' to '$configFile'."
     Write-Output "Next, fill in your API credentials, Signer name and email to continue."
+}
+
+# Check that we have an email address stored after running the 2 Admin code example
+# in case the file was created before - delete it
+if (Test-Path $emailAddressFile) {
+    Remove-Item $emailAddressFile
 }
 
 # Get required environment variables from .\config\settings.json file
@@ -545,19 +552,23 @@ function startAdmin {
             auditUsers = 5;
             getUserDSProfilesByEmail = 6;
             getUserProfileByUserId = 7;
-            Pick_An_API = 8;
+            updateUserProductPermissionProfile = 8;
+            deleteUserProductPermissionProfile = 9;
+            Pick_An_API = 10;
         }
         $listAdminExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listAdminExamples]::createNewUserWithActiveStatus)) Create a new user with active status"
-            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create an active CLM and ESign user"
+            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create a new active CLM and eSignature user"
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
             Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's DocuSign profile using an email address"
             Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
+            Write-Output "$([int][listAdminExamples]::updateUserProductPermissionProfile)) Update user product permission profiles using an email address"
+            Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -591,6 +602,14 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserProfileByUserId) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg007GetUserProfileByUserId.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::updateUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg008UpdateUserProductPermissionProfile.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

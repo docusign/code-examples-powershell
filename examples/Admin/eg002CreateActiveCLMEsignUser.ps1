@@ -159,7 +159,11 @@ try {
   Write-Output "Response:"
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/users/"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
-  $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 4
+  $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 5
+
+  # Store user email to the file for future reference
+  $($response.Content | ConvertFrom-Json).email > .\config\ESIGN_CLM_USER_EMAIL
+
   Write-Output "Done"
 }
 catch {

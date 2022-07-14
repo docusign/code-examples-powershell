@@ -1,11 +1,18 @@
 $ErrorActionPreference = "Stop" # force stop on failure
 
 $configFile = ".\config\settings.json"
+$emailAddressFile = ".\config\ESIGN_CLM_USER_EMAIL"
 
 if ((Test-Path $configFile) -eq $False) {
     Write-Output "Error: "
     Write-Output "First copy the file '.\config\settings.example.json' to '$configFile'."
     Write-Output "Next, fill in your API credentials, Signer name and email to continue."
+}
+
+# Check that we have an email address stored after running the 2 Admin code example
+# in case the file was created before - delete it
+if (Test-Path $emailAddressFile) {
+    Remove-Item $emailAddressFile
 }
 
 # Get required environment variables from .\config\settings.json file
@@ -14,9 +21,15 @@ $config = Get-Content $configFile -Raw | ConvertFrom-Json
 function checkCC {
 
     # Fill in Quickstart Carbon Copy config values
-    if ($config.CC_EMAIL -eq "{CC_EMAIL}" ) {
+    if (($config.CC_EMAIL -eq "{CC_EMAIL}" ) -or ($config.CC_EMAIL -eq "" )) {
         Write-Output "It looks like this is your first time running the launcher from Quickstart. "
         $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
+        if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.CC_EMAIL, 
+        "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+        "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
+            Write-Output ("Invalid email address - run again and try again");
+            exit 0;
+        }
         $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
         Write-Output ""
         write-output $config | ConvertTo-Json | Set-Content $configFile
@@ -539,19 +552,23 @@ function startAdmin {
             auditUsers = 5;
             getUserDSProfilesByEmail = 6;
             getUserProfileByUserId = 7;
-            Pick_An_API = 8;
+            updateUserProductPermissionProfile = 8;
+            deleteUserProductPermissionProfile = 9;
+            Pick_An_API = 10;
         }
         $listAdminExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listAdminExamples]::createNewUserWithActiveStatus)) Create a new user with active status"
-            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create an active CLM and ESign user"
+            Write-Output "$([int][listAdminExamples]::createActiveCLMEsignUser)) Create a new active CLM and eSignature user"
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
             Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's DocuSign profile using an email address"
             Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
+            Write-Output "$([int][listAdminExamples]::updateUserProductPermissionProfile)) Update user product permission profiles using an email address"
+            Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -585,6 +602,14 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserProfileByUserId) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg007GetUserProfileByUserId.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::updateUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg008UpdateUserProductPermissionProfile.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserProductPermissionProfile) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

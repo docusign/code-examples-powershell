@@ -30,10 +30,12 @@ if (Test-Path $emailAddressFile) {
 }
 
 # Construct your API headers
+# Step 2 start
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+# Step 2 end
 
 try {
   # Display the JSON response
@@ -103,6 +105,7 @@ if ($null -eq $userHasProductPermissions) {
   Write-Output ""
 } else {
   # Construct the request body
+  # Step 3 start
   $body = @"
   {
       "user_email": "$emailAddress",
@@ -111,12 +114,15 @@ if ($null -eq $userHasProductPermissions) {
       ]
   }
 "@
+# Step 3 end
 
   try {
     # Display the JSON response
     Write-Output "Response:"
+    # Step 4 start
     $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/users"
     Invoke-WebRequest -uri $uri -headers $headers -body $body -method DELETE
+    # Step 4 end
     
     Write-Output "Product permission profile has been deleted."
     Write-Output ""

@@ -234,7 +234,8 @@ function startSignature {
             Delayed_Routing = 36;
             SMS_Delivery = 37;
             Create_Signable_HTML_document = 38;
-            Pick_An_API = 39;
+            Signing_In_Person = 39;
+            Pick_An_API = 40;
         }
 
         $ApiExamplesView = $null;
@@ -278,6 +279,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
             Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
             Write-Output "$([int][ApiExamples]::Create_Signable_HTML_document)) Create_Signable_HTML_document"
+            Write-Output "$([int][ApiExamples]::Signing_In_Person)) Signing_In_Person"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -407,6 +409,10 @@ function startSignature {
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Signable_HTML_document) {
             checkCC
             powershell.exe .\examples\eSignature\eg038ResponsiveSigning.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_In_Person) {
+            checkCC
+            powershell.exe .\examples\eSignature\eg039SigningInPerson.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher

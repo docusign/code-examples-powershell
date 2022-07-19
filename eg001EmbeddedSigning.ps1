@@ -1,19 +1,31 @@
 $apiUri = "https://demo.docusign.net/restapi"
+$configPath = ".\config\settings.json"
+$tokenPath = ".\config\ds_access_token.txt"
+$accountIdPath = ".\config\API_ACCOUNT_ID"
+
+# Check the folder structure to switch paths for Quick ACG
+if ((Test-Path $configPath) -eq $false) {
+    $configPath = "..\config\settings.json"
+}
+if ((Test-Path $tokenPath) -eq $false) {
+    $tokenPath = "..\config\ds_access_token.txt"
+}
+if ((Test-Path $accountIdPath) -eq $false) {
+    $accountIdPath = "..\config\API_ACCOUNT_ID"
+}
 
 # Use embedded signing
 
 # Get required variables from .\config\settings.json file
-$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-
-
+$variables = Get-Content $configPath -Raw | ConvertFrom-Json
 
 # 1. Obtain your OAuth token
-$accessToken = Get-Content .\config\ds_access_token.txt
+$accessToken = Get-Content $tokenPath
 
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
 #    the drop down on the upper right corner of the screen by your picture or
 #    the default picture.
-$accountID = Get-Content .\config\API_ACCOUNT_ID
+$accountID = Get-Content $accountIdPath
 
 # Step 2. Create the envelope definition.
 # The signer recipient includes a clientUserId setting
@@ -28,8 +40,15 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
+$docPath = ".\demo_documents\World_Wide_Corp_lorem.pdf"
+
+# Check the folder structure to switch paths for Quick ACG
+if ((Test-Path $docPath) -eq $false) {
+    $docPath = "..\demo_documents\World_Wide_Corp_lorem.pdf"
+}
+
 # Fetch doc and encode
-[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path $docPath))) > $doc1Base64
 
 Write-Output "Sending the envelope request to DocuSign..."
 

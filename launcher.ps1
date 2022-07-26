@@ -279,7 +279,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
             Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
             Write-Output "$([int][ApiExamples]::Create_Signable_HTML_document)) Create_Signable_HTML_document"
-            Write-Output "$([int][ApiExamples]::Signing_In_Person)) Signing_In_Person"
+            Write-Output "$([int][ApiExamples]::Signing_In_Person)) In_Person_Signing"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));

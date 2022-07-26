@@ -25,7 +25,6 @@ $docBase64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
-$hostName = Read-Host "Please enter the name of the host"
 $signerName = Read-Host "Please enter the name of the in person signer"
 
 # Get the current user email
@@ -40,6 +39,7 @@ Invoke-RestMethod `
     -OutFile $response
 
 $hostEmail = $(Get-Content $response | ConvertFrom-Json).email
+$hostName = $(Get-Content $response | ConvertFrom-Json).name
 
 Write-Output "Sending the envelope request to DocuSign..."
 

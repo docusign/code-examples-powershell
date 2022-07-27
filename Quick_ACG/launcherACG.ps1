@@ -40,7 +40,7 @@ function startSignature {
         do {
             Write-Output ""
             Write-Output 'Pick the next action: '
-            Write-Output "$([int][MenuOptions]::Embedded_Signing)) Rerun the embeddd signing code example"
+            Write-Output "$([int][MenuOptions]::Embedded_Signing)) Rerun the embedded signing code example"
             Write-Output "$([int][MenuOptions]::Exit)) Exit"
             [int]$MenuOptionsView = Read-Host "Pick the next action"
         } while (-not [MenuOptions]::IsDefined([MenuOptions], $MenuOptionsView));

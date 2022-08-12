@@ -36,6 +36,7 @@ Enum listDocs {
     CertificateOfCompletion = 4;
     DocumentsCombinedTogether = 5;
     ZIPfile = 6;
+    PDFPortfolio = 7;
 }
 
 $listDocsView = $null;
@@ -47,6 +48,7 @@ do {
     Write-Output "$([int][listDocs]::CertificateOfCompletion) - Certificate of Completion"
     Write-Output "$([int][listDocs]::DocumentsCombinedTogether) - Documents combined together"
     Write-Output "$([int][listDocs]::ZIPfile) - ZIP file"
+    Write-Output "$([int][listDocs]::PDFPortfolio) - PDF Portfolio"
     [int]$listDocsView = Read-Host "Please make a selection"
 } while (-not [listDocs]::IsDefined([listDocs], $listDocsView));
 
@@ -61,6 +63,10 @@ elseif ($listDocsView -eq [listDocs]::DocumentsCombinedTogether) {
 elseif ($listDocsView -eq [listDocs]::ZIPfile) {
     $docChoice = "archive"
     $outputFileExtension = "zip"
+}
+elseif ($listDocsView -eq [listDocs]::PDFPortfolio) {
+    $docChoice = "portfolio"
+    $outputFileExtension = "pdf"
 }
 else {
     $docChoice = $listDocsView

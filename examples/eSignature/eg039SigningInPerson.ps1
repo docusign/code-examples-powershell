@@ -10,7 +10,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Step 2. Create the envelope definition.
-# The signer recipient includes a clientUserId setting
 #
 #  document 1 (PDF) has tag /sn1/
 #  recipient 1 - signer
@@ -62,7 +61,6 @@ Write-Output "Sending the envelope request to DocuSign..."
                 signerName   = $signerName;
                 recipientId  = "1";
                 routingOrder = "1";
-                clientUserId = "1000";
                 tabs         = @{
                     signHereTabs = @(
                         @{
@@ -111,7 +109,6 @@ $json = [ordered]@{
     'authenticationMethod' = 'none';
     'email'                = $hostEmail;
     'userName'             = $hostName;
-    'clientUserId'         = 1000
 } | ConvertTo-Json -Compress
 
 

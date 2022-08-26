@@ -1,7 +1,7 @@
 $apiUri = "https://demo.docusign.net/restapi"
 $authorizationEndpoint = "https://account-d.docusign.com/oauth"
 
-# Step 1: Obtain your OAuth token
+# Obtain your OAuth token
 # Note: Substitute these values with your own
 $accessToken = Get-Content .\config\ds_access_token.txt
 
@@ -9,7 +9,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Step 2. Create the envelope definition.
+# Create the envelope definition.
 #
 #  document 1 (PDF) has tag /sn1/
 #  recipient 1 - signer
@@ -79,7 +79,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 } | ConvertTo-Json -Depth 32 > $requestData
 # Step 2 end
 
-# Step 3. Call DocuSign to create the envelope
+# Call DocuSign to create the envelope
 # Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -92,13 +92,13 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
-# Step 3 end
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
+# Step 3 end
 
-# Step 4. Create a recipient view definition
+# Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
@@ -118,7 +118,7 @@ $json = [ordered]@{
 # Step 4 end
 
 
-# Step 5. Create the recipient view and begin the DocuSign signing
+# Create the recipient view and begin the DocuSign signing
 # Step 5 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
@@ -134,7 +134,6 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
 # Step 5 end
 
-# ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 

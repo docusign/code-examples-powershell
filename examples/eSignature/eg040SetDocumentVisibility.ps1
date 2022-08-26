@@ -52,6 +52,7 @@ Write-Output "The envelope has three documents. Processing time will be about 15
 Write-Output "Results:"
 
 # Concatenate the different parts of the request
+# Step 3 start
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -121,18 +122,22 @@ Write-Output "Results:"
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+# Step 3 end
 
-# Step 3. Create and send the envelope'
+# Step 4 start
 try {
     Invoke-RestMethod `
         -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
         -Method 'POST' `
         -Headers @{
+# Step 2 start
         'Authorization' = "Bearer $accessToken";
         'Content-Type'  = "application/json";
+# Step 2 end        
     } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+# Step 4 end
 
     Write-Output "Response: $(Get-Content -Raw $response)"
 

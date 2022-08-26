@@ -6,7 +6,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 
-# Step 1: Obtain your OAuth token
+# Obtain your OAuth token
 # Note: Substitute these values with your own
 $accessToken = Get-Content .\config\ds_access_token.txt
 
@@ -14,7 +14,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
 #  document 3 (pdf) has tag /sn1/
@@ -144,7 +143,6 @@ try {
     # pull out the envelopeId
     $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 
-    # ***DS.snippet.0.end
     Write-Output "EnvelopeId: $envelopeId"
 }
 catch {

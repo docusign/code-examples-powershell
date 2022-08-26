@@ -43,6 +43,7 @@ $hostName = $(Get-Content $response | ConvertFrom-Json).name
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
+# Step 2 start
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -76,8 +77,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+# Step 2 end
 
 # Step 3. Call DocuSign to create the envelope
+# Step 3 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -89,6 +92,7 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
+# Step 3 end
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
@@ -104,15 +108,18 @@ Write-Output "EnvelopeId: $envelopeId"
 
 Write-Output "Requesting the url for the embedded signing..."
 
+# Step 4 start
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
     'authenticationMethod' = 'none';
     'email'                = $hostEmail;
     'userName'             = $hostName;
 } | ConvertTo-Json -Compress
+# Step 4 end
 
 
 # Step 5. Create the recipient view and begin the DocuSign signing
+# Step 5 start
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -125,6 +132,7 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
+# Step 5 end
 
 # ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"

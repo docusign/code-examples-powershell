@@ -23,17 +23,21 @@ else {
   exit 1
 }
 
-Write-Output "Sending the EnvelopeDocuments::list request to DocuSign..."
-Write-Output "Results:"
-
-# Step 2. List envelope documents
-Invoke-RestMethod `
-  -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents" `
-  -Method 'GET' `
-  -Headers @{
+# Step 2 start
+$headers = @{
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
+# Step 2 end
+
+Write-Output "Sending the EnvelopeDocuments::list request to DocuSign..."
+Write-Output "Results:"
+
+# Step 3. List envelope documents
+Invoke-RestMethod `
+  -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents" `
+  -Method 'GET' `
+  -Headers $headers
 # ***DS.snippet.0.end
 
 Write-Output "Done."

@@ -1,7 +1,7 @@
 $apiUri = "https://demo.docusign.net/restapi"
 $authorizationEndpoint = "https://account-d.docusign.com/oauth"
 
-# Obtain your OAuth token
+# Step 1: Obtain your OAuth token
 # Note: Substitute these values with your own
 $accessToken = Get-Content .\config\ds_access_token.txt
 
@@ -9,7 +9,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Create the envelope definition.
+# Step 2. Create the envelope definition.
 #
 #  document 1 (PDF) has tag /sn1/
 #  recipient 1 - signer
@@ -43,7 +43,6 @@ $hostName = $(Get-Content $response | ConvertFrom-Json).name
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
-# Step 2 start
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -77,10 +76,8 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-# Step 2 end
 
-# Call DocuSign to create the envelope
-# Step 3 start
+# Step 3. Call DocuSign to create the envelope
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -96,9 +93,8 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
-# Step 3 end
 
-# Create a recipient view definition
+# Step 4. Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
@@ -108,18 +104,15 @@ Write-Output "EnvelopeId: $envelopeId"
 
 Write-Output "Requesting the url for the embedded signing..."
 
-# Step 4 start
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
     'authenticationMethod' = 'none';
     'email'                = $hostEmail;
     'userName'             = $hostName;
 } | ConvertTo-Json -Compress
-# Step 4 end
 
 
-# Create the recipient view and begin the DocuSign signing
-# Step 5 start
+# Step 5. Create the recipient view and begin the DocuSign signing
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -132,8 +125,8 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
-# Step 5 end
 
+# ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 

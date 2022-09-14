@@ -26,6 +26,11 @@ else {
     exit 1
 }
 
+$headers = @{
+    'Authorization' = "Bearer $accessToken";
+    'Content-Type'  = "application/json";
+  }
+
 $docChoice = "1"
 $outputFileExtension = "pdf"
 
@@ -78,11 +83,9 @@ Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
     -Method 'GET' `
-    -Headers @{
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
-} `
+    -Headers $headers `
     -OutFile ${outputFile}${outputFileExtension}
+
 # Step 3 end
 Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
 Write-Output "Done."

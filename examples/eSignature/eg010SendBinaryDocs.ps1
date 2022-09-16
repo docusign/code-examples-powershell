@@ -23,13 +23,6 @@ $accessToken = Get-Content ".\config\ds_access_token.txt"
 # the default picture.
 $accountId = Get-Content ".\config\API_ACCOUNT_ID"
 
-# Step 2 start
-$headers = @{
-	'Authorization' = "Bearer $accessToken";
-	'Content-Type'  = "multipart/form-data; boundary=${boundary}";
-}
-# Step 2 end
-
 # ***DS.snippet.0.start
 
 # Step 3 start
@@ -152,6 +145,13 @@ Add-OemContent $requestData "${CRLF}"
 Add-OemContent $requestData "--$boundary--"
 Add-OemContent $requestData "${CRLF}"
 # Step 3 end
+
+# Step 2 start
+$headers = @{
+	'Authorization' = "Bearer $accessToken";
+	'Content-Type'  = "multipart/form-data; boundary=${boundary}";
+}
+# Step 2 end
 
 # Send request
 try {

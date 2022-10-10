@@ -62,7 +62,7 @@ catch {
     }
     $int++
   }
-  Write-Output "Error : "$_.ErrorDetails.Message
+  Write-Output "You do not have Monitor enabled for your account, follow https://developers.docusign.com/docs/monitor-api/how-to/enable-monitor/ to get it enabled."
   Write-Output "Command : "$_.InvocationInfo.Line
 }
 # Step 4 end

@@ -37,7 +37,7 @@ Write-Output "Results:"
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents" `
   -Method 'GET' `
-  -Headers $headers
+  -Headers $headers | ConvertTo-Json
 # ***DS.snippet.0.end
 
 Write-Output "Done."

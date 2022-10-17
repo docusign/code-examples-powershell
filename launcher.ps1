@@ -18,7 +18,17 @@ if (Test-Path $emailAddressFile) {
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
 
-function checkCC {
+function checkEmailAddresses {
+
+    if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.SIGNER_EMAIL, 
+    "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+    "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
+        Write-Output "Invalid signer email address for signer email in config - please fix it and try again";
+        Write-Output ("Email address provided: " + $config.SIGNER_EMAIL )
+        exit 1;
+    }
+
+
 
     # Fill in Quickstart Carbon Copy config values
     if (($config.CC_EMAIL -eq "{CC_EMAIL}" ) -or ($config.CC_EMAIL -eq "" )) {
@@ -27,8 +37,8 @@ function checkCC {
         if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.CC_EMAIL, 
         "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
         "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
-            Write-Output ("Invalid email address - run again and try again");
-            exit 0;
+            Write-Output ("Invalid email address for cc email in config - please fix it and try again");
+            exit 1;
         }
         $config.CC_NAME = Read-Host "Enter a name for your CC recipient"
         Write-Output ""
@@ -290,7 +300,7 @@ function startSignature {
             powershell.exe -Command .\eg001EmbeddedSigning.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email) {
-            checkCC
+            checkEmailAddresses
             powershell.exe -Command .\examples\eSignature\eg002SigningViaEmail.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::List_Envelopes) {
@@ -312,26 +322,26 @@ function startSignature {
             powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Template) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg009UseTemplate.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Send_Binary_Docs) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg010SendBinaryDocs.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Sending) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg011EmbeddedSending.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Console) {
             powershell.exe .\examples\eSignature\eg012EmbeddedConsole.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Add_Doc_To_Template) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg013AddDocToTemplate.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Collect_Payment) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg014CollectPayment.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Tab_Data) {
@@ -341,7 +351,7 @@ function startSignature {
             powershell.exe .\examples\eSignature\eg016SetTabValues.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Template_Tab_Values) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg017SetTemplateTabValues.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Custom_Field_Data) {
@@ -378,46 +388,46 @@ function startSignature {
             powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Template) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg031BulkSending.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Pause_Signature_Workflow) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg032PauseSignatureWorkflow.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Unpause_Signature_Workflow) {
             powershell.exe .\examples\eSignature\eg033UnpauseSignatureWorkflow.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Conditional_Recipients) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg034UseConditionalRecipients.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Delayed_Routing) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg036DelayedRouting.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::SMS_Delivery) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg037SMSDelivery.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Signable_HTML_document) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg038ResponsiveSigning.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_In_Person) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg039SigningInPerson.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Document_Visibility) {
-            checkCC
+            checkEmailAddresses
             powershell.exe .\examples\eSignature\eg040SetDocumentVisibility.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
@@ -494,7 +504,8 @@ function startClick {
             clickwrapVersioning = 3;
             retrieveClickwraps = 4;
             getClickwrapResponses = 5;
-            Pick_An_API = 6;
+            embedClickwrap = 6
+            Pick_An_API = 7;
         }
         $listClickExamplesView = $null;
         do {
@@ -505,6 +516,7 @@ function startClick {
             Write-Output "$([int][listClickExamples]::clickwrapVersioning)) clickwrap Versioning"
             Write-Output "$([int][listClickExamples]::retrieveClickwraps)) Retrieve clickwraps"
             Write-Output "$([int][listClickExamples]::getClickwrapResponses)) Get clickwrap Responses"
+            Write-Output "$([int][listClickExamples]::embedClickwrap)) Embed a clickwrap"
             Write-Output "$([int][listClickExamples]::Pick_An_API)) Pick_An_API"
             [int]$listClickExamplesView = Read-Host "Select the action"
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
@@ -523,6 +535,9 @@ function startClick {
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
             powershell.exe -Command .\examples\Click\eg005GetClickwrapResponses.ps1
+        }
+        elseif ($listClickExamplesView -eq [listClickExamples]::embedClickwrap) {
+            powershell.exe -Command .\examples\Click\eg006EmbedClickwrap.ps1
         }
     } until ($listClickExamplesView -eq [listClickExamples]::Pick_An_API)
     startLauncher

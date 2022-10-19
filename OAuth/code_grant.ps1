@@ -21,7 +21,7 @@ elseif ($apiVersion -eq "eSignature") {
   $scopes = "signature"
 }
 elseif ($apiVersion -eq "click") {
-  $scopes = "click.manage"
+  $scopes = "click.manage%20click.send%20signature"
 }
 elseif ($apiVersion -eq "monitor") {
   $scopes = "signature impersonation"

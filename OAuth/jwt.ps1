@@ -34,7 +34,7 @@ if ($apiVersion -eq "rooms") {
   } elseif ($apiVersion -eq "eSignature") {
     $scopes = "signature%20impersonation"
   } elseif ($apiVersion -eq "click") {
-    $scopes = "click.manage"
+    $scopes = "click.manage%20click.send%20signature%20impersonation"
   }
   elseif ($apiVersion -eq "monitor") {
     $scopes = "signature%20impersonation"

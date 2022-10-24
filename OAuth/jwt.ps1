@@ -55,62 +55,6 @@ $authorizationURL = "${authorizationEndpoint}auth?scope=$scopes&redirect_uri=$re
 Write-Output "The authorization URL is: $authorizationURL"
 Write-Output ""
 
-# Request the authorization code
-# Use Http Server
-$http = New-Object System.Net.HttpListener
-
-# Hostname and port to listen on
-$http.Prefixes.Add($redirectURI + "/")
-
-try {
-  # Start the Http Server
-  $http.Start()
-
-  }
-  catch {
-      Write-Error "OAuth listener failed. Is port 8080 in use by another program?" -ErrorAction Stop
-  }
-
-if ($http.IsListening) {
-    Write-Output "Open the following URL in a browser to continue:" $authorizationURL
-    Start-Process $authorizationURL
-}
-
-while ($http.IsListening) {
-    $context = $http.GetContext()
-
-    if ($context.Request.HttpMethod -eq 'GET' -and $context.Request.Url.LocalPath -match '/authorization-code/callback') {
-        # write-host "Check context"
-        # write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
-        [string]$html = '
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title></title>
-          </head>
-          <body>
-          Ok. You may close this tab and return to the shell. This window closes automatically in five seconds.
-          <script type="text/javascript">
-            setTimeout(
-            function ( )
-            {
-              self.close();
-            }, 5000 );
-            </script>
-          </body>
-          </html>
-          '
-        # Respond to the request
-        $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # Convert HTML to bytes
-        $context.Response.ContentLength64 = $buffer.Length
-        $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream HTML to browser
-        $context.Response.OutputStream.Close() # Close the response
-
-        Start-Sleep 4
-        $http.Stop()
-    }
-}
-
 # Step 2. Create a JWT
 $decJwtHeader = [ordered]@{
     'typ' = 'JWT';
@@ -177,5 +121,83 @@ try {
     Write-Output "Account id has been written to $accountIdFile file..."
 }
 catch {
+  if (($_.ErrorDetails.Message | ConvertFrom-Json | Select-Object -Expand error) -eq "consent_required") {
+    # Use Http Server
+    $http = New-Object System.Net.HttpListener
+
+    # Hostname and port to listen on
+    $http.Prefixes.Add($redirectURI + "/")
+
+    try {
+      # Start the Http Server
+      $http.Start()
+    
+    }
+    catch {
+      Write-Error "OAuth listener failed. Is port 8080 in use by another program?" -ErrorAction Stop
+    }
+
+    if ($http.IsListening) {
+      Write-Output "Open the following URL in a browser to continue:" $authorizationURL
+      Start-Process $authorizationURL
+    }
+
+    while ($http.IsListening) {
+        $context = $http.GetContext()
+    
+        if ($context.Request.HttpMethod -eq 'GET' -and $context.Request.Url.LocalPath -match '/authorization-code/callback') {
+            # write-host "Check context"
+            # write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
+            [string]$html = '
+              <html lang="en">
+              <head>
+                <meta charset="utf-8">
+                <title></title>
+              </head>
+              <body>
+              Ok. You may close this tab and return to the shell. This window closes automatically in five seconds.
+              <script type="text/javascript">
+                setTimeout(
+                function ( )
+                {
+                  self.close();
+                }, 5000 );
+                </script>
+              </body>
+              </html>
+              '
+            # Respond to the request
+            $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # Convert HTML to bytes
+            $context.Response.ContentLength64 = $buffer.Length
+            $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream HTML to browser
+            $context.Response.OutputStream.Close() # Close the response
+
+            Start-Sleep 4
+            $http.Stop()
+        }
+    }
+
+    $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
+    $tokenResponse = Invoke-WebRequest `
+        -Uri "$authorizationEndpoint/token" `
+        -UseBasicParsing `
+        -Method "POST" `
+        -Body "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwtToken"
+    $accessToken = ($tokenResponse | ConvertFrom-Json).access_token
+    Write-Output $accessToken > $outputFile
+    Write-Output "Access token has been written to $outputFile file..."
+
+    Write-Output "Getting an account id..."
+    $userInfoResponse = Invoke-RestMethod `
+        -Uri "$authorizationEndpoint/userinfo" `
+        -UseBasicParsing `
+        -Method "GET" `
+        -Headers @{ "Authorization" = "Bearer $accessToken" }
+    $accountId = $userInfoResponse.accounts[0].account_id
+    Write-Output "Account id: $accountId"
+    Write-Output $accountId > $accountIdFile
+    Write-Output "Account id has been written to $accountIdFile file..."
+  } else {
     Write-Error $_
+  }
 }

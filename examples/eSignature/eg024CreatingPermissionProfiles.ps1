@@ -31,7 +31,6 @@ $body = @"
         "allowedAddressBookAccess":"personalAndShared",
         "allowedTemplateAccess":"share",
         "enableRecipientViewingNotifications":"true",
-        "enableRecipientViewingNotifications":"true",
         "enableSequentialSigningInterface":"true",
         "receiveCompletedSelfSignedDocumentsAsEmailLinks":"false",
         "signingUiVersion":"v2",

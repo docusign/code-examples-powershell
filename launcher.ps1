@@ -17,6 +17,21 @@ if (Test-Path $emailAddressFile) {
 
 # Get required environment variables from .\config\settings.json file
 $config = Get-Content $configFile -Raw | ConvertFrom-Json
+function isCFR {
+    $response = New-TemporaryFile
+    $accessToken = Get-Content .\config\ds_access_token.txt
+    $accountId = Get-Content .\config\API_ACCOUNT_ID
+
+    Invoke-RestMethod `
+        -Uri "https://demo.docusign.net/restapi/v2.1/accounts/$accountId/settings" `
+        -Method 'GET' `
+        -Headers @{
+        'Authorization' = "Bearer $accessToken";
+        'Content-Type'  = "application/json";
+    } `
+        -OutFile $response
+    $env:CFR_STATUS = Select-String -Pattern '"require21CFRpt11Compliance":"true"' -Path $response
+}
 
 function checkEmailAddresses {
 
@@ -185,9 +200,14 @@ function startAuth ($apiVersion) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }
     }
-
     if ($listApiView -eq [listApi]::eSignature) {
-        startSignature
+        isCFR
+        if($null -ne $env:CFR_STATUS){
+            startCFRSignature
+        }
+        else {
+            startSignature
+        }
     }
     elseif ($listApiView -eq [listApi]::Rooms) {
         startRooms
@@ -203,6 +223,189 @@ function startAuth ($apiVersion) {
     }
 }
 
+function startCFRSignature {
+    do {
+        # Preparing a list of eSignature examples
+        Enum ApiExamples {
+            Embedded_Signing_CFR = 1;
+            Signing_Via_Email = 2;
+            List_Envelopes = 3;
+            Envelope_Info = 4;
+            Envelope_Recipients = 5;
+            Envelope_Docs = 6;
+            Envelope_Get_Doc = 7;
+            Create_Template = 8;
+            Use_Template = 9;
+            Send_Binary_Docs = 10;
+            Embedded_Sending = 11;
+            Embedded_Console = 12;
+            Add_Doc_To_Template = 13;
+            Envelope_Tab_Data = 14;
+            Set_Tab_Values = 15;
+            Set_Template_Tab_Values = 16;
+            Envelope_Custom_Field_Data = 17;
+            Signing_Via_Email_With_Access_Code = 18;
+            Signing_Via_Email_With_Phone_Authentication = 19;
+            Signing_Via_Email_With_Knowledge_Based_Authentication = 20;
+            Signing_Via_Email_With_IDV_Authentication = 21;
+            Creating_Permission_Profiles = 22;
+            Setting_Permission_Profiles = 23;
+            Updating_Individual_Permission = 24;
+            Deleting_Permissions = 25;
+            Creating_A_Brand = 26;
+            Applying_Brand_Envelope = 27;
+            Applying_Brand_Template = 28;
+            Bulk_Sending = 29;
+            Scheduled_Sending = 30;
+            Create_Signable_HTML_document = 31;
+            Pick_An_API = 32;
+        }
+
+        $ApiExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][ApiExamples]::Embedded_Signing_CFR)) Embedded_Signing_CFR"
+            Write-Output "$([int][ApiExamples]::Signing_Via_Email)) Signing_Via_Email"
+            Write-Output "$([int][ApiExamples]::List_Envelopes)) List_Envelopes"
+            Write-Output "$([int][ApiExamples]::Envelope_Info)) Envelope_Info"
+            Write-Output "$([int][ApiExamples]::Envelope_Recipients)) Envelope_Recipients"
+            Write-Output "$([int][ApiExamples]::Envelope_Docs)) Envelope_Docs"
+            Write-Output "$([int][ApiExamples]::Envelope_Get_Doc)) Envelope_Get_Doc"
+            Write-Output "$([int][ApiExamples]::Create_Template)) Create_Template"
+            Write-Output "$([int][ApiExamples]::Use_Template)) Use_Template"
+            Write-Output "$([int][ApiExamples]::Send_Binary_Docs)) Send_Binary_Docs"
+            Write-Output "$([int][ApiExamples]::Embedded_Sending)) Embedded_Sending"
+            Write-Output "$([int][ApiExamples]::Embedded_Console)) Embedded_Console"
+            Write-Output "$([int][ApiExamples]::Add_Doc_To_Template)) Add_Doc_To_Template"
+            Write-Output "$([int][ApiExamples]::Envelope_Tab_Data)) Envelope_Tab_Data"
+            Write-Output "$([int][ApiExamples]::Set_Tab_Values)) Set_Tab_Values"
+            Write-Output "$([int][ApiExamples]::Set_Template_Tab_Values)) Set_Template_Tab_Values"
+            Write-Output "$([int][ApiExamples]::Envelope_Custom_Field_Data)) Envelope_Custom_Field_Data"
+            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Access_Code)) Signing_Via_Email_With_Access_Code"
+            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Phone_Authentication)) Signing_Via_Email_With_Phone_Authentication"
+            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication)) Signing_Via_Email_With_Knowledge_Based_Authentication"
+            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_IDV_Authentication)) Signing_Via_Email_With_IDV_Authentication"
+            Write-Output "$([int][ApiExamples]::Creating_Permission_Profiles)) Creating_Permission_Profiles"
+            Write-Output "$([int][ApiExamples]::Setting_Permission_Profiles)) Setting_Permission_Profiles"
+            Write-Output "$([int][ApiExamples]::Updating_Individual_Permission)) Updating_Individual_Permission"
+            Write-Output "$([int][ApiExamples]::Deleting_Permissions)) Deleting_Permissions"
+            Write-Output "$([int][ApiExamples]::Creating_A_Brand)) Creating_A_Brand"
+            Write-Output "$([int][ApiExamples]::Applying_Brand_Envelope)) Applying_Brand_Envelope"
+            Write-Output "$([int][ApiExamples]::Applying_Brand_Template)) Applying_Brand_Template"
+            Write-Output "$([int][ApiExamples]::Bulk_Sending)) Bulk_Sending"
+            Write-Output "$([int][ApiExamples]::Scheduled_Sending)) Scheduled_Sending"
+            Write-Output "$([int][ApiExamples]::Create_Signable_HTML_document)) Create_Signable_HTML_document"
+            Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
+            [int]$ApiExamplesView = Read-Host "Select the action"
+        } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
+
+        if ($ApiExamplesView -eq [ApiExamples]::Embedded_Signing_CFR) {
+            powershell.exe -Command .\examples\eSignature\eg041EmbeddedSigningCFR.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email) {
+            checkEmailAddresses
+            powershell.exe -Command .\examples\eSignature\eg002SigningViaEmail.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::List_Envelopes) {
+            powershell.exe -Command .\examples\eSignature\eg003ListEnvelopes.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Info) {
+            powershell.exe -Command .\examples\eSignature\eg004EnvelopeInfo.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Recipients) {
+            powershell.exe .\examples\eSignature\eg005EnvelopeRecipients.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Docs) {
+            powershell.exe .\examples\eSignature\eg006EnvelopeDocs.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Get_Doc) {
+            powershell.exe .\examples\eSignature\eg007EnvelopeGetDoc.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Create_Template) {
+            powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Use_Template) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg009UseTemplate.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Send_Binary_Docs) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg010SendBinaryDocs.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Sending) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg011EmbeddedSending.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Console) {
+            powershell.exe .\examples\eSignature\eg012EmbeddedConsole.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Add_Doc_To_Template) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg013AddDocToTemplate.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Tab_Data) {
+            powershell.exe .\examples\eSignature\eg015EnvelopeTabData.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Set_Tab_Values) {
+            powershell.exe .\examples\eSignature\eg016SetTabValues.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Set_Template_Tab_Values) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg017SetTemplateTabValues.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Custom_Field_Data) {
+            powershell.exe .\examples\eSignature\eg018EnvelopeCustomFieldData.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
+            powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Phone_Authentication) {
+            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
+            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
+            powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Creating_Permission_Profiles) {
+            powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Setting_Permission_Profiles) {
+            powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Updating_Individual_Permission) {
+            powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Deleting_Permissions) {
+            powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Creating_A_Brand) {
+            powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Envelope) {
+            powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Template) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg031BulkSending.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Create_Signable_HTML_document) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg038ResponsiveSigning.ps1
+        }
+    } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
+    startLauncher
+}
 function startSignature {
     do {
         # Preparing a list of eSignature examples

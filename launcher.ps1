@@ -246,7 +246,8 @@ function startSignature {
             Create_Signable_HTML_document = 38;
             Signing_In_Person = 39;
             Set_Document_Visibility = 40;
-            Pick_An_API = 41;
+            Embedded_Signing_CFR = 41
+            Pick_An_API = 42;
         }
 
         $ApiExamplesView = $null;
@@ -292,6 +293,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Create_Signable_HTML_document)) Create_Signable_HTML_document"
             Write-Output "$([int][ApiExamples]::Signing_In_Person)) In_Person_Signing"
             Write-Output "$([int][ApiExamples]::Set_Document_Visibility)) Set_Document_Visibility"
+            Write-Output "$([int][ApiExamples]::Embedded_Signing_CFR)) Embedded_Signing_CFR"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -429,6 +431,10 @@ function startSignature {
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Document_Visibility) {
             checkEmailAddresses
             powershell.exe .\examples\eSignature\eg040SetDocumentVisibility.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Signing_CFR) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg041EmbeddedSigningCFR.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher

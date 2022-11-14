@@ -200,7 +200,6 @@ function startAuth ($apiVersion) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }
     }
-    #add new code to get cfr value
     if ($listApiView -eq [listApi]::eSignature) {
         isCFR
         if($null -ne $env:CFR_STATUS){

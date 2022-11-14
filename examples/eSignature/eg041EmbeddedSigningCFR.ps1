@@ -58,7 +58,7 @@ Write-Output "Attempting to retrieve your account's workflow ID"
 $result = Invoke-RestMethod -uri $uri -headers $headers -method GET
 $result.content
 #Obtain the workflow ID from the API response
-$workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "Phone Authentication"}).workflowId
+$workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "SMS for Access & Signatures"}).workflowId
 # Step 2 end
 
 if ($null -eq $workflowId)

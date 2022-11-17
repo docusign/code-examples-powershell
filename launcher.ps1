@@ -245,20 +245,19 @@ function startCFRSignature {
             Set_Template_Tab_Values = 16;
             Envelope_Custom_Field_Data = 17;
             Signing_Via_Email_With_Access_Code = 18;
-            Signing_Via_Email_With_Phone_Authentication = 19;
-            Signing_Via_Email_With_Knowledge_Based_Authentication = 20;
-            Signing_Via_Email_With_IDV_Authentication = 21;
-            Creating_Permission_Profiles = 22;
-            Setting_Permission_Profiles = 23;
-            Updating_Individual_Permission = 24;
-            Deleting_Permissions = 25;
-            Creating_A_Brand = 26;
-            Applying_Brand_Envelope = 27;
-            Applying_Brand_Template = 28;
-            Bulk_Sending = 29;
-            Scheduled_Sending = 30;
-            Create_Signable_HTML_document = 31;
-            Pick_An_API = 32;
+            Signing_Via_Email_With_Knowledge_Based_Authentication = 19;
+            Signing_Via_Email_With_IDV_Authentication = 20;
+            Creating_Permission_Profiles = 21;
+            Setting_Permission_Profiles = 22;
+            Updating_Individual_Permission = 23;
+            Deleting_Permissions = 24;
+            Creating_A_Brand = 25;
+            Applying_Brand_Envelope = 26;
+            Applying_Brand_Template = 27;
+            Bulk_Sending = 28;
+            Scheduled_Sending = 29;
+            Create_Signable_HTML_document = 30;
+            Pick_An_API = 31;
         }
 
         $ApiExamplesView = $null;
@@ -283,7 +282,6 @@ function startCFRSignature {
             Write-Output "$([int][ApiExamples]::Set_Template_Tab_Values)) Set_Template_Tab_Values"
             Write-Output "$([int][ApiExamples]::Envelope_Custom_Field_Data)) Envelope_Custom_Field_Data"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Access_Code)) Signing_Via_Email_With_Access_Code"
-            Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Phone_Authentication)) Signing_Via_Email_With_Phone_Authentication"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication)) Signing_Via_Email_With_Knowledge_Based_Authentication"
             Write-Output "$([int][ApiExamples]::Signing_Via_Email_With_IDV_Authentication)) Signing_Via_Email_With_IDV_Authentication"
             Write-Output "$([int][ApiExamples]::Creating_Permission_Profiles)) Creating_Permission_Profiles"
@@ -359,9 +357,6 @@ function startCFRSignature {
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
             powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
-        }
-        elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Phone_Authentication) {
-            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
             powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1

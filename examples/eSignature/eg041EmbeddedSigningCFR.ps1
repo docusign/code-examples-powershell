@@ -66,12 +66,13 @@ if ($null -eq $workflowId)
 	throw "Please contact https://support.docusign.com to enable recipient phone authentication in your account."
 }
 
+# Concatenate the different parts of the request
+$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country phone number prefix for the Signer"
+
+$SIGNER_PHONE_NUMBER = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
+
 Write-Output "Sending the envelope request to DocuSign..."
 
-# Concatenate the different parts of the request
-$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
-
-$SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body
 # Step 3 start
 $body = @"
@@ -102,7 +103,7 @@ $body = @"
 					"recipientId": "1",
 					"tabLabel": "SignHereTab",
 					"xPosition": "200",
-					"yPosition": "160"
+					"yPosition": "150"
 				}]
 			},
 			"templateAccessCodeRequired": null,

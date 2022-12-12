@@ -2,7 +2,10 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$clientId,
     [Parameter(Mandatory = $true)]
-    [string]$apiVersion)
+    [string]$apiVersion,
+    [Parameter(Mandatory = $true)]
+    [string]$targetAccountId
+  )
 
 # Reference dependencies
 . ([System.IO.Path]::Combine($PSScriptRoot, "..\Install-NugetPackage.ps1"))
@@ -115,7 +118,28 @@ try {
         -UseBasicParsing `
         -Method "GET" `
         -Headers @{ "Authorization" = "Bearer $accessToken" }
-    $accountId = $userInfoResponse.accounts[0].account_id
+
+    if ($targetAccountId -ne "TARGET_ACCOUNT_ID") {
+        $targetAccountFound = "false";
+        foreach ($account_info in $userInfoResponse.accounts) {
+            if ($account_info.account_id -eq $targetAccountId) {
+                $accountId = $account_info.account_id;
+                $targetAccountFound = "true";
+                break;
+            }
+        }
+
+        if ($targetAccountFound -eq "false") {
+          Write-Error "Targeted Account with Id $targetAccountId not found." -ErrorAction Stop;
+        }
+    } else {
+        foreach ($account_info in $userInfoResponse.accounts) {
+            if ($account_info.is_default -eq "true") {
+                $accountId = $account_info.account_id;
+                break;
+            }
+        }
+    }
     Write-Output "Account id: $accountId"
     Write-Output $accountId > $accountIdFile
     Write-Output "Account id has been written to $accountIdFile file..."

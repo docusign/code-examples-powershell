@@ -15,7 +15,7 @@ function startQuickACG {
     Write-Output ''
     Write-Output "Authentication in progress, please wait"
     Write-Output ''
-    powershell.exe -Command ..\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature")
+    powershell.exe -Command ..\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") -targetAccountId $($config.TARGET_ACCOUNT_ID)
     Write-Output ''
 
     if ((Test-Path "../config/ds_access_token.txt") -eq $true) {

@@ -102,7 +102,7 @@ Write-Output "Sending the envelope request to DocuSign..."
               locked        = "true";
               tabId         = "salary";
               tabLabel      = "Salary";
-              value         = "$123,000.00";
+              value         = '$123,000.00';
             }; );
         };
       }; );

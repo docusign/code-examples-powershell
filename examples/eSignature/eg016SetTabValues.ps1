@@ -13,6 +13,12 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
+# Step 2. Create your authorization headers
+$headers = @{
+  'Authorization' = "Bearer $accessToken";
+  'Content-Type'  = "application/json";
+}
+
 # Tabs and custom fields shown in the request body in step 4
 # Step 4. Construct the request body
 
@@ -146,10 +152,7 @@ Write-Output "Requesting the url for the embedded signing..."
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
   -Method 'POST' `
-  -Headers @{
-  'Authorization' = "Bearer $accessToken";
-  'Content-Type'  = "application/json";
-} `
+  -Headers $headers `
   -InFile (Resolve-Path $requestData).Path`
   -OutFile $response
 

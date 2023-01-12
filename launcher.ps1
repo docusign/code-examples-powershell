@@ -359,7 +359,7 @@ function startCFRSignature {
             powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
-            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
+            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
             powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
@@ -562,7 +562,7 @@ function startSignature {
             powershell.exe .\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
-            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnoweldgeBasedAuthentication.ps1
+            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
             powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1

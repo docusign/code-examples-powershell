@@ -1,4 +1,4 @@
-$apiUri = "https://demo.docusign.net/restapi"
+$apiUri = "https://stage.docusign.net/restapi"
 
 # Create a template. First, the account's templates are listed.
 # If one of the templates is named "Example Signer and CC template"
@@ -16,7 +16,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 # List the account's templates
 Write-Output "Checking to see if the template already exists in your account..."
 
-$templateName = "Example Signer and CC template"
+$templateName = "Example Signer and CC template v2"
 $response = New-TemporaryFile
 
 Invoke-RestMethod `
@@ -159,12 +159,15 @@ Write-Output "Sending the template create request to DocuSign..."
                             tabLabel = "text"; width = 84;
                             xPosition = "153"; yPosition = "230";
                         };
+                    );
+                    numericalTabs       = @(
                         @{
+                            ValidationType = "Currency";
                             documentId = "1"; font = "helvetica";
                             fontSize = "size14"; height = 23;
                             pageNumber = "1"; required = "false";
-                            tabLabel = "numbersOnly"; width = 84;
-                            xPosition = "153"; yPosition = "260";
+                            tabLabel = "numericalCurrency"; width = 84;
+                            xPosition = "153"; yPosition = "230";
                         };
                     );
                 };

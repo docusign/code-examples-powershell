@@ -28,7 +28,8 @@ $body =
 @"
 {
   "roomId": $roomId,
-  "formId": "$formId"
+  "formIds": $formId,
+  "xFrameAllowedUrl": "https://iframetester.com"
 }
 "@
 
@@ -40,6 +41,16 @@ try {
   Write-Output "Response:"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
   $response.Content | ConvertFrom-Json | ConvertTo-Json
+
+  Write-Output "Response: $(Get-Content -Raw $response)"
+  $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
+  $redirectUrl = "https://iframetester.com/?url="+$signingUrl
+
+  Write-Output "The embedded form URL is $redirectUrl"
+  Write-Output "Attempting to automatically open your browser..."
+
+  Start-Process $redirectUrl
+
 }
 catch {
   Write-Output "Unable to access form fill view link "
@@ -49,6 +60,14 @@ catch {
     if ($header -eq "X-DocuSign-TraceToken") { Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] }
     $int++
   }
-  Write-Output "Error : "$_.ErrorDetails.Message
+
+  $errorMessage = $_.ErrorDetails.Message
+  
+  if ( $errorMessage.Contains("INVALID_REQUEST_PARAMETERS") ) { Write-Output "Room ID is needed. Please run step 1 or 2..." }
+
+  if ( $errorMessage.Contains("PROPERTY_VALIDATION_FAILURE")) { Write-Output "Problem: Form is not in the room. Please run example 4...." }
+  
+  Write-Output "Error : "$errorMessage
   Write-Output "Command : "$_.InvocationInfo.Line
+  
 }

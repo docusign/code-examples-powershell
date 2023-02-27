@@ -16,11 +16,11 @@ $roomId = $($response.Content | ConvertFrom-Json).rooms[0].roomId
 # Get Form Library ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/form_libraries"
 $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers
-$formLibraryId = $($response.Content | ConvertFrom-Json).formsLibrarySummaries.formsLibraryId
+$formLibraryId = $($response.Content | ConvertFrom-Json).formsLibrarySummaries[0].formsLibraryId
 
 # Get Form ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/form_libraries/$formLibraryId/forms"
-$response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers
+$response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 $formId = $($response.Content | ConvertFrom-Json).forms[0].libraryFormId
 
 # Construct the request body for adding a form

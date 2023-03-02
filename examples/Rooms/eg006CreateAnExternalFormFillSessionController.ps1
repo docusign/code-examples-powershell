@@ -63,7 +63,7 @@ catch {
 
   $errorMessage = $_.ErrorDetails.Message
   
-  if ( $errorMessage.Contains("INVALID_REQUEST_PARAMETERS") ) { Write-Output "Room ID is needed. Please run step 1 or 2..." }
+  if ( $errorMessage.Contains("ACCESS_DENIED") ) { Write-Output "Room ID is needed. Please run step 1 or 2..." }
 
   if ( $errorMessage.Contains("PROPERTY_VALIDATION_FAILURE")) { Write-Output "Problem: Form is not in the room. Please run example 4...." }
   

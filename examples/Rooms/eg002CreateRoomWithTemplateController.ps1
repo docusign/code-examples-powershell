@@ -17,7 +17,8 @@ $uriOfficeId = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountI
 
 try {
   $response = Invoke-RestMethod -uri $uri -headers $headers -method GET
-  $roleId = $response.roles[0].roleId
+  $roles = $response.roles
+  $roleId = $roles.Where({$_.name -eq "Default Admin"}).roleId
   $roomTemplateId = $response.roomTemplates.roomTemplateId
   Write-Output "roleID:" $roleId
   $response = Invoke-RestMethod -uri $uriOfficeId -headers $headers -method GET

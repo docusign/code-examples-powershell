@@ -63,9 +63,9 @@ catch {
 
   $errorMessage = $_.ErrorDetails.Message
   
-  if ( $errorMessage.Contains("INVALID_REQUEST_PARAMETERS") ) { Write-Output "Room ID is needed. Please run step 1 or 2..." }
+  if ( $errorMessage.Contains("INVALID_REQUEST_PARAMETERS") ) { Write-Output "Problem: Create a room using example 1." }
 
-  if ( $errorMessage.Contains("PROPERTY_VALIDATION_FAILURE") -or $errorMessage.Contains("FORM_NOT_IN_ROOM")) { Write-Output "Problem: Form is not in the room. Please run example 4...." }
+  if ( $errorMessage.Contains("PROPERTY_VALIDATION_FAILURE") -or $errorMessage.Contains("FORM_NOT_IN_ROOM")) { Write-Output "Problem: Selected room does not have any forms. Add a form to a room using example 4." }
   
   Write-Output "Error : "$errorMessage
   Write-Output "Command : "$_.InvocationInfo.Line

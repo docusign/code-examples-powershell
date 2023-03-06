@@ -11,7 +11,8 @@ $headers.add("Content-Type", "application/json")
 # Get Role ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/roles"
 $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
-$roleId = $($response.Content | ConvertFrom-Json).roles[0].roleid
+$roles = $($response.Content | ConvertFrom-Json).roles
+$roleId = $roles.Where({$_.name -eq "Default Admin"}).roleId
 
 # - Construct the request body for your room
 $body = @"

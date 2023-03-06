@@ -16,19 +16,21 @@ $roomId = $($response.Content | ConvertFrom-Json).rooms[0].roomId
 # Get Form Library ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/form_libraries"
 $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers
-$formLibraryId = $($response.Content | ConvertFrom-Json).formsLibrarySummaries.formsLibraryId
+$formLibraryId = $($response.Content | ConvertFrom-Json).formsLibrarySummaries[0].formsLibraryId
 
 # Get Form ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/form_libraries/$formLibraryId/forms"
-$response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers
+$response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 $formId = $($response.Content | ConvertFrom-Json).forms[0].libraryFormId
+
 
 # Construct your request body
 $body =
 @"
 {
-  "roomId": $roomId,
-  "formId": "$formId"
+  "roomId": "$roomId",
+  "formId": "$formId",
+  "xFrameAllowedUrl": "https://iframetester.com/"
 }
 "@
 
@@ -40,6 +42,15 @@ try {
   Write-Output "Response:"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
   $response.Content | ConvertFrom-Json | ConvertTo-Json
+
+  $signingUrl = $($response.Content | ConvertFrom-Json).url
+  $redirectUrl = "https://iframetester.com/?url="+$signingUrl
+
+  Write-Output "The embedded form URL is $redirectUrl"
+  Write-Output "Attempting to automatically open your browser..."
+
+  Start-Process $redirectUrl
+
 }
 catch {
   Write-Output "Unable to access form fill view link "
@@ -49,6 +60,14 @@ catch {
     if ($header -eq "X-DocuSign-TraceToken") { Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] }
     $int++
   }
-  Write-Output "Error : "$_.ErrorDetails.Message
+
+  $errorMessage = $_.ErrorDetails.Message
+  
+  if ( $errorMessage.Contains("INVALID_REQUEST_PARAMETERS") ) { Write-Output "Problem: Create a room using example 1." }
+
+  if ( $errorMessage.Contains("PROPERTY_VALIDATION_FAILURE") -or $errorMessage.Contains("FORM_NOT_IN_ROOM")) { Write-Output "Problem: Selected room does not have any forms. Add a form to a room using example 4." }
+  
+  Write-Output "Error : "$errorMessage
   Write-Output "Command : "$_.InvocationInfo.Line
+  
 }

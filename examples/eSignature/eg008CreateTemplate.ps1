@@ -1,4 +1,4 @@
-$apiUri = "https://stage.docusign.net/restapi"
+$apiUri = "https://demo.docusign.net/restapi"
 
 # Create a template. First, the account's templates are listed.
 # If one of the templates is named "Example Signer and CC template"

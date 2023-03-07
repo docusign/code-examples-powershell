@@ -21,8 +21,7 @@ try {
     # Retrieve a form library ID
     $obj = $response.Content | ConvertFrom-Json
     $formsLibraryID = $obj.formsLibrarySummaries[0].formsLibraryId
-}
-catch {
+} catch {
     Write-Output "Unable to retrieve form library"
     # On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
 
@@ -38,14 +37,29 @@ catch {
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_libraries/$formsLibraryID/forms"
 
 try {
+    Write-Output ""
     Write-Output "Response:"
     $response = Invoke-WebRequest -uri $uri -headers $headers -method GET
-    # Retrieve the the first form ID provided
     $response.Content
-    $obj = $response | ConvertFrom-Json
-    $formID = $obj.forms[0].libraryFormId
-}
-catch {
+
+    $formsObj = $($response.Content  | ConvertFrom-Json).forms
+
+    Write-Output ""
+    $menu = @{}
+    for ($i=1;$i -le $formsObj.count; $i++) { 
+        Write-Output "$i. $($formsObj[$i-1].name)"
+        $menu.Add($i,($formsObj[$i-1].libraryFormId))
+    }
+
+    do {
+        Write-Output ""
+        [int]$selection = Read-Host 'Select a form by the form name: '
+    } while ($selection -gt $formsObj.count -or $selection -lt 1);
+    $formID = $menu.Item($selection)
+
+    Write-Output ""
+    Write-Output "Form Id: $formID"
+} catch {
     Write-Output "Unable to retrieve a form id"
     # On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
 
@@ -59,14 +73,40 @@ catch {
 # Step 3 End
 
 # Step 4 Start
-# Get form group ID from the .\config\FORM_GROUP_ID file
-if (Test-Path .\config\FORM_GROUP_ID) {
-    $formGroupID = Get-Content .\config\FORM_GROUP_ID
-  }
-  else {
-    Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
-    exit 1
-  }
+$formGroupID = ""
+
+# Call the Rooms API to look up a list of form group IDs
+$uri = "${base_path}/restapi/v2/accounts/$APIAccountId/form_groups"
+$result = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
+
+Write-Output ""
+Write-Output "Response:"
+$result.Content
+
+$formGroupObj = $($result.Content  | ConvertFrom-Json).formGroups
+Write-Output ""
+
+# Setup a temporary menu option to pick a form group
+$menu = @{}
+for ($i=1;$i -le $formGroupObj.count; $i++) { 
+    Write-Output "$i. $($formGroupObj[$i-1].name)"
+    $menu.Add($i,($formGroupObj[$i-1].formGroupId))
+}
+
+if ($formGroupObj.count -lt 1) {
+   Write-Output "A form group ID is needed. Fix: execute code example 7 - Create a form group..."
+   exit 1
+}
+
+do {
+    Write-Output ""
+    [int]$selection = Read-Host 'Select a form group: '
+} while ($selection -gt $formGroupObj.count -or $selection -lt 1);
+$formGroupID = $menu.Item($selection)
+
+Write-Output ""
+Write-Output "Form group Id: $formGroupID"
+Write-Output ""
 # Step 4 End
 
 # Step 5 Start
@@ -85,8 +125,7 @@ try {
     $response = Invoke-WebRequest -uri $uri -headers $headers -method POST -Body $body
     Write-Output $response.Status
     Write-Output "Response: No JSON response body returned when setting the default office ID in a form group"
-}
-catch {
+} catch {
     Write-Output "Unable to assign the form to the form group"
     # On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
 

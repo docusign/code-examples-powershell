@@ -16,7 +16,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 # List the account's templates
 Write-Output "Checking to see if the template already exists in your account..."
 
-$templateName = "Example Signer and CC template"
+$templateName = "Example Signer and CC template v2"
 $response = New-TemporaryFile
 
 Invoke-RestMethod `
@@ -64,7 +64,7 @@ Write-Output "Sending the template create request to DocuSign..."
 # Concatenate the different parts of the request
 @{
     description = "Example template created via the eSignature API";
-    name        = "Example Signer and CC template";
+    name        = "Example Signer and CC template v2";
     shared      = "false";
     documents                  = @(
         @{

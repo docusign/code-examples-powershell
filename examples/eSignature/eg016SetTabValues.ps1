@@ -67,7 +67,28 @@ Write-Output "Sending the envelope request to DocuSign..."
               anchorXOffset = "20";
               anchorYOffset = "10";
             }; );
-          textTabs     = @(@{
+            numericalTabs = @(@{
+              ValidationType = "Currency";
+              XPosition = "210";
+              YPosition = "235";
+              Height = "20";
+              Width = "70";
+              PageNumber = "1";
+              DocumentId = "1";
+              MinNumericalValue = "0";
+              MaxNumericalValue = "1000000";
+              TabId = "salary";
+              TabLabel = "Salary";
+              NumericalValue = "123000";
+              LocalPolicy = @{
+                CultureName = "en-US";
+                CurrencyCode = "usd";
+                CurrencyPositiveFormat = "csym_1_comma_234_comma_567_period_89";
+                CurrencyNegativeFormat = "minus_csym_1_comma_234_comma_567_period_89";
+                UseLongCurrencyFormat = "true";
+              };
+            }; );
+            textTabs     = @(@{
               anchorString  = "/legal/";
               anchorUnits   = "pixels";
               anchorXOffset = "5";
@@ -91,19 +112,7 @@ Write-Output "Sending the envelope request to DocuSign..."
               tabId         = "familiar_name";
               tabLabel      = "Familiar name";
               value         = $variables.SIGNER_NAME;
-            }; @{
-              anchorString  = "/salary/";
-              anchorUnits   = "pixels";
-              anchorXOffset = "5";
-              anchorYOffset = "-9";
-              bold          = "true";
-              font          = "helvetica";
-              fontSize      = "size11";
-              locked        = "true";
-              tabId         = "salary";
-              tabLabel      = "Salary";
-              value         = '$123,000.00';
-            }; );
+            };);
         };
       }; );
   };

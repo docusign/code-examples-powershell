@@ -159,12 +159,15 @@ Write-Output "Sending the template create request to DocuSign..."
                             tabLabel = "text"; width = 84;
                             xPosition = "153"; yPosition = "230";
                         };
+                    );
+                    numericalTabs       = @(
                         @{
+                            ValidationType = "Currency";
                             documentId = "1"; font = "helvetica";
                             fontSize = "size14"; height = 23;
                             pageNumber = "1"; required = "false";
-                            tabLabel = "numbersOnly"; width = 84;
-                            xPosition = "153"; yPosition = "260";
+                            tabLabel = "numericalCurrency"; width = 84;
+                            xPosition = "153"; yPosition = "230";
                         };
                     );
                 };

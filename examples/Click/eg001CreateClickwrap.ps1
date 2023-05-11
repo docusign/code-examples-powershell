@@ -5,12 +5,15 @@ $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 $clickwrapName = Read-Host "Please input a name for the clickwrap: "
 
 # Step 2. Construct your API headers
+#ds-snippet-start:Click1Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Click1Step2
 
 # Step 3. Construct the request body
+#ds-snippet-start:Click1Step3
 $body = @"
 {
   "displaySettings": {
@@ -36,14 +39,17 @@ $body = @"
   "requireReacceptance": true
 }
 "@
+#ds-snippet-end:Click1Step3
 
 # Step 4. Call the Click API
 # a) Make a POST call to the clickwraps endpoint to create a clickwrap for an account
 # b) Display the JSON structure of the created clickwrap
+#ds-snippet-start:Click1Step4
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method POST -Body $body
 Write-Output "Response: "
 $result.Content
+#ds-snippet-end:Click1Step4
 
 # Store clickwrapId to the file for future reference
 $($result.Content | ConvertFrom-Json).clickwrapId > .\config\CLICKWRAP_ID

@@ -12,10 +12,12 @@ else {
 }
 
 # Construct your API headers
+#ds-snippet-start:Click6Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Click6Step2
 
 $client_user_id = Read-Host "Please input a Client User Id (your own unique identifier) for the clickwrap"
 $full_name = Read-Host "Please input a full name"
@@ -24,6 +26,7 @@ $company_name = Read-Host "Please input a company name"
 $title = Read-Host "Please input a job title"
 
 # Construct the request body
+#ds-snippet-start:Click6Step3
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
@@ -38,6 +41,7 @@ $response = New-TemporaryFile
     date     = $((Get-Date).ToString("yyyy-MM-ddThh:mm:ssK"))
   };
 }  | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:Click6Step3
 
 # Call the Click API
 # a) Make a GET call to the users endpoint to retrieve responses (acceptance) of a specific clickwrap for an account
@@ -45,6 +49,7 @@ $response = New-TemporaryFile
 try {
 
 
+  #ds-snippet-start:Click6Step4
   Invoke-RestMethod `
   -Uri "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/agreements" `
   -UseBasicParsing `
@@ -56,6 +61,7 @@ try {
 } `
 -InFile (Resolve-Path $requestData).Path `
 -OutFile $response
+#ds-snippet-end:Click6Step4
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 

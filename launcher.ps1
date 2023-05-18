@@ -445,8 +445,8 @@ function startSignature {
             Signing_In_Person = 39;
             Set_Document_Visibility = 40;
             Document_Generation = 41;
-            Shared_Access = 42;
-            Pick_An_API = 43;
+            Shared_Access = 43;
+            Pick_An_API = 44;
         }
 
         $ApiExamplesView = $null;

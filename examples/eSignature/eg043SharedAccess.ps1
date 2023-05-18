@@ -71,19 +71,30 @@ if ($choice -ne "1") {
     exit 1
 }
 
-# Get user id of the currently logged user
-Invoke-RestMethod `
+try {
+    # Get user id of the currently logged user
+    Invoke-RestMethod `
     -Uri "${accountUri}/oauth/userinfo" `
     -Method 'GET' `
     -Headers @{
     'Cache-Control' = "no-store";
     'Pragma' = "cache";
     'Authorization' = "Bearer $accessToken";
-} `
+    } `
     -Body @{ "from_date" = ${fromDate} } `
     -OutFile $response
 
-$userId = $(Get-Content $response | ConvertFrom-Json).sub
+    $userId = $(Get-Content $response | ConvertFrom-Json).sub
+} catch {
+    Write-Output "Unable to retrieve Bulk Status."
+
+    foreach ($header in $_.Exception.Response.Headers) {
+        if ($header -eq "X-DocuSign-TraceToken") { Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] }
+        $int++
+    }
+    Write-Output "Error : "$_.ErrorDetails.Message
+    Write-Output "Command : "$_.InvocationInfo.Line
+}
 
 $isUserActivated = 0;
 
@@ -152,33 +163,44 @@ if ($choice -ne "1") {
 
 powershell.exe -Command .\utils\sharedAccess.ps1
 
-# Make the API call to check the envelope
-# Get date in the ISO 8601 format
-$fromDate = ((Get-Date).AddDays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
+try {
+    # Make the API call to check the envelope
+    # Get date in the ISO 8601 format
+    $fromDate = ((Get-Date).AddDays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
 
-$response = New-TemporaryFile
+    $response = New-TemporaryFile
 
-Invoke-RestMethod `
-    -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
-    -Method 'GET' `
-    -Headers @{
-    'X-DocuSign-Act-On-Behalf' = $userId;
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
-} `
-    -Body @{ "from_date" = ${fromDate} } `
-    -OutFile $response
+    Invoke-RestMethod `
+        -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
+        -Method 'GET' `
+        -Headers @{
+        'X-DocuSign-Act-On-Behalf' = $userId;
+        'Authorization' = "Bearer $accessToken";
+        'Content-Type'  = "application/json";
+    } `
+        -Body @{ "from_date" = ${fromDate} } `
+        -OutFile $response
 
-if ([string]::IsNullOrEmpty($response))
-{
-    Write-Output ""
-    Write-Output "Response body is empty because there are no envelopes in the account. Please run example 2 and re-run this example." 
-} else {
-    Write-Output ""
-    Write-Output "Response:"
-    Write-Output ""
+    if ([string]::IsNullOrEmpty($response))
+    {
+        Write-Output ""
+        Write-Output "Response body is empty because there are no envelopes in the account. Please run example 2 and re-run this example." 
+    } else {
+        Write-Output ""
+        Write-Output "Response:"
+        Write-Output ""
 
-    Get-Content $response
+        Get-Content $response
+    }
+} catch {
+    Write-Output "Unable to retrieve Bulk Status."
+
+    foreach ($header in $_.Exception.Response.Headers) {
+        if ($header -eq "X-DocuSign-TraceToken") { Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] }
+        $int++
+    }
+    Write-Output "Error : "$_.ErrorDetails.Message
+    Write-Output "Command : "$_.InvocationInfo.Line
 }
 
 # cleanup

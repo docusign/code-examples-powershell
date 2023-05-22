@@ -2,15 +2,15 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Step 2 Start
 # Construct your API headers
+#ds-snippet-start:Rooms9Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
-# Step 2 End
+#ds-snippet-end:Rooms9Step2
 
-# Step 3 Start
+#ds-snippet-start:Rooms9Step3
 # Call the Rooms API to look up your forms library ID
 $base_path = "https://demo.rooms.docusign.com"
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_libraries"
@@ -70,9 +70,9 @@ try {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
-# Step 3 End
+#ds-snippet-end:Rooms9Step3
 
-# Step 4 Start
+#ds-snippet-start:Rooms9Step4
 $formGroupID = ""
 
 # Call the Rooms API to look up a list of form group IDs
@@ -107,17 +107,17 @@ $formGroupID = $menu.Item($selection)
 Write-Output ""
 Write-Output "Form group Id: $formGroupID"
 Write-Output ""
-# Step 4 End
+#ds-snippet-end:Rooms9Step4
 
-# Step 5 Start
+#ds-snippet-start:Rooms9Step5
 # Construct your request body
 $body =
 @"
  {"formId": "$formID" }
 "@
-# Step 5 End
+#ds-snippet-end:Rooms9Step5
 
-# Step 6 Start
+#ds-snippet-start:Rooms9Step6
 # Call the Rooms API
 $uri = "$base_path/restapi/v2/accounts/$APIAccountId/form_groups/$formGroupID/assign_form"
 
@@ -136,4 +136,4 @@ try {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
-# Step 6 End
+#ds-snippet-end:Rooms9Step6

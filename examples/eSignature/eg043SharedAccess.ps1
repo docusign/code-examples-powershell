@@ -115,7 +115,7 @@ do {
         Write-Output ""
         Get-Content $response
 
-        if ($(Get-Content $response | ConvertFrom-Json).authorizations -eq "") {
+        if ([string]::IsNullOrEmpty($(Get-Content $response | ConvertFrom-Json).authorizations)) {
             # Sharing the envelope with the agent
             $body = @"
             {

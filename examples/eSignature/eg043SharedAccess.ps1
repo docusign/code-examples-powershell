@@ -110,11 +110,6 @@ do {
             } `
             -OutFile $response
 
-        Write-Output ""
-        Write-Output "Response:"
-        Write-Output ""
-        Get-Content $response
-
         if ([string]::IsNullOrEmpty($(Get-Content $response | ConvertFrom-Json).authorizations)) {
             # Sharing the envelope with the agent
             $body = @"
@@ -135,8 +130,10 @@ do {
             $headers.add("Authorization", "Bearer $accessToken")
             $headers.add("Content-Type", "application/json")
 
-            $result = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST -UseBasicParsing -OutFile $response
-            $result.content
+            Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST -UseBasicParsing -OutFile $response
+            
+            Write-Output "Response:"
+            Write-Output "$(Get-Content -Raw $response)"
         }
 
         $isUserActivated = 1;

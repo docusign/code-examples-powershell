@@ -22,7 +22,7 @@ do {
     Write-Output "$([int][AuthType]::CodeGrant)) Authorization Code Grant"
     Write-Output "$([int][AuthType]::JWT)) Json Web Token (JWT)"
     Write-Output "$([int][AuthType]::Exit)) Exit"
-    [int]$AuthTypeView = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
+    [int]$AuthTypeView = Read-Host "Choose an OAuth Strategy. Then log in as the new user that you just created."
 } while (-not [AuthType]::IsDefined([AuthType], $AuthTypeView));
 
 if ($AuthTypeView -eq [AuthType]::Exit) {

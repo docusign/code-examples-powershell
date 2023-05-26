@@ -65,22 +65,22 @@ else {
 #ds-snippet-end:Admin3Step3
 
 # Check the request status
-# Step 4 start
+#ds-snippet-start:Admin3Step4
 $uri2 = "${base_path}/v2/organizations/$organizationId/exports/user_list/$requestId"
 $result2 = Invoke-WebRequest -headers $headers -Uri $uri2 -Method GET
 $result2.Content
 $results = $result2 | ConvertFrom-Json
-# Step 4 end
+#ds-snippet-end:Admin3Step4
 $results
 
 # Get result Id
 $resultId = $($result2 | ConvertFrom-Json).results.id
 
 # Download the exported user data
-# Step 5 start
+#ds-snippet-start:Admin3Step5
 $uri3 = "https://demo.docusign.net/restapi/v2/organization_exports/$organizationId/user_list/$resultId"
 $result3 = Invoke-WebRequest -headers $headers -Uri $uri3 -Method GET
 $result3.Content
-# Step 5 end
+#ds-snippet-end:Admin3Step5
 Write-Output "Export data to file bulkexport.csv ..."
 $result3.Content > bulkexport.csv

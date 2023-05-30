@@ -2,11 +2,11 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:Admin6Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:Admin6Step2
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -24,8 +24,8 @@ $email = Read-Host "Enter the user's email address"
 
 $result = ""
 # Call the DocuSign Admin API
-# Step 3 start
+#ds-snippet-start:Admin6Step3
 $uri = "${base_path}/v2.1/organizations/${organizationId}/users/dsprofile?email=${email}"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method GET
 $result.Content
-# Step 3 end
+#ds-snippet-end:Admin6Step3

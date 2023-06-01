@@ -445,7 +445,8 @@ function startSignature {
             Signing_In_Person = 39;
             Set_Document_Visibility = 40;
             Document_Generation = 41;
-            Pick_An_API = 42;
+            Shared_Access = 43;
+            Pick_An_API = 44;
         }
 
         $ApiExamplesView = $null;
@@ -492,6 +493,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Signing_In_Person)) In_Person_Signing"
             Write-Output "$([int][ApiExamples]::Set_Document_Visibility)) Set_Document_Visibility"
             Write-Output "$([int][ApiExamples]::Document_Generation)) Document_Generation"
+            Write-Output "$([int][ApiExamples]::Shared_Access)) Shared_Access"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -633,6 +635,10 @@ function startSignature {
         elseif ($ApiExamplesView -eq [ApiExamples]::Document_Generation) {
             checkEmailAddresses
             powershell.exe .\examples\eSignature\eg042DocumentGeneration.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Shared_Access) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg043SharedAccess.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher
@@ -785,7 +791,9 @@ function startAdmin {
             getUserProfileByUserId = 7;
             updateUserProductPermissionProfile = 8;
             deleteUserProductPermissionProfile = 9;
-            Pick_An_API = 10;
+            deleteUserDataFromOrganization = 10;
+            deleteUserDataFromAccount = 11;
+            Pick_An_API = 12;
         }
         $listAdminExamplesView = $null;
         do {
@@ -800,6 +808,8 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
             Write-Output "$([int][listAdminExamples]::updateUserProductPermissionProfile)) Update user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
+            Write-Output "$([int][listAdminExamples]::deleteUserDataFromOrganization)) Delete user data from organization"
+            Write-Output "$([int][listAdminExamples]::deleteUserDataFromAccount)) Delete user data from account"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -841,6 +851,14 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserProductPermissionProfile) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserDataFromOrganization) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg010DeleteUserDataFromOrganization.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserDataFromAccount) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg011DeleteUserDataFromAccount.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

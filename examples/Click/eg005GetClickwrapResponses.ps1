@@ -12,15 +12,19 @@ if (Test-Path .\config\CLICKWRAP_ID) {
 }
 
 # Step 2. Construct your API headers
+#ds-snippet-start:Click5Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Click5Step2
 
 # Step 3. Call the Click API
 # a) Make a GET call to the users endpoint to retrieve responses (acceptance) of a specific clickwrap for an account
 # b) Display the returned JSON structure of the responses
+#ds-snippet-start:Click5Step3
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method GET
 Write-Output "Response: "
 $result.Content
+#ds-snippet-end:Click5Step3

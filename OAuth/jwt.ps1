@@ -43,7 +43,7 @@ if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation"
   }
   elseif ($apiVersion -eq "admin") {
-    $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read"
+    $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read%20user_data_redact"
   }
 
 # Step 1. Request application consent

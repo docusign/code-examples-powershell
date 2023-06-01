@@ -2,11 +2,11 @@
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:Admin3Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:Admin3Step2
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -35,7 +35,7 @@ $result = Invoke-WebRequest -headers $headers -Uri $uri2 -body $body -Method POS
 $requestId = $($result.Content  | ConvertFrom-Json).id
 $requestId
 
-# Step 3 start
+#ds-snippet-start:Admin3Step3
 Write-Output "Checking Bulk Action Status"
 $uri2 = "${base_path}/v2/organizations/$organizationId/exports/user_list/$requestId"
 $result2 = Invoke-WebRequest -headers $headers -Uri $uri2 -Method GET
@@ -62,25 +62,25 @@ else {
     Write-Output "An error has occurred, the Bulk Action has not been completed."
     exit 1
 }
-# Step 3 end
+#ds-snippet-end:Admin3Step3
 
 # Check the request status
-# Step 4 start
+#ds-snippet-start:Admin3Step4
 $uri2 = "${base_path}/v2/organizations/$organizationId/exports/user_list/$requestId"
 $result2 = Invoke-WebRequest -headers $headers -Uri $uri2 -Method GET
 $result2.Content
 $results = $result2 | ConvertFrom-Json
-# Step 4 end
+#ds-snippet-end:Admin3Step4
 $results
 
 # Get result Id
 $resultId = $($result2 | ConvertFrom-Json).results.id
 
 # Download the exported user data
-# Step 5 start
+#ds-snippet-start:Admin3Step5
 $uri3 = "https://demo.docusign.net/restapi/v2/organization_exports/$organizationId/user_list/$resultId"
 $result3 = Invoke-WebRequest -headers $headers -Uri $uri3 -Method GET
 $result3.Content
-# Step 5 end
+#ds-snippet-end:Admin3Step5
 Write-Output "Export data to file bulkexport.csv ..."
 $result3.Content > bulkexport.csv

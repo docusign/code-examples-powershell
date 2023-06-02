@@ -8,6 +8,10 @@ $requestData = New-TemporaryFile
 $requestDataTemp = New-TemporaryFile
 $response = New-TemporaryFile
 
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.add("Authorization", "Bearer $accessToken")
+$headers.add("Content-Type", "application/json")
+
 Write-Output ""
 $agentName = Read-Host "Please enter the name of the new agent"
 Write-Output ""

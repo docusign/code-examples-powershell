@@ -28,7 +28,7 @@ else {
 Write-Output "Sending the Envelopes::get request to DocuSign..."
 Write-Output "Results:"
 
-# Step 2. Get envelope data
+#ds-snippet-start:eSign4Step2
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}" `
   -Method 'GET' `
@@ -36,6 +36,6 @@ Invoke-RestMethod `
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign4Step2
 
 Write-Output "Done."

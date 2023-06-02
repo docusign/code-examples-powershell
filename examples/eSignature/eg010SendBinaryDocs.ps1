@@ -23,9 +23,7 @@ $accessToken = Get-Content ".\config\ds_access_token.txt"
 # the default picture.
 $accountId = Get-Content ".\config\API_ACCOUNT_ID"
 
-# ***DS.snippet.0.start
-
-# Step 3 start
+#ds-snippet-start:eSign10Step3
 # Construct the request body
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
@@ -144,14 +142,14 @@ Add-OemContent $requestData "${CRLF}"
 # Add closing boundary
 Add-OemContent $requestData "--$boundary--"
 Add-OemContent $requestData "${CRLF}"
-# Step 3 end
+#ds-snippet-end:eSign10Step3
 
-# Step 2 start
+#ds-snippet-start:eSign10Step2
 $headers = @{
 	'Authorization' = "Bearer $accessToken";
 	'Content-Type'  = "multipart/form-data; boundary=${boundary}";
 }
-# Step 2 end
+#ds-snippet-end:eSign10Step2
 
 # Send request
 try {

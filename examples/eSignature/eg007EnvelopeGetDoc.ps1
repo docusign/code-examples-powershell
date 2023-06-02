@@ -26,10 +26,12 @@ else {
     exit 1
 }
 
+#ds-snippet-start:eSign7Step2
 $headers = @{
     'Authorization' = "Bearer $accessToken";
     'Content-Type'  = "application/json";
   }
+#ds-snippet-end:eSign7Step2
 
 $docChoice = "1"
 $outputFileExtension = "pdf"
@@ -79,13 +81,12 @@ else {
 
 Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
 # Call the eSignature API
-# Step 3 start
+#ds-snippet-start:eSign7Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents/${docChoice}" `
     -Method 'GET' `
     -Headers $headers `
     -OutFile ${outputFile}${outputFileExtension}
-
-# Step 3 end
+#ds-snippet-end:eSign7Step3
 Write-Output "The document(s) are stored in file ${outputFile}${outputFileExtension}"
 Write-Output "Done."

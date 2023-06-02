@@ -8,6 +8,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Step 2. List envelope status
+#ds-snippet-start:eSign3Step2
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
 # the drop down on the upper right corner of the screen by your picture or
 # the default picture.
@@ -28,5 +29,5 @@ $(Invoke-RestMethod `
     'Content-Type'  = "application/json";
   } `
     -Body @{ "from_date" = ${fromDate} }).envelopes
-
+#ds-snippet-end:eSign3Step2
 Write-Output "Done."

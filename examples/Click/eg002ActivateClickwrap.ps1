@@ -12,24 +12,30 @@ if (Test-Path .\config\CLICKWRAP_ID) {
 }
 
 # Step 2. Construct your API headers
+#ds-snippet-start:Click2Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Click2Step2
 
 # Note: These values are not valid, but are shown for example purposes only!
 $VersionNumber = "1"
 
 # Construct your clickwrap JSON body
+#ds-snippet-start:Click2Step3
 $body = @"
 {
 "status" : "active"
 }
 "@
+#ds-snippet-end:Click2Step3
 
 # a) Make a POST call to updateClickwrapVersionByNumber
 # b) Display the JSON structure of the created clickwrap
+#ds-snippet-start:Click2Step4
 $uri = "https://demo.docusign.net/clickapi/v1/accounts/$APIAccountId/clickwraps/$ClickWrapId/versions/$VersionNumber"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -UseBasicParsing -Method PUT -Body $body
 Write-Output "Response: "
 $result.Content
+#ds-snippet-end:Click2Step4

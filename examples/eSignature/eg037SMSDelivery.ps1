@@ -74,6 +74,7 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
                 name         = $variables.CC_NAME;
                 recipientId  = "2";
                 routingOrder = "2";
+                deliveryMethod = "SMS";
             };
         );
 
@@ -86,6 +87,7 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
                 name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
+                deliveryMethod = "SMS";
                 tabs         = @{
                     signHereTabs = @(
                         @{

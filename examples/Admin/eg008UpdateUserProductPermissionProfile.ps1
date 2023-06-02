@@ -30,12 +30,12 @@ if (Test-Path $emailAddressFile) {
 }
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:Admin8Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:Admin8Step2
 
 try {
   # Get all permission profiles
@@ -128,7 +128,7 @@ if ($listProductChoicesView -eq [listProductChoices]::CLM) {
 }
 
 # Construct the request body
-# Step 3 start
+#ds-snippet-start:Admin8Step3
 $body = @"
 {
     "email": "$emailAddress",
@@ -140,16 +140,16 @@ $body = @"
     ]
 }
 "@
-# Step 3 end
+#ds-snippet-end:Admin8Step3
 
 try {
   # Display the JSON response
   Write-Output "Response:"
-  # Step 4 start
+#ds-snippet-start:Admin8Step4
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/permission_profiles/users"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
   $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 4
-  # Step 4 end
+#ds-snippet-end:Admin8Step4
   
   Write-Output "Done"
 }

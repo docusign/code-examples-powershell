@@ -42,6 +42,7 @@ do {
 
 Write-Output "Requesting the console view url"
 
+#ds-snippet-start:eSign12Step2
 $requestBody = switch ($selectedView) {
     { [ViewType]::FrontPage } {
         @{
@@ -58,7 +59,6 @@ $requestBody = switch ($selectedView) {
 }
 
 $requestBody
-# Step 2. Call the eSignature REST API
 $console = Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/views/console" `
     -Method "POST" `
@@ -71,8 +71,8 @@ $console = Invoke-RestMethod `
 Write-Output "Results:"
 Write-Output "Console received: $console"
 $consoleUrl = $console.url
+#ds-snippet-end:eSign12Step2
 
-# ***DS.snippet.0.end
 Write-Output "The console URL is $consoleUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 Start-Process $consoleUrl

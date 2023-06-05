@@ -53,6 +53,7 @@ if ((Test-Path $docPath) -eq $false) {
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign1Step2
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -86,8 +87,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign1Step2
 
 # Step 3. Call DocuSign to create the envelope
+#ds-snippet-start:eSign1Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -97,6 +100,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign1Step3
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 
@@ -112,6 +116,7 @@ Write-Output "EnvelopeId: $envelopeId"
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
 
+#ds-snippet-start:eSign1Step4
 Write-Output "Requesting the url for the embedded signing..."
 
 $json = [ordered]@{
@@ -121,9 +126,10 @@ $json = [ordered]@{
     'userName'             = $variables.SIGNER_NAME;
     'clientUserId'         = 1000
 } | ConvertTo-Json -Compress
-
+#ds-snippet-end:eSign1Step4
 
 # Step 5. Create the recipient view and begin the DocuSign signing
+#ds-snippet-start:eSign1Step5
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -136,6 +142,7 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
+#ds-snippet-end:eSign1Step5
 
 # ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"

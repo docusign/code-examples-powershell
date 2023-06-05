@@ -28,17 +28,21 @@ else {
 Write-Output "Sending the EnvelopeCustomFields::list request to DocuSign..."
 
 # Step 2. Create your authorization headers
+#ds-snippet-start:eSign18Step2
 $headers = @{
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
+#ds-snippet-end:eSign18Step2
 
 # Step 3. Call the eSignature REST API
+#ds-snippet-start:eSign18Step3
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/custom_fields" `
   -Method 'GET' `
   -Headers $headers `
   -OutFile $response
+#ds-snippet-end:eSign18Step3
 
 Write-Output "Results:"
 

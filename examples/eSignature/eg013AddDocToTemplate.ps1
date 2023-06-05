@@ -28,7 +28,6 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-# ***DS.snippet.0.start
 # Fetch docs and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\added_document.html"))) > $doc1Base64
 
@@ -38,6 +37,7 @@ Write-Output "added by using Composite Templates"
 
 # Concatenate the different parts of the request
 #  document 1 (html) has tag **signature_1**
+#ds-snippet-start:eSign13Step2
 @{
     compositeTemplates = @(
         @{
@@ -118,7 +118,10 @@ Write-Output "added by using Composite Templates"
     );
     status             = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign13Step2
+
 # Step 3. Call DocuSign to create the envelope
+#ds-snippet-start:eSign13Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -128,6 +131,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign13Step3
 
 Write-Output "Results:"
 Get-Content $response
@@ -143,6 +147,7 @@ Write-Output "EnvelopeId: $envelopeId"
 # the signer to returnUrl when the signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
 # query parameters passed back from DocuSign
+#ds-snippet-start:eSign13Step4
 Write-Output "Requesting the url for the embedded signing..."
 
 @{
@@ -167,7 +172,7 @@ Write-Output "Response:"
 Get-Content $response
 
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign13Step4
 
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."

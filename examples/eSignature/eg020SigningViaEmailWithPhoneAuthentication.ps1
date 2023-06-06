@@ -27,15 +27,15 @@ $docBase64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:eSign20Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:eSign20Step2
 
 # - Obtain your workflow ID
-# Step 3 start
+#ds-snippet-start:eSign20Step3
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/identity_verification"
 
 Write-Output "Attempting to retrieve your account's workflow ID"
@@ -45,7 +45,7 @@ $result = Invoke-RestMethod -uri $uri -headers $headers -method GET
 $result.content
 #Obtain the workflow ID from the API response
 $workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "Phone Authentication"}).workflowId
-# Step 3 end
+#ds-snippet-end:eSign20Step3
 
 if ($null -eq $workflowId)
 {
@@ -56,7 +56,7 @@ $SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient auth
 
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
 # Construct your envelope JSON body
-# Step 4 start
+#ds-snippet-start:eSign20Step4
 $body = @"
 {
 	"documents": [{
@@ -108,14 +108,14 @@ $body = @"
 	"status": "Sent"
 }
 "@
-# Step 4 end
+#ds-snippet-end:eSign20Step4
 Write-Output ""
 Write-Output "Request: "
 Write-Output $body
 
 # a) Make a POST call to the createEnvelopes endpoint to create a new envelope.
 # b) Display the JSON structure of the created envelope
-# Step 5 start
+#ds-snippet-start:eSign20Step5
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 try {
 	Write-Output "Response:"
@@ -131,7 +131,7 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
-# Step 5 end
+#ds-snippet-end:eSign20Step5
 
 # cleanup
 Remove-Item $docBase64

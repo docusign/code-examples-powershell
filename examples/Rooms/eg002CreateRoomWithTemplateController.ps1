@@ -14,6 +14,7 @@ $headers.add("Content-Type", "application/json")
 
 # - Retrieve rooms pre-requisite data
 # - Obtain our RoleID and OfficeID
+#ds-snippet-start:Rooms2Step3
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/roles"
 $uriOfficeId = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/offices"
 
@@ -36,6 +37,7 @@ catch {
   Write-Output "Error : "$_.ErrorDetails.Message
   Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:Rooms2Step3
 
 # - Retrieve a Rooms template ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/room_templates"
@@ -58,7 +60,7 @@ catch {
 }
 
 # Construct the JSON body for your room
-#ds-snippet-start:Rooms2Step3
+#ds-snippet-start:Rooms2Step4
 $body = @"
 {
   "name": "Sample Rooms Creation from Template",
@@ -79,11 +81,11 @@ $body = @"
      }
 }
 "@
-#ds-snippet-end:Rooms2Step3
+#ds-snippet-end:Rooms2Step4
 
 # a) Call the Rooms API
 # b) Display JSON response
-#ds-snippet-start:Rooms2Step4
+#ds-snippet-start:Rooms2Step5
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/rooms"
 
 try {
@@ -101,4 +103,4 @@ catch {
   Write-Output "Error : "$_.ErrorDetails.Message
   Write-Output "Command : "$_.InvocationInfo.Line
 }
-#ds-snippet-end:Rooms2Step4
+#ds-snippet-end:Rooms2Step5

@@ -107,7 +107,7 @@ $formGroupID = $menu.Item($selection)
 Write-Output ""
 Write-Output "Form group Id: $formGroupID"
 Write-Output ""
-#ds-snippet-start:Rooms9Step4
+#ds-snippet-end:Rooms9Step4
 
 # Construct your request body
 #ds-snippet-start:Rooms9Step5

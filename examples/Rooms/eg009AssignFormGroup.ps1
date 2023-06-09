@@ -72,7 +72,7 @@ try {
 }
 #ds-snippet-end:Rooms9Step3
 
-# Step 4 Start
+#ds-snippet-start:Rooms9Step4
 $formGroupID = ""
 
 # Call the Rooms API to look up a list of form group IDs
@@ -107,7 +107,7 @@ $formGroupID = $menu.Item($selection)
 Write-Output ""
 Write-Output "Form group Id: $formGroupID"
 Write-Output ""
-# Step 4 End
+#ds-snippet-start:Rooms9Step4
 
 # Construct your request body
 #ds-snippet-start:Rooms9Step5

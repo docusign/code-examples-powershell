@@ -16,14 +16,14 @@ if($null -eq $organizationId)
 }
 
 # Construct your API headers
-# ds-snippet-start:Admin5Step2
+#ds-snippet-start:Admin5Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
-# ds-snippet-end:Admin5Step2
+#ds-snippet-end:Admin5Step2
 
-# ds-snippet-start:Admin5Step3
+#ds-snippet-start:Admin5Step3
 $modifiedSince = (Get-Date (Get-Date).AddDays(-10) -Format "yyyy-MM-dd")
 
 try {
@@ -45,13 +45,13 @@ catch {
   Write-Output "Command : "$_.InvocationInfo.Line
   exit 1
 }
-# ds-snippet-end:Admin5Step3
+#ds-snippet-end:Admin5Step3
 
-# ds-snippet-start:Admin5Step4
+#ds-snippet-start:Admin5Step4
 $userEmails = $modifiedUsers.email
-# ds-snippet-end:Admin5Step4
+#ds-snippet-end:Admin5Step4
 
-# ds-snippet-start:Admin5Step5
+#ds-snippet-start:Admin5Step5
 foreach ($emailAddress in $userEmails){
   try {
     # Display the JSON response
@@ -72,4 +72,4 @@ foreach ($emailAddress in $userEmails){
     exit 1
   }
 }
-# ds-snippet-end:Admin5Step5
+#ds-snippet-end:Admin5Step5

@@ -3,11 +3,11 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:Admin1Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:Admin1Step2
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -22,11 +22,12 @@ $base_path = "https://api-d.docusign.net/management"
 $organizationId = $variables.ORGANIZATION_ID
 
 # Get groups and permission profile IDs
-
+#ds-snippet-start:Admin1Step3
 $uri = "${base_path}/v2/organizations/${organizationId}/accounts/${accountId}/permissions"
 $result = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 
 $permissionsObj = $($result.Content  | ConvertFrom-Json).permissions
+#ds-snippet-end:Admin1Step3
 
 # Setup a temporary menu option to pick a permission profile
 $menu = @{}
@@ -38,12 +39,12 @@ $menu = @{}
   } while ($selection -gt $permissionsObj.count -or $selection -lt 1);
   $permissionsId = $menu.Item($selection)
 
-
+#ds-snippet-start:Admin1Step4
 $uri = "${base_path}/v2/organizations/${organizationId}/accounts/${accountId}/groups"
 $result = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
 
 $groupsObj = $($result.Content  | ConvertFrom-Json).groups
-
+#ds-snippet-end:Admin1Step4
 
 # Setup a temporary menu option to pick a group
 $menu = @{}
@@ -63,7 +64,7 @@ $lastName = Read-Host "Enter the last name of the new user"
 $userEmail = Read-Host "Enter an email for the new user"
 
 # Construct the request body for the new user
-# Step 3 start
+#ds-snippet-start:Admin1Step5
 $body = @"
 {
   "user_name": "$userName",
@@ -86,12 +87,12 @@ $body = @"
   ]
 }
 "@
-# Step 3 end
+#ds-snippet-end:Admin1Step5
 
 $result = ""
 # Call the DocuSign Admin API
-# Step 4 start
+#ds-snippet-start:Admin1Step6
 $uri = "${base_path}/v2/organizations/${organizationId}/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method POST
 $result.Content
-# Step 4 end
+#ds-snippet-end:Admin1Step6

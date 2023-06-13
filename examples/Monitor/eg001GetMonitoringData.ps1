@@ -80,7 +80,7 @@ DO {
    }
 
 } While ($complete -eq $false )
-#ds-snippet-start:Monitor1Step3
+#ds-snippet-end:Monitor1Step3
 
 Remove-Item $response
 

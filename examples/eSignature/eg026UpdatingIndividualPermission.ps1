@@ -9,10 +9,12 @@ $oAuthAccessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Construct your API headers
+#ds-snippet-start:eSign26Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign26Step2
 
 # Check that we have an profile name
 if (Test-Path .\config\PROFILE_NAME) {
@@ -33,6 +35,7 @@ else {
 }
 
 # Construct your request body
+#ds-snippet-start:eSign26Step3
 $body = @"
 {
     "permissionProfileName": "${profileName}",
@@ -65,9 +68,11 @@ $body = @"
     }
 }
 "@
+#ds-snippet-end:eSign26Step3
 
 # a) Call the eSignature API
 # b) Display the JSON response
+#ds-snippet-start:eSign26Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/permission_profiles/${profileId}"
 
 try {
@@ -85,3 +90,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign26Step4

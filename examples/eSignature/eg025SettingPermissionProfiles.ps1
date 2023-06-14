@@ -19,15 +19,18 @@ else {
 
 # Step 2. Construct your API headers
 # Construct your API headers
+#ds-snippet-start:eSign25Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign25Step2
 
 $GROUP_NAME = Read-Host "Please enter a NEW group name"
 
 # Step 3. Construct the request body
 # Create a Group and get a Group ID
+#ds-snippet-start:eSign25Step3
 $body = @"
 {
     "groups": [
@@ -37,6 +40,7 @@ $body = @"
     ]
 }
 "@
+#ds-snippet-end:eSign25Step3
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/groups"
 $response = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST
 $groupId = $($response.Content | ConvertFrom-Json).groups.groupId
@@ -57,6 +61,7 @@ $body = @"
 # a) Call the eSignature API
 # b) Display the JSON response
 
+#ds-snippet-start:eSign25Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/groups"
 $response = $null
 
@@ -75,3 +80,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign25Step4

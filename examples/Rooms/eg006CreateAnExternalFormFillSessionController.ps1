@@ -3,10 +3,12 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Construct your API headers
+#ds-snippet-start:Rooms6Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Rooms6Step2
 
 # Get Room ID
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/rooms"
@@ -25,6 +27,7 @@ $formId = $($response.Content | ConvertFrom-Json).forms[0].libraryFormId
 
 
 # Construct your request body
+#ds-snippet-start:Rooms6Step3
 $body =
 @"
 {
@@ -33,24 +36,29 @@ $body =
   "xFrameAllowedUrl": "https://iframetester.com/"
 }
 "@
+#ds-snippet-end:Rooms6Step3
 
 # a) Call the v2 Rooms API
 # b) Display the JSON response
+#ds-snippet-start:Rooms6Step4
 $uri = "https://demo.rooms.docusign.com/restapi/v2/accounts/$APIAccountId/external_form_fill_sessions"
 
 try {
   Write-Output "Response:"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
   $response.Content | ConvertFrom-Json | ConvertTo-Json
+#ds-snippet-end:Rooms6Step4
 
+#ds-snippet-start:Rooms6Step5
   $signingUrl = $($response.Content | ConvertFrom-Json).url
+
   $redirectUrl = "https://iframetester.com/?url="+$signingUrl
 
   Write-Output "The embedded form URL is $redirectUrl"
   Write-Output "Attempting to automatically open your browser..."
 
   Start-Process $redirectUrl
-
+#ds-snippet-end:Rooms6Step5
 }
 catch {
   Write-Output "Unable to access form fill view link "

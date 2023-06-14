@@ -34,12 +34,15 @@ else {
 }
 
 # Construct your API headers
+#ds-snippet-start:eSign30Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign30Step2
 
 # Construct your request body
+#ds-snippet-start:eSign30Step3
 $body = @"
     {
         "templateId": "${templateID}",
@@ -59,9 +62,11 @@ $body = @"
         "status": "sent"
     }
 "@
+#ds-snippet-end:eSign30Step3
 
 # a) Make a POST call to the createEnvelopes endpoint to create a new envelope.
 # b) Display the JSON structure of the created envelope
+#ds-snippet-start:eSign30Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 
 try {
@@ -78,3 +83,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign30Step4

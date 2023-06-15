@@ -22,20 +22,25 @@ else {
 }
 
 # Step 2. Construct your API headers
+#ds-snippet-start:eSign33Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign33Step2
 
 # Step 3.Construct the JSON body for your envelope
+#ds-snippet-start:eSign33Step3
 @{
     workflow =
     @{
         workflowStatus = "in_progress";
     };
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign33Step3
 
 # Step 4. Call the eSignature API
+#ds-snippet-start:eSign33Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/${APIaccountId}/envelopes/${envelopeId}?resend_envelope=true"
 Invoke-RestMethod `
     -Uri $uri `
@@ -47,6 +52,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign33Step4
 
 Write-Output ""
 Write-Output "Request: $(Get-Content -Raw $requestData)"

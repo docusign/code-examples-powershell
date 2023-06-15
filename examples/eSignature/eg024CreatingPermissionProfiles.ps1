@@ -12,12 +12,15 @@ $PROFILE_NAME = Read-Host "Please enter a new permission profile name: "
 $PROFILE_NAME > .\config\PROFILE_NAME
 
 # Construct your API headers
+#ds-snippet-start:eSign24Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign24Step2
 
 # Construct the request body for your permission profile
+#ds-snippet-start:eSign24Step3
 $body = @"
 {
     "permissionProfileName": "${PROFILE_NAME}",
@@ -50,9 +53,11 @@ $body = @"
     }
 }
 "@
+#ds-snippet-end:eSign24Step3
 
 # a) Call the eSignature API
 # b) Display the JSON response
+#ds-snippet-start:eSign24Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/permission_profiles/"
 
 try {
@@ -71,3 +76,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign24Step4

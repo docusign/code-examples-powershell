@@ -42,7 +42,7 @@ $SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer:
 $SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient: "
 $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient: "
 
-# Step 2 start
+#ds-snippet-start:eSign37Step2
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -109,7 +109,7 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-# Step 2 end
+#ds-snippet-end:eSign37Step2
 
 Write-Output "Sending the envelope request to DocuSign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
@@ -118,7 +118,7 @@ Write-Output $requestData
 
 # Step 3. Create and send the envelope
 # Create and send the envelope
-# Step 3 start
+#ds-snippet-start:eSign37Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -130,7 +130,7 @@ Invoke-RestMethod `
     -OutFile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
-# Step 3 end
+#ds-snippet-end:eSign37Step3
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId

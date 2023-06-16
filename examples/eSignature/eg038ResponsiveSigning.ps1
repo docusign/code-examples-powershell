@@ -37,6 +37,7 @@ $doc_html = New-TemporaryFile
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign38Step2
 @{
     emailSubject = "Example Signing Document";
     documents    = @(
@@ -70,8 +71,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign38Step2
 
 # Step 3. Call DocuSign to create the envelope
+#ds-snippet-start:eSign38Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -81,6 +84,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign38Step3
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 
@@ -121,7 +125,6 @@ Invoke-RestMethod `
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
 
-# ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 

@@ -18,13 +18,16 @@ else {
 }
 
 # Construct your API headers
+#ds-snippet-start:eSign27Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign27Step2
 
 # a) Call the eSignature API
 # b) Display the JSON response
+#ds-snippet-start:eSign27Step3
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/permission_profiles/$profileID"
 
 try {
@@ -41,3 +44,4 @@ catch {
     Write-Output "Error : "$_.ErrorDetails.Message
     Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign27Step3

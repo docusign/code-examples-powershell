@@ -26,12 +26,15 @@ $docBase64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
 # Construct your API headers
+#ds-snippet-start:eSign22Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign22Step2
 
 # Construct your envelope JSON body
+#ds-snippet-start:eSign22Step3
 $body = @"
 {
 	"documents": [{
@@ -69,12 +72,14 @@ $body = @"
 	"status": "Sent"
 }
 "@
+#ds-snippet-end:eSign22Step3
 Write-Output ""
 Write-Output "Request: "
 Write-Output $body
 
 # a) Make a POST call to the createEnvelopes endpoint to create a new envelope.
 # b) Display the JSON structure of the created envelope
+#ds-snippet-start:eSign22Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 try {
 	Write-Output "Response:"
@@ -90,6 +95,7 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign22Step4
 
 # cleanup
 Remove-Item $docBase64

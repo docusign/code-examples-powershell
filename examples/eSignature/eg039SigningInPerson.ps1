@@ -43,6 +43,7 @@ $hostName = $(Get-Content $response | ConvertFrom-Json).name
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign39Step2
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -76,8 +77,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign39Step2
 
 # Step 3. Call DocuSign to create the envelope
+#ds-snippet-start:eSign39Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -93,6 +96,7 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 Write-Output "EnvelopeId: $envelopeId"
+#ds-snippet-end:eSign39Step3
 
 # Step 4. Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
@@ -104,15 +108,17 @@ Write-Output "EnvelopeId: $envelopeId"
 
 Write-Output "Requesting the url for the embedded signing..."
 
+#ds-snippet-start:eSign39Step4
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
     'authenticationMethod' = 'none';
     'email'                = $hostEmail;
     'userName'             = $hostName;
 } | ConvertTo-Json -Compress
-
+#ds-snippet-end:eSign39Step4
 
 # Step 5. Create the recipient view and begin the DocuSign signing
+#ds-snippet-start:eSign39Step5
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -125,8 +131,8 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
+#ds-snippet-end:eSign39Step4
 
-# ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 

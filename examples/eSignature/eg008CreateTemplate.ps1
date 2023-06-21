@@ -62,6 +62,7 @@ Write-Output "Sending the template create request to DocuSign..."
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_fields.pdf"))) > $doc1Base64
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign8Step2
 @{
     description = "Example template created via the eSignature API";
     name        = "Example Signer and CC template v2";
@@ -176,7 +177,9 @@ Write-Output "Sending the template create request to DocuSign..."
     };
     status                     = "created";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign8Step2
 
+#ds-snippet-start:eSign8Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/templates" `
     -Method 'POST' `
@@ -186,6 +189,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign8Step3
 
 Write-Output "Results:"
 Get-Content $response

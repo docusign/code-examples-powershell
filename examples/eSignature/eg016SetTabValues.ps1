@@ -14,13 +14,15 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Step 2. Create your authorization headers
+#ds-snippet-start:eSign16Step2
 $headers = @{
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
+#ds-snippet-end:eSign16Step2
 
 # Tabs and custom fields shown in the request body in step 4
-# Step 4. Construct the request body
+# Step 3. Construct the request body
 
 # Temp files:
 $requestData = New-TemporaryFile
@@ -33,6 +35,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_salary.docx"))) > $doc1Base64
 
 
+#ds-snippet-start:eSign16Step3
 @{
   customFields       = @{
     textCustomFields = @(@{
@@ -118,8 +121,10 @@ Write-Output "Sending the envelope request to DocuSign..."
   };
   status             = "Sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign16Step3
 
-# Step 5. Call the eSignature REST API
+# Step 4. Call the eSignature REST API
+#ds-snippet-start:eSign15Step4
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
   -Method 'POST' `
@@ -129,6 +134,7 @@ Invoke-RestMethod `
 } `
   -InFile (Resolve-Path $requestData).Path `
   -OutFile $response
+#ds-snippet-end:eSign16Step4
 
 Write-Output "Response:"
 Get-Content $response
@@ -150,6 +156,7 @@ Write-Output $envelopeId > .\config\ENVELOPE_ID
 
 Write-Output "Requesting the url for the embedded signing..."
 
+#ds-snippet-start:eSign16Step5
 @{
   returnUrl            = "http://httpbin.org/get";
   authenticationMethod = "none";
@@ -167,6 +174,7 @@ Invoke-RestMethod `
 
 Write-Output "Response:"
 Get-Content $response
+#ds-snippet-end:eSign16Step5
 
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
 

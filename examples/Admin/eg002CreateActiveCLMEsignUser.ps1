@@ -9,21 +9,23 @@ $base_path = "https://api-d.docusign.net/management"
 $organizationId=$variables.ORGANIZATION_ID
 
 # Construct your API headers
-# Step 2 start
+#ds-snippet-start:Admin2Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
-# Step 2 end
+#ds-snippet-end:Admin2Step2
 
-# Step 3 Start
+
 try {
   # Display the JSON response
   # Write-Output "Response:"
+  #ds-snippet-start:Admin2Step3  
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/permission_profiles"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
-  # $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 4
+
   $productProfiles = $($response.Content | ConvertFrom-Json).product_permission_profiles
+  #ds-snippet-end:Admin2Step3
 }
 catch {
   Write-Output "Error:"
@@ -36,7 +38,7 @@ catch {
   Write-Output "Command : "$_.InvocationInfo.Line
   exit 1
 }
-# Step 3 end
+
 
 $esignPermissionProfiles = $null
 $clmPermissionProfiles = $null
@@ -82,14 +84,15 @@ if($null -eq $clmPermissionProfiles){
   $clmPermissionProfileId = $menu.Item($selection)
 }
 
-# Step 4 Start
+
 try {
   # Display the JSON response
   Write-Output "Response:"
+  #ds-snippet-start:Admin2Step4
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/dsgroups"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
-  # $response.Content | ConvertFrom-Json | ConvertTo-Json
   $dsGroups = $($response.Content | ConvertFrom-Json).ds_groups
+  #ds-snippet-end:Admin2Step4
 }
 catch {
   Write-Output "Error:"
@@ -102,7 +105,7 @@ catch {
   Write-Output "Command : "$_.InvocationInfo.Line
   exit 1
 }
-# Step 4 end
+
 
 if($dsGroups.count -eq 0){
   Write-Output "You must create a DS Group before running this code example"
@@ -125,8 +128,8 @@ $firstName = Read-Host "Enter the first name of the new user"
 $lastName = Read-Host "Enter the last name of the new user"
 $userEmail = Read-Host "Enter an email for the new user"
 
-# - Construct the request body for the new user
-# Step 5 Start
+# Construct the request body for the new user
+#ds-snippet-start:Admin2Step5
 $body = @"
 {
   "user_name": "$userName",
@@ -151,19 +154,20 @@ $body = @"
   ]
 }
 "@
-# Step 5 end
+#ds-snippet-end:Admin2Step5
 
-# Step 6 Start
+
 try {
   # Display the JSON response
   Write-Output "Response:"
+  #ds-snippet-start:Admin2Step6
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/users/"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -body $body -method POST
   $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 5
+  #ds-snippet-end:Admin2Step6
 
   # Store user email to the file for future reference
   $($response.Content | ConvertFrom-Json).email > .\config\ESIGN_CLM_USER_EMAIL
-
   Write-Output "Done"
 }
 catch {
@@ -177,4 +181,3 @@ catch {
   Write-Output "Command : "$_.InvocationInfo.Line
   exit 1
 }
-# Step 6 end

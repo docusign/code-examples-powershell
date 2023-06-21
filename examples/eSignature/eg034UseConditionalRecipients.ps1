@@ -32,16 +32,19 @@ Write-Output "SIGNER_NOT_CHECKED_EMAIL is $SIGNER_NOT_CHECKED_EMAIL"
 Write-Output "SIGNER_NOT_CHECKED_NAME is $SIGNER_NOT_CHECKED_NAME"
 
 # Step 2. Construct your API headers
+#ds-snippet-start:eSign34Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign34Step2
 
 # Create temp files
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
 # Step 3. Construct the request body
+#ds-snippet-start:eSign34Step3
 @{
     documents    =
     @(
@@ -196,8 +199,10 @@ $response = New-TemporaryFile
     };
     status       = "Sent"
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign34Step3
 
 # Step 4. Call the eSignature API
+#ds-snippet-start:eSign34Step4
 try {
     Write-Output "Request: "
     Write-Output $requestData
@@ -228,6 +233,7 @@ catch [System.Net.WebException] {
 catch {
     Write-Output $_
 }
+#ds-snippet-end:eSign34Step4
 
 # Delete temp files
 Remove-Item $requestData

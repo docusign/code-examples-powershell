@@ -22,7 +22,6 @@ if (-not (Test-Path .\config\TEMPLATE_ID)) {
     exit 0
 }
 
-# ***DS.snippet.0.start
 # Step 2. Create the envelope definition from a template
 # temp files:
 $response = New-TemporaryFile
@@ -30,6 +29,7 @@ $requestData = New-TemporaryFile
 
 Write-Output "Sending the envelope request to DocuSign..."
 
+#ds-snippet-start:eSign9Step2
 @{
     templateId    = "$(Get-Content .\config\TEMPLATE_ID)";
     templateRoles = @(
@@ -46,8 +46,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     );
     status        = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign9Step2
 
 # Step 3. Create and send the envelope
+#ds-snippet-start:eSign9Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -57,6 +59,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response
+#ds-snippet-end:eSign9Step3
 
 
 Write-Output "Response:"

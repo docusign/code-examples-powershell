@@ -19,10 +19,12 @@ $APIAccountId = Get-Content .\config\API_ACCOUNT_ID
 
 # Step 2. Construct your API headers
 # Construct your API headers
+#ds-snippet-start:eSign19Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign19Step2
 
 # Step 3. Construct the request body
 # temp files:
@@ -34,6 +36,7 @@ $docBase64 = New-TemporaryFile
 $AccessCode = Read-Host "Please enter an access code for recipient authentication"
 
 # Construct your envelope JSON body
+#ds-snippet-start:eSign19Step3
 $body = @"
 {
 	"documents": [{
@@ -76,6 +79,7 @@ $body = @"
 	"status": "Sent"
 }
 "@
+#ds-snippet-end:eSign19Step3
 Write-Output ""
 Write-Output "Request: "
 Write-Output $body
@@ -83,6 +87,7 @@ Write-Output $body
 # Step 4. Call the eSignature REST API
 # a) Make a POST call to the createEnvelopes endpoint to create a new envelope.
 # b) Display the JSON structure of the created envelope
+#ds-snippet-start:eSign19Step4
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 try {
 	Write-Output "Response:"
@@ -98,3 +103,4 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
+#ds-snippet-end:eSign19Step4

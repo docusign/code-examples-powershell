@@ -6,7 +6,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 # can be manually created.
 
 # ***DS.snippet.0.start
-# Step 1. Obtain your Oauth access token
+# Obtain your Oauth access token
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
@@ -23,21 +23,22 @@ else {
   exit 1
 }
 
-# Step 2 start
+#ds-snippet-start:eSign6Step2
 $headers = @{
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
-# Step 2 end
+#ds-snippet-end:eSign6Step2
 
 Write-Output "Sending the EnvelopeDocuments::list request to DocuSign..."
 Write-Output "Results:"
 
-# Step 3. List envelope documents
+# List envelope documents
+#ds-snippet-start:eSign6Step3
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/documents" `
   -Method 'GET' `
   -Headers $headers | ConvertTo-Json
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign6Step3
 
 Write-Output "Done."

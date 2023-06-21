@@ -23,23 +23,23 @@ $doc1Base64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc1Base64
 
-# Step 2 start
 # Construct your API headers
+#ds-snippet-start:eSign31Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json, text/plain, */*")
 $headers.add("Content-Type", "application/json;charset=UTF-8")
 $headers.add("Accept-Encoding", "gzip, deflate, br")
 $headers.add("Accept-Language", "en-US,en;q=0.9")
-# Step 2 end
+#ds-snippet-end:eSign31Step2
 
 $continue = $true
 
-# Step 3 start
 # Step 3. Submit a bulk list
 # Submit the Bulk List
 # Create a temporary file to store the JSON body
 # The JSON body must contain the recipient role, recipientId, name, and email.
+#ds-snippet-start:eSign31Step3
 $body = @"
 {
 	"name": "sample.csv",
@@ -99,10 +99,10 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
-# Step 3 end
-# Step 4 start
+#ds-snippet-end:eSign31Step3
 # Step 4. Create an envelope
 # Create your draft envelope
+#ds-snippet-start:eSign31Step4
 $body = @"
 {
 	"documents": [{
@@ -175,12 +175,12 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
-# Step 4 end
-# Step 5 start
+#ds-snippet-end:eSign31Step4
 # Step 5. Attach your bulk list ID to the envelope
 # Add an envelope custom field set to the value of your listId
 # This Custom Field is used for tracking your Bulk Send via the Envelopes::Get method
 # Create a temporary file to store the JSON body
+#ds-snippet-start:eSign31Step5
 $body = @"
 {
 	"listCustomFields": [],
@@ -214,11 +214,11 @@ catch {
 	Write-Output "Error : "$_.ErrorDetails.Message
 	Write-Output "Command : "$_.InvocationInfo.Line
 }
-# Step 5 start
-# Step 5 end
+#ds-snippet-end:eSign31Step5
 # Step 6. Initiate bulk send
 # Initiate the Bulk Send
 # Target endpoint: {ACCOUNT_ID}/bulk_send_lists/{LIST_ID}/send
+#ds-snippet-start:eSign31Step6
 $body = @"
 {
 	"listId": "${listId}",
@@ -250,11 +250,11 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
-# Step 6 end
-# Step 7 start
+#ds-snippet-end:eSign31Step6
 # Step 7. Confirm successful batch send
 # Confirm successful batch send
 # Note: Depending on the number of Bulk Recipients, it may take some time for the Bulk Send to complete. For 2000 recipients this can take ~1 hour.
+#ds-snippet-start:eSign31Step7
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/bulk_send_batch/$bulkBatchId"
 if ($continue -eq $true) {
 	$response = $null
@@ -278,4 +278,4 @@ if ($continue -eq $true) {
 		Write-Output "Command : "$_.InvocationInfo.Line
 	}
 }
-# Step 7 end
+#ds-snippet-end:eSign31Step7

@@ -5,10 +5,12 @@ $response = New-TemporaryFile
 $accessToken = Get-Content .\config\ds_access_token.txt
 
 # Step 2. Construct your API headers
+#ds-snippet-start:Monitor1Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:Monitor1Step2
 
 # Declare variables
 $complete=$false
@@ -25,6 +27,7 @@ if (($accessToken -eq "") -or ($null -eq $accessToken)) {
 # After each call, save the cursor and use it to make the next
 # call from the point where the previous one left off when iterating through
 # the monitoring records
+#ds-snippet-start:Monitor1Step3
 DO {
    $iterations++
    Write-Output ""
@@ -77,6 +80,7 @@ DO {
    }
 
 } While ($complete -eq $false )
+#ds-snippet-end:Monitor1Step3
 
 Remove-Item $response
 

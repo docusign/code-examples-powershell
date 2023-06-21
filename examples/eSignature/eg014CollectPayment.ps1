@@ -33,6 +33,7 @@ $doc1Base64 = New-TemporaryFile
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign14Step2
 @{
     emailSubject = "Please complete your order";
     documents    = @(
@@ -159,8 +160,9 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign14Step2
 
-# Step 4. Call the eSignature REST API
+#ds-snippet-start:eSign14Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -170,7 +172,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign14Step3
 
 Write-Output "Results:"
 Get-Content $response

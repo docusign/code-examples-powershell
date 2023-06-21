@@ -29,8 +29,7 @@ Write-Output "Sending the EnvelopeRecipients::list request to DocuSign..."
 Write-Output "Results:"
 
 
-# Step 2. List envelope recipients
-# ***DS.snippet.0.start
+#ds-snippet-start:eSign5Step2
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/recipients" `
   -Method 'GET' `
@@ -38,6 +37,6 @@ Invoke-RestMethod `
   'Authorization' = "Bearer $accessToken";
   'Content-Type'  = "application/json";
 }
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign5Step2
 
 Write-Output "Done."

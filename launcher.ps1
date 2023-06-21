@@ -757,15 +757,13 @@ function startMonitor {
     do {
         Enum listMonitorExamples {
             getMonitoringData = 1;
-            postWebQuery = 2;
-            Pick_An_API = 3;
+            Pick_An_API = 2;
         }
         $listMonitorExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listMonitorExamples]::getMonitoringData)) Get Monitoring Data"
-            Write-Output "$([int][listMonitorExamples]::postWebQuery)) Query Monitoring Data with Filters"
             Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMonitorExamplesView = Read-Host "Select the action"
         } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));

@@ -39,7 +39,7 @@ $Signer2Name = Read-Host "Please enter the name for the second signer: "
 $DelayInHours= Read-Host "Please enter the delay (in hours): "
 $DelayTimeSpan = New-TimeSpan -Hours $DelayInHours -Minutes 0
 
-# Step 2 start
+#ds-snippet-start:eSign36Step2
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -103,10 +103,10 @@ $DelayTimeSpan = New-TimeSpan -Hours $DelayInHours -Minutes 0
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-# Step 2 end
+#ds-snippet-end:eSign36Step2
 
-# Step 3. Create and send the envelope
-# Step 3 start
+# Create and send the envelope
+#ds-snippet-start:eSign36Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -116,7 +116,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
-# Step 3 end
+#ds-snippet-end:eSign36Step3
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 

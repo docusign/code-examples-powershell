@@ -101,7 +101,8 @@ function startLauncher {
             Click = 3;
             Monitor = 4;
             Admin = 5;
-            Exit = 6;
+            Notary = 6;
+            Exit = 7;
         }
 
         $listApiView = $null;
@@ -137,6 +138,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Monitor)) Monitor"
             Write-Output "$([int][listApi]::Admin)) Admin"
+            Write-Output "$([int][listApi]::Notary)) Notary"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -156,6 +158,9 @@ function startLauncher {
         elseif ($listApiView -eq [listApi]::Admin) {
             startAuth "admin"
         }
+        elseif ($listApiView -eq [listApi]::Notary) {
+            startAuth "notary"
+        }        
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
         }
@@ -221,6 +226,9 @@ function startAuth ($apiVersion) {
     elseif ($listApiView -eq [listApi]::Admin) {
         startAdmin
     }
+    elseif ($listApiView -eq [listApi]::Notary) {
+        startNotary
+    }    
 }
 
 function startCFRSignature {
@@ -861,6 +869,38 @@ function startAdmin {
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher
 }
+
+function startNotary {
+    do {
+        Enum listNotaryExamples {
+            signatureRequestToNotaryGroup = 1;
+            inviteNotaryToPool = 2;
+            jurisdictions = 3;
+            Pick_An_API = 4;
+        }
+        $listNotaryExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send_Signature_Request_To_Notary_Group"               
+            Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite_Notary_To_Pool"            
+            Write-Output "$([int][listNotaryExamples]::jurisdictions)) Jurisdictions"
+            Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listNotaryExamplesView = Read-Host "Select the action"
+        } while (-not [listNotaryExamples]::IsDefined([listNotaryExamples], $listNotaryExamplesView));
+
+        if ($listNotaryExamplesView -eq [listNotaryExamples]::signatureRequestToNotaryGroup) {
+            powershell.exe -Command .\examples\Notary\signatureRequestToNotaryGroup.ps1
+        } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::Invite_Notary_To_Pool) {
+            powershell.exe -Command .\examples\Notary\inviteNotaryToPool.ps1
+        }            
+        } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
+            powershell.exe -Command .\examples\Notary\Jurisdictions.ps1
+        }
+    } until ($listNotaryExamplesView -eq [listNotaryExamples]::Pick_An_API)
+    startLauncher
+}
+
 
 Write-Output "Welcome to the DocuSign PowerShell Launcher"
 startLauncher

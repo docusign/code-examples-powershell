@@ -16,9 +16,9 @@ When the token expires, the user is asked to re-authenticate. The refresh token 
 When the token expires, it updates automatically.
 
 
-## eSignature API
+## eSignature REST API
 
-For more information about the scopes used for obtaining authorization to use the eSignature API, see [Required scopes](https://developers.docusign.com/docs/esign-rest-api/esign101/auth#required-scopes).  
+For more information about the scopes used for obtaining authorization to use the eSignature REST API, see [Required scopes](https://developers.docusign.com/docs/esign-rest-api/esign101/auth#required-scopes).  
 
 For a list of code examples that use the eSignature API, see the [How-to guides overview](https://developers.docusign.com/docs/esign-rest-api/how-to/) on the DocuSign Developer Center.
 
@@ -52,6 +52,16 @@ For a list of code examples that use the Monitor API, see the [How-to guides ove
 For information about the scopes used for obtaining authorization to use the Admin API, see the [scopes section](https://developers.docusign.com/docs/admin-api/admin101/auth/).
 
 For a list of code examples that use the Admin API, see the [How-to guides overview](https://developers.docusign.com/docs/admin-api/how-to/) on the DocuSign Developer Center.
+
+
+## Notary API (closed beta)
+
+**Note:** For closed beta participants interested in adding Notary API functionality to your production account, contact your DocuSign representative. Example 1 requires a Sender DocuSign developer account API account ID that has been provisioned for the [Notary API base URI](https://developers.docusign.com/docs/notary-api/go-live/). Example 2 requires that you [create an organization](https://support.docusign.com/en/guides/org-admin-guide-create-org) in your Sender DocuSign developer account.
+
+For information about the scopes used for obtaining authorization to use the Admin API, see the [scopes section](https://developers.docusign.com/docs/notary-api/notary101/auth/).
+
+For a list of code examples that use the Notary API, see the [How-to guides overview](https://developers.docusign.com/docs/notary-api/how-to/) on the DocuSign Developer Center.
+
 
 ## Installation
 

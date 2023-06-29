@@ -138,7 +138,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Monitor)) Monitor"
             Write-Output "$([int][listApi]::Admin)) Admin"
-            Write-Output "$([int][listApi]::Notary)) Notary"
+            Write-Output "$([int][listApi]::Notary)) Notary (closed beta)"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));

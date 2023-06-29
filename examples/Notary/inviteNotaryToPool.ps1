@@ -11,11 +11,11 @@ $response = New-TemporaryFile
 
 # Construct your API headers
 
-# Step 2 Start
+#ds-snippet-start:Notary2Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
-# Step 2 End
+#ds-snippet-end
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -33,7 +33,7 @@ Write-Output ""
 Write-Output "Retrieving your notary pool:"
 Write-Output ""
 
-# Step 3 Start
+#ds-snippet-start:Notary2Step3
 Invoke-RestMethod `
     -UseBasicParsing `
     -Uri "${apiUri}/v1.0/organizations/${organizationId}/pools/" `
@@ -43,9 +43,9 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $POOL_ID = $(Get-Content $response | ConvertFrom-Json).pools[0].poolId
-# Step 3 End
+#ds-snippet-end
 
-# Step 4 Start
+#ds-snippet-start:Notary2Step4
 write-Output ""
 $NOTARY_NAME = Read-Host "Enter a name for the notary"
 $NOTARY_EMAIL = Read-Host "Enter an email address for the notary"
@@ -56,14 +56,14 @@ $body = @"
   "name" : "${NOTARY_NAME}",
 }
 "@
-# Step 4 End
+#ds-snippet-end
 
-# Step 5 Start
 write-Output ""
 write-Output "Inviting ${NOTARY_NAME} to your organization's notary pool"
 write-Output ""
 write-Output "Pool id is ${POOL_ID}"
 write-Output ""
+#ds-snippet-start:Notary2Step5
 Invoke-RestMethod `
     -Uri "${apiUri}/v1.0/organizations/${organizationId}/pools/${POOL_ID}/invites" `
     -Headers $headers `
@@ -72,7 +72,7 @@ Invoke-RestMethod `
     -Outfile $response
 
 Write-Output "Response: $(Get-Content -Raw $response)"
-# Step 5 End
+#ds-snippet-end
 
 # cleanup
 Remove-Item $response

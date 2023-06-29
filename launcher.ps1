@@ -882,13 +882,15 @@ function startNotary {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send_Signature Request to Notary group"               
-            Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite Notary to Pool"            
+            Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send signature request to Notary group"               
+            Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite Notary to pool"            
             Write-Output "$([int][listNotaryExamples]::jurisdictions)) Jurisdictions"
-            Write-Output "$([int][listMonitorExamples]::Pick_An_API)) Pick_An_API"
+            Write-Output "$([int][listNotaryExamples]::Pick_An_API)) Pick_An_API"
             [int]$listNotaryExamplesView = Read-Host "Select the action"
         } while (-not [listNotaryExamples]::IsDefined([listNotaryExamples], $listNotaryExamplesView));
 
+        # if ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
+        #     powershell.exe -Command .\examples\Notary\Jurisdictions.ps1
         if ($listNotaryExamplesView -eq [listNotaryExamples]::signatureRequestToNotaryGroup) {
             powershell.exe -Command .\examples\Notary\signatureRequestToNotaryGroup.ps1
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::inviteNotaryToPool) {

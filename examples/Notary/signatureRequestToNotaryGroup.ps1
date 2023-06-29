@@ -6,8 +6,8 @@ $apiUri = "https://demo.docusign.net/restapi"
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 # Check that we have a Notary name and email in the settings.json config file
-if ((!$variables.NOTARY_EMAIL) -or (!$variables.NOTARY_NAME)) {
-    Write-Output "NOTARY_EMAIL and NOTARY_NAME are needed. Please add the NOTARY_EMAIL and NOTARY_NAME variables to the settings.json"
+if ((!$variables.NOTARY_EMAIL) -or (!$variables.NOTARY_NAME) -or (!$variables.NOTARY_API_ACCOUNT_ID)) {
+    Write-Output "NOTARY_EMAIL, NOTARY_NAME, and NOTARY_API_ACCOUNT_ID are needed. Please add the NOTARY_EMAIL, NOTARY_NAME, and NOTARY_API_ACCOUNT_ID variables to the settings.json"
     exit -1
 }
 
@@ -86,7 +86,7 @@ Write-Output "Results:"
                        };
                    )
                };
-               userId = $NOTARY_API_ACCOUNT_ID;
+               userId = $variables.NOTARY_API_ACCOUNT_ID;
                notaryType = "remote";
            };
        );

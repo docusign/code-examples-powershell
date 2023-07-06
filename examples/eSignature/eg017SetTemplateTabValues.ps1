@@ -17,6 +17,11 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
+$headers = @{
+    'Authorization' = "Bearer $accessToken";
+    'Content-Type'  = "application/json";
+  }
+
 # Check that we have a template ID
 if (Test-Path .\config\TEMPLATE_ID) {
     $templateId = Get-Content .\config\TEMPLATE_ID
@@ -114,10 +119,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
-    -Headers @{
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
-} `
+    -Headers $headers `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
 

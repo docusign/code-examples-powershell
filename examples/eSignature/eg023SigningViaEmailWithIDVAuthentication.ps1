@@ -113,8 +113,14 @@ Write-Output $body
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/envelopes"
 try {
 	Write-Output "Response:"
-	$result = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST
-	$result.content
+	$result = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST	
+	$response = $result.content | ConvertFrom-Json
+
+	$envelopeId = $response.envelopeId
+
+	# Save the IDV envelope id for use by other scripts
+	Write-Output "IDV EnvelopeId: " $envelopeId
+	Write-Output $envelopeId > .\config\IDV_ENVELOPE_ID
 }
 catch {
 	$int = 0

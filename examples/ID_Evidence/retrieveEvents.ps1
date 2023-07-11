@@ -22,7 +22,6 @@ $headers.add("Content-Type","application/json;charset=UTF-8")
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/${APIaccountId}/envelopes/${envelopeId}/recipients"
 
 write-host "Retrieving recipient data"
-3
 
 try{
 	write-host "Response:"
@@ -45,6 +44,7 @@ catch{
 write-host "recipientIdGuid: " $recipientIdGuid
 # Save the Recipient ID Guid for use by other scripts
 Write-Output $recipientIdGuid > .\config\RECIPIENT_ID_GUID
+
 
 # Construct your API headers
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -79,11 +79,11 @@ write-host "resourceToken: " $resourceToken
 # Save the Resource Token for use by other scripts
 Write-Output $resourceToken > .\config\RESOURCE_TOKEN.txt
 
+
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization","Bearer $resourceToken")
 $headers.add("Accept","application/json, text/plain, */*")
 $headers.add("Content-Type","application/json;charset=UTF-8")
-
 
 # Retrieve recipient data
 $uri = "https://proof-d.docusign.net/api/v1/events/person/$recipientIdGuid.json"
@@ -113,3 +113,5 @@ $copy_of_id_front = $result.events.data.copy_of_id_front  | ConvertTo-Json
 write-host "copy_of_id_front:"$copy_of_id_front
 # Save the copy_of_id_front URL for use by other scripts
 Write-Output $copy_of_id_front > .\config\COPY_OF_ID_FRONT_URL.txt
+
+# cleanup

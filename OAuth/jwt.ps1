@@ -34,7 +34,7 @@ $timestamp = [int][double]::Parse((Get-Date (Get-Date).ToUniversalTime() -UForma
 
 if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
-  } elseif ($apiVersion -eq "eSignature") {
+  } elseif (($apiVersion -eq "eSignature") -or ($apiVersion -eq "idEvidence")) {
     $scopes = "signature%20impersonation"
   } elseif ($apiVersion -eq "click") {
     $scopes = "click.manage%20click.send%20signature%20impersonation"
@@ -49,7 +49,7 @@ if ($apiVersion -eq "rooms") {
     $scopes = "signature%20organization_read%20notary_read%20notary_write"
   }
 
-# Step 1. Request application consent
+# Request application consent
 $PORT = '8080'
 $IP = 'localhost'
 $state = [Convert]::ToString($(Get-Random -Maximum 1000000000), 16)
@@ -61,7 +61,7 @@ $authorizationURL = "${authorizationEndpoint}auth?scope=$scopes&redirect_uri=$re
 Write-Output "The authorization URL is: $authorizationURL"
 Write-Output ""
 
-# Step 2. Create a JWT
+# Create a JWT
 $decJwtHeader = [ordered]@{
     'typ' = 'JWT';
     'alg' = 'RS256'
@@ -103,7 +103,7 @@ $signedBase64Token = [System.Convert]::ToBase64String($signedToken) -replace '\+
 
 $jwtToken = "$encJwtHeader.$encJwtPayLoad.$signedBase64Token"
 
-# Step 3. Obtain the access token
+# Obtain the access token
 try {
     $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
     $tokenResponse = Invoke-WebRequest `

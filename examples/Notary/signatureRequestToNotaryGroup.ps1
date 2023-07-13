@@ -46,8 +46,7 @@ $docBase64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $docBase64
 
 Write-Output "Sending the envelope request to DocuSign..."
-Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
-Write-Output "Results:"
+Write-Output "The envelope processing time will be about 15 seconds."
 
 # Concatenate the different parts of the request
 
@@ -72,8 +71,8 @@ Write-Output "Results:"
                tabs         = @{
                    notarySealTabs = @(
                        @{
-                           xPosition = "150";
-                           yPosition = "50";
+                           xPosition = "300";
+                           yPosition = "245";                           
                            documentId = "1";
                            pageNumber = "1";
                        };
@@ -103,8 +102,8 @@ Write-Output "Results:"
                    signHereTabs = @(
                        @{
                            documentId  = "1";
-                           xPosition = "50";
-                           yPosition = "50";
+                           xPosition = "200";
+                           yPosition = "245";                           
                            pageNumber = "1";
                        };
                        @{

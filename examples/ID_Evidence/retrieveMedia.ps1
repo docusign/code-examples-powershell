@@ -133,8 +133,8 @@ $headers.add("Content-Type","image/jpg")
 
 # return a base-64 image of the front of the photo ID
 #$uri = "https://proof-d.docusign.net/api/v1/events/person/${recipientIdGuid}/${eventId}/media/${frontMediaId}"
-$uri =  "https://proof-d.docusign.net/api/v1/events/person/e96e07a5-c393-4622-9c3a-58f33be7b617/b9a3bb1b-cf9b-4ac3-9014-eddd5a798990/media/3300d1a8-0e03-408d-b3d8-ec12fb86596a"
-#$uri = 
+#$uri = "https://proof-d.docusign.net/api/v1/events/person/e96e07a5-c393-4622-9c3a-58f33be7b617/b9a3bb1b-cf9b-4ac3-9014-eddd5a798990/media/3300d1a8-0e03-408d-b3d8-ec12fb86596a"
+$uri = 
 #$uri = $copy_of_id_front
 
 #[system.uri]$copy_of_id_front = $uri

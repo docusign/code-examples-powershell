@@ -133,7 +133,7 @@ $headers.add("Content-Type","image/jpg")
 
 # return a base-64 image of the front of the photo ID
 #$uri = "https://proof-d.docusign.net/api/v1/events/person/${recipientIdGuid}/${eventId}/media/${frontMediaId}"
-$uri = "https://proof-d.docusign.net/api/v1/events/person/eecbf35c-753d-4b72-9780-9fe993fe6b6c/2e914d89-b174-4598-9422-53328cb92170/media/e6b45fc9-04e9-42ea-be94-f7a939d5dbc9"
+$uri =  "https://proof-d.docusign.net/api/v1/events/person/e96e07a5-c393-4622-9c3a-58f33be7b617/b9a3bb1b-cf9b-4ac3-9014-eddd5a798990/media/3300d1a8-0e03-408d-b3d8-ec12fb86596a"
 #$uri = 
 #$uri = $copy_of_id_front
 
@@ -147,8 +147,9 @@ try{
 	#Obtain the base-64 image
 	$result = Invoke-RestMethod -uri $uri -headers $headers -method GET
 	#$result.content
-	$result > C:\id_front_base64_image.txt
-	write-host "Response: Saved to C:\id_front_base64_image.txt"
+	#$result > C:\id_front_base64_image.txt
+	$result | Out-File -FilePath .\id_front_base64_image.txt
+	write-host "Response: Saved to .\id_front_base64_image.txt"
 	}
 catch{
 	$int = 0

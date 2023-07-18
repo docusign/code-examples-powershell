@@ -4,10 +4,12 @@ $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 $basePath = "https://api-d.docusign.net/management"
 $organizationId=$variables.ORGANIZATION_ID
 
+#ds-snippet-start:Admin10Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
 $headers.add("Accept", "application/json")
+#ds-snippet-end:Admin10Step2
 
 # Get user information
 $emailAddress = Read-Host "Please input the email address of the user whose data will be deleted. Note that this email address should be associated with a user that has been closed for at least 24 hours."
@@ -19,6 +21,7 @@ $userId = $($response.Content | ConvertFrom-Json).users.id
 $accountId = $($response.Content | ConvertFrom-Json).users.memberships.account_id
 
 # Construct the request body
+#ds-snippet-start:Admin10Step3
 $body = @"
   {
     "user_id": "$userId",
@@ -27,15 +30,18 @@ $body = @"
     }]
   }
 "@
+#ds-snippet-end:Admin10Step3
 
 try {
   # Display the JSON response
   Write-Output ""
   Write-Output "Response:"
+  #ds-snippet-start:Admin10Step4
   $uri = "${basePath}/v2/data_redaction/organizations/${organizationId}/user"
 
 	$result = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST
 	$result.content
+  #ds-snippet-end:Admin10Step4
 } catch {
   Write-Output "Unable to delete the user."
 

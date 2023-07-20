@@ -8,9 +8,11 @@ $requestData = New-TemporaryFile
 $requestDataTemp = New-TemporaryFile
 $response = New-TemporaryFile
 
+#ds-snippet-start:eSign43Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign43Step2
 
 Write-Output ""
 $agentName = Read-Host "Please enter the name of the new agent"
@@ -19,6 +21,7 @@ $agentEmail = Read-Host "Please enter the email address of the new agent"
 Write-Output ""
 $activation = Read-Host "Please input an activation code for the new agent. Save this code. You'll need it when activating the new agent."
 
+#ds-snippet-start:eSign43Step3
 try {
     # Check, if the agent already exists
     Invoke-RestMethod `
@@ -64,6 +67,7 @@ try {
     Get-Content $response
     
     $agentUserId = $(Get-Content $response | ConvertFrom-Json).newUsers.userId
+    #ds-snippet-end:eSign43Step3
 }
 
 Write-Output "" 
@@ -100,6 +104,7 @@ try {
     Write-Output "Command : "$_.InvocationInfo.Line
 }
 
+#ds-snippet-start:eSign43Step4
 $isUserActivated = 0;
 
 do {
@@ -141,6 +146,7 @@ do {
         }
 
         $isUserActivated = 1;
+        #ds-snippet-end:eSign43Step4
     } catch {
         Write-Output "Agent has been created. Please go to the agent's email to activate the agent, and press 1 to continue the example: "
 
@@ -164,6 +170,7 @@ if ($choice -ne "1") {
 
 powershell.exe -Command .\utils\sharedAccess.ps1
 
+#ds-snippet-start:eSign43Step5
 try {
     # Make the API call to check the envelope
     # Get date in the ISO 8601 format
@@ -193,6 +200,7 @@ try {
 
         Get-Content $response
     }
+   #ds-snippet-end:eSign43Step5
 } catch {
     Write-Output "Unable to retrieve Bulk Status."
 

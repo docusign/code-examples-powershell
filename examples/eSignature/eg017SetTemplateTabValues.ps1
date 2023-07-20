@@ -146,6 +146,7 @@ Write-Output "EnvelopeId: $envelopeId"
 
 Write-Output "Requesting the url for the embedded signing..."
 
+#ds-snippet-start:eSign17Step6
 @{
     returnUrl            = "http://httpbin.org/get";
     authenticationMethod = "none";
@@ -163,6 +164,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path`
     -OutFile $response
+#ds-snippet-end:eSign17Step6
 
 Write-Output "Response:"
 Get-Content $response

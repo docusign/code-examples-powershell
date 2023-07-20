@@ -17,10 +17,12 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
+#ds-snippet-start:eSign17Step2
 $headers = @{
     'Authorization' = "Bearer $accessToken";
     'Content-Type'  = "application/json";
   }
+#ds-snippet-end:eSign17Step2
 
 # Check that we have a template ID
 if (Test-Path .\config\TEMPLATE_ID) {
@@ -34,6 +36,7 @@ else {
 Write-Output "Sending the envelope request to DocuSign..."
 # Tabs and custom fields shown in the request body on step 4
 # Step 4. Construct the request body
+#ds-snippet-start:eSign17Step4
 @{
     customFields  = @{
         textCustomFields = @(
@@ -114,14 +117,17 @@ Write-Output "Sending the envelope request to DocuSign..."
     status        = "Sent";
     templateId    = "$templateId";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign17Step4
 
 # Step 5. Call the eSignature REST API
+#ds-snippet-start:eSign17Step5
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
     -Headers $headers `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign17Step5
 
 Write-Output "Response:"
 Get-Content $response

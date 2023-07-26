@@ -14,7 +14,6 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# ***DS.snippet.0.start
 #  document 1 (html) has tag **signature_1**
 #  document 2 (docx) has tag /sn1/
 #  document 3 (pdf) has tag /sn1/
@@ -41,6 +40,12 @@ $SIGNER2_NAME = Read-Host 'Please enter signer #2 name'
 $CC_EMAIL = Read-Host 'Please enter carbon copy email address'
 $CC_NAME = Read-Host 'Please enter carbon copy name'
 
+#ds-snippet-start:eSign403Step2
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.add("Authorization", "Bearer $accessToken")
+$headers.add("Content-Type", "application/json")
+#ds-snippet-end:eSign40Step2
+
 
 # Fetch docs and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\doc_1.html"))) > $doc1Base64
@@ -52,6 +57,7 @@ Write-Output "The envelope has three documents. Processing time will be about 15
 Write-Output "Results:"
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign403Step3
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -121,25 +127,24 @@ Write-Output "Results:"
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:eSign403Step3
 
 # Step 3. Create and send the envelope'
+#ds-snippet-start:eSign403Step4
 try {
     Invoke-RestMethod `
         -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
         -Method 'POST' `
-        -Headers @{
-        'Authorization' = "Bearer $accessToken";
-        'Content-Type'  = "application/json";
-    } `
-    -InFile (Resolve-Path $requestData).Path `
-    -OutFile $response
+        -Headers $headers `
+        -InFile (Resolve-Path $requestData).Path `
+        -OutFile $response
+#ds-snippet-end:eSign403Step4
 
     Write-Output "Response: $(Get-Content -Raw $response)"
 
     # pull out the envelopeId
     $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 
-    # ***DS.snippet.0.end
     Write-Output "EnvelopeId: $envelopeId"
 }
 catch {

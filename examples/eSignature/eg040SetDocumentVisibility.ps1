@@ -57,7 +57,7 @@ Write-Output "The envelope has three documents. Processing time will be about 15
 Write-Output "Results:"
 
 # Concatenate the different parts of the request
-#ds-snippet-start:eSign403Step3
+#ds-snippet-start:eSign40Step3
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -127,10 +127,10 @@ Write-Output "Results:"
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-#ds-snippet-end:eSign403Step3
+#ds-snippet-end:eSign40Step3
 
 # Step 3. Create and send the envelope'
-#ds-snippet-start:eSign403Step4
+#ds-snippet-start:eSign40Step4
 try {
     Invoke-RestMethod `
         -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -138,7 +138,7 @@ try {
         -Headers $headers `
         -InFile (Resolve-Path $requestData).Path `
         -OutFile $response
-#ds-snippet-end:eSign403Step4
+#ds-snippet-end:eSign40Step4
 
     Write-Output "Response: $(Get-Content -Raw $response)"
 

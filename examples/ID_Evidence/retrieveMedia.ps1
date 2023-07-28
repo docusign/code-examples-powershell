@@ -10,6 +10,12 @@ if (-not (Test-Path .\config\IDV_ENVELOPE_ID)) {
     exit 0
 }
 
+# Check that we have Copy of ID front URL and Resource Token in config file
+if ((-not (Test-Path .\config\COPY_OF_ID_FRONT_URL.txt)) -or (-not (Test-Path .\config\RESOURCE_TOKEN.txt))) {
+    Write-Output "Copy of ID Front URL and Resource Token are needed. Run ID Evidence example 1 'Retrieve events' before running this code example."
+    exit 0
+}
+
 $envelopeId = Get-Content .\config\IDV_ENVELOPE_ID
 
 # Construct your API headers
@@ -75,6 +81,7 @@ catch{
 } 
 
 write-host "resourceToken: " $resourceToken
+
 # Save the Resource Token for use by other scripts
 Write-Output $resourceToken > .\config\RESOURCE_TOKEN.txt
 
@@ -82,7 +89,6 @@ $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization","Bearer $resourceToken")
 $headers.add("Accept","application/json, text/plain, */*")
 $headers.add("Content-Type","application/json;charset=UTF-8")
-
 
 # Retrieve recipient data
 $uri = "https://proof-d.docusign.net/api/v1/events/person/$recipientIdGuid.json"
@@ -96,8 +102,7 @@ try{
 	$EventList = $result.events | ConvertTo-Json 
 
 	write-host $EventList
-	}
-catch{
+}catch{
 	$int = 0
 	foreach($header in $_.Exception.Response.Headers){
 	#On error, display the error, the line that triggered the error, and the TraceToken
@@ -115,14 +120,8 @@ Write-Output $copy_of_id_front > .\config\COPY_OF_ID_FRONT_URL.txt
 
 
 # Required values: $resourceToken, $copy_of_id_front
-
-# Check that we have Copy of ID front URL and Resource Token in config file
-#if ((-not (Test-Path .\config\COPY_OF_ID_FRONT_URL.txt)) -or (-not (Test-Path .\config\RESOURCE_TOKEN.txt))) {
-#    Write-Output "Copy of ID Front URL and Resource Token are needed. Run ID Evidence example 1 'Retrieve events' before running this code example."
-#    exit -1
-#}
 $copy_of_id_front = Get-Content .\config\COPY_OF_ID_FRONT_URL.txt
-#$recipientIdGuid = Get-Content .\config\RECIPIENT_ID_GUID
+$recipientIdGuid = Get-Content .\config\RECIPIENT_ID_GUID
 $resourceToken = Get-Content .\config\RESOURCE_TOKEN.txt
 
 
@@ -132,22 +131,13 @@ $headers.add("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*
 $headers.add("Content-Type","image/jpg")
 
 # return a base-64 image of the front of the photo ID
-#$uri = "https://proof-d.docusign.net/api/v1/events/person/${recipientIdGuid}/${eventId}/media/${frontMediaId}"
-#$uri = "https://proof-d.docusign.net/api/v1/events/person/e96e07a5-c393-4622-9c3a-58f33be7b617/b9a3bb1b-cf9b-4ac3-9014-eddd5a798990/media/3300d1a8-0e03-408d-b3d8-ec12fb86596a"
-$uri = 
-#$uri = $copy_of_id_front
-
-#[system.uri]$copy_of_id_front = $uri
-#[uri]::IsWellFormedUriString($copy_of_id_front, 'Absolute')
-#[uri]::IsWellFormedUriString($uri, 'Absolute')
+$uri = $copy_of_id_front -replace '"'
 
 write-host "Retrieving recipient data"
 
 try{
 	#Obtain the base-64 image
 	$result = Invoke-RestMethod -uri $uri -headers $headers -method GET
-	#$result.content
-	#$result > C:\id_front_base64_image.txt
 	$result | Out-File -FilePath .\id_front_base64_image.txt
 	write-host "Response: Saved to .\id_front_base64_image.txt"
 	}

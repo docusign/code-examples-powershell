@@ -19,6 +19,7 @@ $headers.add("Accept","application/json, text/plain, */*")
 $headers.add("Content-Type","application/json;charset=UTF-8")
 
 # Retrieve recipient data
+#ds-snippet-start:IDEvidence1Step2
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/${APIaccountId}/envelopes/${envelopeId}/recipients"
 
 write-host "Retrieving recipient data"
@@ -30,6 +31,7 @@ try{
     #Obtain the recipient ID GUID from the API response
 	$recipientIdGuid = $result.signers.recipientIdGuid
 	}
+#ds-snippet-end	
 catch{
 	$int = 0
 	foreach($header in $_.Exception.Response.Headers){
@@ -53,6 +55,7 @@ $headers.add("Accept","application/json, text/plain, */*")
 $headers.add("Content-Type","application/json;charset=UTF-8")
 
 # Obtain identity proof token (resource token)
+#ds-snippet-start:IDEvidence1Step3
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/${APIaccountId}/envelopes/${envelopeId}/recipients/${recipientIdGuid}/identity_proof_token"
 
 write-host "Attempting to retrieve your identity proof token"
@@ -64,6 +67,7 @@ try{
     #Obtain the resourceToken from the API response
 	$resourceToken = $result.resourceToken
 	}
+#ds-snippet-end
 catch{
 	$int = 0
 	foreach($header in $_.Exception.Response.Headers){
@@ -79,13 +83,15 @@ write-host "resourceToken: " $resourceToken
 # Save the Resource Token for use by other scripts
 Write-Output $resourceToken > .\config\RESOURCE_TOKEN.txt
 
-
+#ds-snippet-start:IDEvidence1Step4
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization","Bearer $resourceToken")
 $headers.add("Accept","application/json, text/plain, */*")
 $headers.add("Content-Type","application/json;charset=UTF-8")
+#ds-snippet-end
 
 # Retrieve recipient data
+#ds-snippet-start:IDEvidence1Step5
 $uri = "https://proof-d.docusign.net/api/v1/events/person/$recipientIdGuid.json"
 
 write-host "Retrieving recipient data"
@@ -98,6 +104,8 @@ try{
 
 	write-host $EventList
 	}
+#ds-snippet-end
+
 catch{
 	$int = 0
 	foreach($header in $_.Exception.Response.Headers){
@@ -115,3 +123,5 @@ write-host "copy_of_id_front:"$copy_of_id_front
 Write-Output $copy_of_id_front > .\config\COPY_OF_ID_FRONT_URL.txt
 
 # cleanup
+Remove-Item $result
+Write-Output "Done."

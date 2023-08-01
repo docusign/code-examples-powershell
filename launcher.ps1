@@ -101,8 +101,9 @@ function startLauncher {
             Click = 3;
             Monitor = 4;
             Admin = 5;
-            Notary = 6;
-            Exit = 7;
+            ID_Evidence = 6;
+            Notary = 7;
+            Exit = 8;
         }
 
         $listApiView = $null;
@@ -138,6 +139,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Click)) Click"
             Write-Output "$([int][listApi]::Monitor)) Monitor"
             Write-Output "$([int][listApi]::Admin)) Admin"
+            Write-Output "$([int][listApi]::ID_Evidence)) ID Evidence"
             Write-Output "$([int][listApi]::Notary)) Notary (closed beta)"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
@@ -158,6 +160,9 @@ function startLauncher {
         elseif ($listApiView -eq [listApi]::Admin) {
             startAuth "admin"
         }
+        elseif ($listApiView -eq [listApi]::ID_Evidence) {
+            startAuth "idEvidence"
+        }   
         elseif ($listApiView -eq [listApi]::Notary) {
             startAuth "notary"
         }        
@@ -225,6 +230,9 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::Admin) {
         startAdmin
+    }
+    elseif ($listApiView -eq [listApi]::ID_Evidence) {
+        startID_Evidence
     }
     elseif ($listApiView -eq [listApi]::Notary) {
         startNotary
@@ -867,6 +875,32 @@ function startAdmin {
             powershell.exe -Command .\examples\Admin\eg011DeleteUserDataFromAccount.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
+    startLauncher
+}
+
+function startID_Evidence {
+    do {
+        Enum listID_EvidenceExamples {
+            retrieveEvents = 1;
+            retrieveMedia = 2;
+            Pick_An_API = 3;
+        }
+        $listID_EvidenceExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listID_EvidenceExamples]::retrieveEvents)) Retrieve events"               
+            Write-Output "$([int][listID_EvidenceExamples]::retrieveMedia)) Retrieve media"            
+            Write-Output "$([int][listID_EvidenceExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listID_EvidenceExamplesView = Read-Host "Select the action"
+        } while (-not [listID_EvidenceExamples]::IsDefined([listID_EvidenceExamples], $listID_EvidenceExamplesView));
+
+        if ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::retrieveEvents) {
+            powershell.exe -Command .\examples\ID_Evidence\retrieveEvents.ps1
+        } elseif ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::retrieveMedia) {
+            powershell.exe -Command .\examples\ID_Evidence\retrieveMedia.ps1
+        }
+    } until ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::Pick_An_API)
     startLauncher
 }
 

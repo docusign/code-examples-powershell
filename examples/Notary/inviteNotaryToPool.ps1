@@ -77,4 +77,4 @@ Write-Output "Response: $(Get-Content -Raw $response)"
 # cleanup
 Remove-Item $response
 Write-Output ""
-Write-Output "Done..."
+Write-Output "Done."

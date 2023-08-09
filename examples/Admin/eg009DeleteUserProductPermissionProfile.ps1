@@ -40,23 +40,25 @@ $headers.add("Content-Type", "application/json")
 try {
   # Display the JSON response
   Write-Output "Getting permission profiles by email address..."
+  #ds-snippet-start:Admin9Step3
   $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/permission_profiles/users?email=${emailAddress}"
   $response = Invoke-WebRequest -uri $uri -UseBasicParsing -headers $headers -method GET
   $productProfiles = $($response.Content | ConvertFrom-Json).product_permission_profiles
-  
+  #ds-snippet-end:Admin9Step3
+
   Write-Output "Response:"
   Write-Output ""
   Write-Output $response.Content | ConvertFrom-Json | ConvertTo-Json -Depth 5
   Write-Output ""
 }
-catch 
+catch
 {
   Write-Output "Error:"
 
   # On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
   foreach ($header in $_.Exception.Response.Headers) {
-    if ($header -eq "X-DocuSign-TraceToken") { 
-        Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] 
+    if ($header -eq "X-DocuSign-TraceToken") {
+        Write-Output "TraceToken : " $_.Exception.Response.Headers[$int]
     }
     $int++
   }
@@ -105,7 +107,7 @@ if ($null -eq $userHasProductPermissions) {
   Write-Output ""
 } else {
   # Construct the request body
-#ds-snippet-start:Admin9Step3
+#ds-snippet-start:Admin9Step4
   $body = @"
   {
       "user_email": "$emailAddress",
@@ -114,16 +116,16 @@ if ($null -eq $userHasProductPermissions) {
       ]
   }
 "@
-#ds-snippet-end:Admin9Step3
+#ds-snippet-end:Admin9Step4
 
   try {
     # Display the JSON response
     Write-Output "Response:"
-#ds-snippet-start:Admin9Step4
+#ds-snippet-start:Admin9Step5
     $uri = "${base_path}/v2.1/organizations/${organizationId}/accounts/${APIAccountId}/products/users"
     Invoke-WebRequest -uri $uri -headers $headers -body $body -method DELETE
-#ds-snippet-end:Admin9Step4
-    
+#ds-snippet-end:Admin9Step5
+
     Write-Output "Product permission profile has been deleted."
     Write-Output ""
     Write-Output "Done"
@@ -132,8 +134,8 @@ if ($null -eq $userHasProductPermissions) {
 
     # On failure, display a notification, X-DocuSign-TraceToken, error message, and the command that triggered the error
     foreach ($header in $_.Exception.Response.Headers) {
-      if ($header -eq "X-DocuSign-TraceToken") { 
-          Write-Output "TraceToken : " $_.Exception.Response.Headers[$int] 
+      if ($header -eq "X-DocuSign-TraceToken") {
+          Write-Output "TraceToken : " $_.Exception.Response.Headers[$int]
       }
       $int++
     }

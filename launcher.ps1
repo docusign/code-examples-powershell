@@ -456,7 +456,7 @@ function startSignature {
             Use_Conditional_Recipients = 34;
             Scheduled_Sending = 35;
             Delayed_Routing = 36;
-            SMS_Delivery = 37;
+            SMS_or_WhatsApp = 37;
             Create_Signable_HTML_document = 38;
             Signing_In_Person = 39;
             Set_Document_Visibility = 40;
@@ -504,7 +504,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Use_Conditional_Recipients)) Use_Conditional_Recipients"
             Write-Output "$([int][ApiExamples]::Scheduled_Sending)) Scheduled_Sending"
             Write-Output "$([int][ApiExamples]::Delayed_Routing)) Delayed_Routing"
-            Write-Output "$([int][ApiExamples]::SMS_Delivery)) SMS_Delivery"
+            Write-Output "$([int][ApiExamples]::SMS_or_WhatsApp)) SMS_or_WhatsApp"
             Write-Output "$([int][ApiExamples]::Create_Signable_HTML_document)) Create_Signable_HTML_document"
             Write-Output "$([int][ApiExamples]::Signing_In_Person)) In_Person_Signing"
             Write-Output "$([int][ApiExamples]::Set_Document_Visibility)) Set_Document_Visibility"
@@ -632,7 +632,7 @@ function startSignature {
             checkEmailAddresses
             powershell.exe .\examples\eSignature\eg036DelayedRouting.ps1
         }
-        elseif ($ApiExamplesView -eq [ApiExamples]::SMS_Delivery) {
+        elseif ($ApiExamplesView -eq [ApiExamples]::SMS_or_WhatsApp) {
             checkEmailAddresses
             powershell.exe .\examples\eSignature\eg037SMSDelivery.ps1
         }

@@ -17,18 +17,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies 1
+      - name: Install dependency package-lock
         run:
           npm install --package-lock-only
-      - name: Install dependencies 2
+      - name: Install dependency npm
         run:          
           npm ci
       - name: Uninstall Playwright
         run: npm uninstall playwright
       - name: Install Playwright npm test package
         run: npm install -D @playwright/test
-      - name: Install Playwright Browsers
-        run: npx playwright install
+      - name: Install Playwright Chromium browser only
+        run: npx playwright install chromium
       - name: Run Playwright tests
         run: npx playwright test
       - uses: actions/upload-artifact@v3

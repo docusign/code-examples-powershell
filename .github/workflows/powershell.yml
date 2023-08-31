@@ -17,8 +17,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+      - name: Install dependencies 1
         run: npm install
+      - name: Install dependencies 2  
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps

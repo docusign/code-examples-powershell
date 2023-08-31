@@ -17,15 +17,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
-        run: |
-          if [ -e yarn.lock ]; then
-          yarn install --frozen-lockfile
-          elif [ -e package-lock.json ]; then
+      - name: Install dependencies 1
+        run:
+          npm install --package-lock-only
+      - name: Install dependencies 2
+        run:          
           npm ci
-          else
-          npm i
-          fi
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests

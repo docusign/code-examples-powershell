@@ -23,8 +23,12 @@ jobs:
       - name: Install dependencies 2
         run:          
           npm ci
+      - name: Uninstall Playwright
+        run: npm uninstall playwright
+      - name: Install Playwright npm test package
+        run: npm install -D @playwright/test
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install
       - name: Run Playwright tests
         run: npx playwright test
       - uses: actions/upload-artifact@v3

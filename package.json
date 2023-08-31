@@ -1,0 +1,29 @@
+{
+  "name": "playwright-github-action",
+  "version": "1.0.0",
+  "description": "Run Playwright tests on GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js",
+    "build": "ncc build index.js -o dist",
+    "package": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/playwright-github-action.git"
+  },
+  "author": "Microsoft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/microsoft/playwright-github-action/issues"
+  },
+  "homepage": "https://github.com/microsoft/playwright-github-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.9.1",
+    "@actions/exec": "^1.1.1"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^8.17.0"
+  }
+}

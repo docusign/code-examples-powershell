@@ -5,54 +5,32 @@ on:
 
 permissions:
   contents: read
-
+    
 jobs:
-  test-linux:
-    name: Playwright@${{ matrix.playwright}} ${{ matrix.os }} headless=${{ matrix.headless }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-20.04, windows-latest]
-        playwright: [1.8.0, 1.12.0, 1.18.0, next, beta]
-        headless: [true, false]
-        exclude:
-          - os: ubuntu-20.04
-            playwright: 1.0.0
-          - os: ubuntu-20.04
-            playwright: 1.1.0
-          - os: ubuntu-20.04
-            playwright: 1.2.0
-          - os: ubuntu-22.04
-            playwright: 1.23
-          - os: ubuntu-22.04
-            playwright: 1.25
-          - os: ubuntu-22.04
-            playwright: next
-          - os: ubuntu-20.04
-            playwright: latest
-        include:
-          - os: ubuntu-22.04
-            playwright: next
-
-    runs-on: ${{ matrix.os }}
+  test:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - uses: ./
-    - name: Install dependencies
-      run: cd sample && npm install playwright@${{ matrix.playwright }}
-      # Headless running is the same across OSes
-    - name: Run Playwright (headless)
-      if: ${{ matrix.headless == true }}
-      run: cd sample && node index.js
-
-      # Headful is different in every OS
-    - name: Run Playwright (headful linux)
-      if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
-      run: cd sample && HEADFUL=true xvfb-run --auto-servernum -- node index.js
-    - name: Run Playwright (headful windows)
-      if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
-      run: cd sample && HEADFUL=true node index.js
-      shell: bash
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependency npm
+        run:          
+          npm ci
+      - name: Uninstall Playwright
+        run: npm uninstall playwright
+      - name: Install Playwright npm test package
+        run: npm install -D @playwright/test
+      - name: Install Playwright Chromium browser only
+        run: npx playwright install chromium
+      - name: Run Playwright tests UI mode
+        run: npx playwright test --ui
+      - name: Show Playwright HTML test reports
+        run: npx playwright show-report
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 3

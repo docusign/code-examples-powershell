@@ -15,9 +15,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependency package-lock
-        run:
-          npm install --package-lock-only
       - name: Install dependency npm
         run:          
           npm ci
@@ -27,8 +24,10 @@ jobs:
         run: npm install -D @playwright/test
       - name: Install Playwright Chromium browser only
         run: npx playwright install chromium
-      - name: Run Playwright tests
-        run: npx playwright test
+      - name: Run Playwright tests UI mode
+        run: npx playwright test --ui
+      - name: Show Playwright HTML test reports
+        run: npx playwright show-report
       - uses: actions/upload-artifact@v3
         if: always()
         with:

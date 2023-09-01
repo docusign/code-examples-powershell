@@ -1,28 +1,30 @@
 {
-  "name": "playwright-github-action",
+  "name": "code-examples-powershell-private",
   "version": "1.0.0",
   "description": "Run Playwright tests on GitHub Actions",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
     "build": "ncc build index.js -o dist",
+    "test:tests": "playwright tests",
     "package": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/playwright-github-action.git"
+    "url": "git+https://github.com/docusign/code-examples-powershell-private.git"
   },
   "author": "Microsoft",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/microsoft/playwright-github-action/issues"
+    "url": "https://github.com/docusign/code-examples-powershell-private/issues"
   },
-  "homepage": "https://github.com/microsoft/playwright-github-action#readme",
+  "homepage": "https://github.com/docusign/code-examples-powershell-private#readme",
   "dependencies": {
     "@actions/core": "^1.9.1",
     "@actions/exec": "^1.1.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.37.1"
     "@zeit/ncc": "^0.20.5",
     "eslint": "^8.17.0"
   }

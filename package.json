@@ -1,7 +1,7 @@
 {
-  "name": "code-examples-powershell-private",
+  "name": "docusign-code-examples",
   "version": "1.0.0",
-  "description": "Run Playwright tests on GitHub Actions",
+  "description": "DocuSign eSignature Code examples using either Authorization Code Grant and JWT OAuth",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
@@ -11,9 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/docusign/code-examples-powershell-private.git"
+    "url": "https://github.com/docusign/code-examples-powershell-private"
   },
-  "author": "Microsoft",
+  "author": "DocuSign, Inc",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/docusign/code-examples-powershell-private/issues"

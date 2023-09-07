@@ -43,7 +43,7 @@ if ($apiVersion -eq "rooms") {
     $scopes = "signature%20impersonation"
   }
   elseif ($apiVersion -eq "admin") {
-    $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read%20user_data_redact"
+    $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read%20user_data_redact%20asset_group_account_read%20asset_group_account_clone_write%20asset_group_account_clone_read"
   }
   elseif ($apiVersion -eq "notary") {
     $scopes = "signature%20organization_read%20notary_read%20notary_write"

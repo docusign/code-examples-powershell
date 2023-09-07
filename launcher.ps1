@@ -807,7 +807,8 @@ function startAdmin {
             deleteUserProductPermissionProfile = 9;
             deleteUserDataFromOrganization = 10;
             deleteUserDataFromAccount = 11;
-            Pick_An_API = 12;
+            cloneAccount = 12;
+            Pick_An_API = 13;
         }
         $listAdminExamplesView = $null;
         do {
@@ -824,6 +825,7 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::deleteUserDataFromOrganization)) Delete user data from organization"
             Write-Output "$([int][listAdminExamples]::deleteUserDataFromAccount)) Delete user data from account"
+            Write-Output "$([int][listAdminExamples]::cloneAccount)) Clone Account"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -873,6 +875,10 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserDataFromAccount) {
             checkOrgId
             powershell.exe -Command .\examples\Admin\eg011DeleteUserDataFromAccount.ps1
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::cloneAccount) {
+            checkOrgId
+            powershell.exe -Command .\examples\Admin\eg012CloneAccount.ps1
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

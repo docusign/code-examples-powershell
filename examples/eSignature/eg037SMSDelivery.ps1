@@ -1,4 +1,4 @@
-#SMS Delivery
+#SMS or WhatsApp Delivery
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send an envelope with three documents
@@ -37,10 +37,25 @@ $doc3Base64 = New-TemporaryFile
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
 # Step 2. Create the envelope definition
-$SMSCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer: "
-$SMSNumber = Read-Host "Please enter an SMS-enabled Phone number for the Signer: "
-$SMSCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient: "
-$SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbon Copied recipient: "
+Write-Output 'Please choose a message delivery type: '
+Write-Output "$(1) SMS"
+Write-Output "$(2) WhatsApp"
+
+[int]$MSGType = Read-Host "Select 1 or 2"
+
+if ($MSGType -eq 1){ 
+    $selected = "SMS"
+}
+else {
+    $selected = "WhatsApp"
+}
+
+$MSGCountryPrefix = Read-Host "Please enter a country phone number prefix for the Signer"
+$MSGNumber = Read-Host "Please enter a Mobile number for the Signer"
+$MSGCCCountryPrefix = Read-Host "Please enter a country phone number prefix for the Carbon Copied recipient"
+$MSGNumberCC = Read-Host "Please enter a Mobile number for the Carbon Copied recipient"
+
+
 
 #ds-snippet-start:eSign37Step2
 @{
@@ -68,26 +83,27 @@ $SMSNumberCC = Read-Host "Please enter an SMS-enabled Phone number for the Carbo
         carbonCopies = @(
             @{
                 phoneNumber = @{
-                    countryCode =  $SMSCCCountryPrefix;
-                    number = $SMSNumberCC;
+                    countryCode =  $MSGCCCountryPrefix;
+                    number = $MSGNumberCC;
                 }
                 name         = $variables.CC_NAME;
                 recipientId  = "2";
                 routingOrder = "2";
-                deliveryMethod = "SMS";
+                deliveryMethod = $selected;
             };
         );
 
         signers      = @(
             @{
                 phoneNumber = @{
-                    countryCode =  $SMSCountryPrefix;
-                    number = $SMSNumber;
+                    countryCode =  $MSGCountryPrefix;
+                    number = $MSGNumber;
+                    
                 }
                 name         = $variables.SIGNER_NAME;
                 recipientId  = "1";
                 routingOrder = "1";
-                deliveryMethod = "SMS";
+                deliveryMethod = $selected;
                 tabs         = @{
                     signHereTabs = @(
                         @{

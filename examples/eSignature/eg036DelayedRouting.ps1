@@ -1,4 +1,4 @@
-#SMS Delivery
+#Delayed Routing
 $apiUri = "https://demo.docusign.net/restapi"
 
 # Send an envelope with one document

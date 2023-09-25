@@ -47,7 +47,7 @@ if ((Test-Path $docPath) -eq $false) {
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path $docPath))) > $doc1Base64
 # - Obtain your workflow ID
-# Step 2 start
+#ds-snippet-start:eSign41Step2
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/identity_verification"
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $oAuthAccessToken")
@@ -59,7 +59,7 @@ $result = Invoke-RestMethod -uri $uri -headers $headers -method GET
 $result.content
 #Obtain the workflow ID from the API response
 $workflowId = [System.Linq.Enumerable]::FirstOrDefault($result.identityVerification, [func[object, bool]] { param($x) $x.defaultName -eq "SMS for Access & Signatures"}).workflowId
-# Step 2 end
+#ds-snippet-end:eSign41Step2
 
 if ($null -eq $workflowId)
 {
@@ -74,7 +74,7 @@ $SIGNER_PHONE_NUMBER = Read-Host "Please enter an SMS-enabled Phone number for t
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Construct your envelope JSON body
-# Step 3 start
+#ds-snippet-start:eSign41Step3
 $body = @"
 {
 	"documents": [{
@@ -121,24 +121,25 @@ $body = @"
 						}
 						]
 					}]
-				}			
+				}
 			}]
 		},
 	"status": "Sent"
 }
-"@ 
-# Step 3 end
+"@
+#ds-snippet-end:eSign41Step3
 Write-Output ""
 
-# Step 4. Call DocuSign to create the envelope
+#ds-snippet-start:eSign41Step4
 $uri = "${apiUri}/v2.1/accounts/$APIAccountId/envelopes"
 $result = Invoke-WebRequest -uri $uri -headers $headers -body $body -method POST -UseBasicParsing -OutFile $response
 $result.content
 
 # pull out the envelopeId
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
+#ds-snippet-end:eSign41Step4
 
-# Step 5. Create a recipient view definition
+# Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
 #
 # The returnUrl is normally your own web app. DocuSign will redirect
@@ -151,7 +152,7 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
 Write-Output "Requesting the url for the embedded signing..."
-
+#ds-snippet-start:eSign41Step5
 $json = [ordered]@{
     'returnUrl'            = 'http://httpbin.org/get';
     'authenticationMethod' = 'none';
@@ -159,9 +160,10 @@ $json = [ordered]@{
     'userName'             = $variables.SIGNER_NAME;
     'clientUserId'         = 1000
 } | ConvertTo-Json -Compress
+#ds-snippet-end:eSign41Step5
 
-
-# Step 6. Create the recipient view and begin the DocuSign signing
+# Create the recipient view and begin the DocuSign signing
+#ds-snippet-start:eSign41Step6
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `
     -Method 'POST' `
@@ -174,8 +176,8 @@ Invoke-RestMethod `
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 $signingUrl = $(Get-Content $response | ConvertFrom-Json).url
+#ds-snippet-end:eSign41Step6
 
-# ***DS.snippet.0.end
 Write-Output "The embedded signing URL is $signingUrl"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."
 

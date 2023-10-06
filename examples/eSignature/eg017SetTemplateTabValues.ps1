@@ -34,6 +34,40 @@ else {
 }
 
 Write-Output "Sending the envelope request to DocuSign..."
+# Step 3. Create tabs and custom fields
+#ds-snippet-start:eSign17Step3
+$text_custom_fields = @{
+    "name" = "app metadata item"
+    "required" = "false"
+    "show" = "true"
+    "value" = "1234567"
+}
+
+$checkbox_tabs = @{
+    "selected1" = "true"
+    "tabLabel1" = "ckAuthorization"
+    "selected2" = "true"
+    "tabLabel2" = "ckAgreement"
+}
+
+$list_tabs = @{
+    "documentId" = "1"
+    "pageNumber" = "1"
+    "tabLabel" = "list"
+    "value" = "green"
+}
+
+$radio_tabs = @{
+    "selected" = "true"
+    "value" = "white"
+}
+
+$text_tabs = @{
+    "tabLabel" = "text"
+    "value" = "Jabberywocky!"
+}
+#ds-snippet-end:eSign17Step3
+
 # Tabs and custom fields shown in the request body on step 4
 # Step 4. Construct the request body
 #ds-snippet-start:eSign17Step4
@@ -41,10 +75,10 @@ Write-Output "Sending the envelope request to DocuSign..."
     customFields  = @{
         textCustomFields = @(
             @{
-                name     = "app metadata item";
-                required = "false";
-                show     = "true";
-                value    = "1234567";
+                name = $($text_custom_fields['name']);
+                required = $($text_custom_fields['required']);
+                show     = $($text_custom_fields['show']);
+                value    = $($text_custom_fields['value']);
             };
         );
     };
@@ -57,20 +91,20 @@ Write-Output "Sending the envelope request to DocuSign..."
             tabs         = @{
                 checkboxTabs   = @(
                     @{
-                        selected = "true";
-                        tabLabel = "ckAuthorization";
+                        selected = $($checkbox_tabs['selected1']);
+                        tabLabel = $($checkbox_tabs['tabLabel1']);
                     };
                     @{
-                        selected = "true";
-                        tabLabel = "ckAgreement";
+                        selected = $($checkbox_tabs['selected2']);
+                        tabLabel = $($checkbox_tabs['tabLabel2']);
                     };
                 );
                 listTabs       = @(
                     @{
-                        documentId = "1";
-                        pageNumber = "1";
-                        tabLabel   = "list";
-                        value      = "green";
+                        documentId = $($list_tabs['documentId']);
+                        pageNumber = $($list_tabs['pageNumber']);
+                        tabLabel   = $($list_tabs['tabLabel']);
+                        value      = $($list_tabs['value']);
                     };
                 );
                 radioGroupTabs = @(
@@ -78,16 +112,16 @@ Write-Output "Sending the envelope request to DocuSign..."
                         groupName = "radio1";
                         radios    = @(
                             @{
-                                selected = "true";
-                                value    = "white";
+                                selected = $($radio_tabs['selected']);
+                                value    = $($radio_tabs['value']);
                             };
                         );
                     };
                 );
                 textTabs       = @(
                     @{
-                        tabLabel = "text";
-                        value    = "Jabberywocky!";
+                        tabLabel = $($text_tabs['tabLabel']);
+                        value    = $($text_tabs['value']);
                     };
                     @{
                         bold       = "true";

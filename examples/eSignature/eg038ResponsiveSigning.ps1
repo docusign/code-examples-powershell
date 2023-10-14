@@ -31,10 +31,13 @@ $doc_html = New-TemporaryFile
 
 ((Get-Content $doc_html) `
     -replace '/sn1/', '<ds-signature data-ds-role="Signer"/>' `
-    -replace '/l1q/', '<input data-ds-type="number"/>' `
-    -replace '/l2q/', '<input data-ds-type="number"/>') | Set-Content $doc_html
+    -replace '/l1q/', '<input data-ds-type="number" name="l1q"/>' `
+    -replace '/l2q/', '<input data-ds-type="number" name="l2q"/>') | Set-Content $doc_html
 
 Write-Output "Sending the envelope request to DocuSign..."
+
+$price1 = 5
+$price2 = 150
 
 # Concatenate the different parts of the request
 #ds-snippet-start:eSign38Step2
@@ -58,6 +61,56 @@ Write-Output "Sending the envelope request to DocuSign..."
                 routingOrder = "1";
                 clientUserId = "1000";
                 roleName     = "Signer";
+                tabs = @{
+                    formulaTabs = @(
+                        @{
+                            font               = "helvetica";
+                            fontSize           = "size11";
+                            fontColor          = "black";
+                            anchorString       = "/l1e/";
+                            anchorYOffset      = "-8";
+                            anchorUnits        = "pixels";
+                            anchorXOffset      = "105";
+                            tabLabel           = "l1e";
+                            formula            = "[l1q] * $price1";
+                            roundDecimalPlaces = "0";
+                            required           = "true";
+                            locked             = "true";
+                            disableAutoSize    = "false";
+                        };
+                        @{
+                            font               = "helvetica";
+                            fontSize           = "size11";
+                            fontColor          = "black";
+                            anchorString       = "/l2e/";
+                            anchorYOffset      = "-8";
+                            anchorUnits        = "pixels";
+                            anchorXOffset      = "105";
+                            tabLabel           = "l2e";
+                            formula            = "[l2q] * $price2";
+                            roundDecimalPlaces = "0";
+                            required           = "true";
+                            locked             = "true";
+                            disableAutoSize    = "false";
+                        };
+                        @{
+                            font               = "helvetica";
+                            fontSize           = "size11";
+                            fontColor          = "black";
+                            anchorString       = "/l3t/";
+                            anchorYOffset      = "-8";
+                            anchorUnits        = "pixels";
+                            anchorXOffset      = "105";
+                            tabLabel           = "l3t";
+                            formula            = "[l1e] + [l2e]";
+                            roundDecimalPlaces = "0";
+                            required           = "true";
+                            locked             = "true";
+                            disableAutoSize    = "false";
+                            bold               = "true";
+                        };
+                    );
+                };
             };
         );
         carbonCopies = @(

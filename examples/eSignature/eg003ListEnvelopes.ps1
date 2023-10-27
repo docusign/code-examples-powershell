@@ -18,7 +18,7 @@ Write-Output "Sending the list envelope status request to DocuSign..."
 Write-Output "Results:"
 
 # Get date in the ISO 8601 format
-$fromDate = ((Get-Date).AddDays(-10d)).ToString("yyyy-MM-ddThh:mm:ssK")
+$fromDate = ((Get-Date).AddDays(-10d)).ToString("yyyy-MM-ddTHH:mm:ssK")
 
 
 $(Invoke-RestMethod `

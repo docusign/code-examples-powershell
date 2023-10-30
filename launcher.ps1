@@ -462,7 +462,8 @@ function startSignature {
             Set_Document_Visibility = 40;
             Document_Generation = 41;
             Shared_Access = 43;
-            Pick_An_API = 44;
+            Focused_View = 44;
+            Pick_An_API = 45;
         }
 
         $ApiExamplesView = $null;
@@ -510,6 +511,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Set_Document_Visibility)) Set_Document_Visibility"
             Write-Output "$([int][ApiExamples]::Document_Generation)) Document_Generation"
             Write-Output "$([int][ApiExamples]::Shared_Access)) Shared_Access"
+            Write-Output "$([int][ApiExamples]::Focused_View)) Focused_View"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -655,6 +657,10 @@ function startSignature {
         elseif ($ApiExamplesView -eq [ApiExamples]::Shared_Access) {
             checkEmailAddresses
             powershell.exe .\examples\eSignature\eg043SharedAccess.ps1
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Focused_View) {
+            checkEmailAddresses
+            powershell.exe .\examples\eSignature\eg044FocusedView.ps1
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher

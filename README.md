@@ -121,6 +121,8 @@ For a list of code examples that use the Rooms API, see the [How-to guides overv
    1. Add the launcher’s redirect URI. Under **Additional settings**, select **+ ADD URI**, and set a redirect URI of http://localhost:8080/authorization-code/callback. Select **SAVE**.   
    1. Set a name and email address for the signer. In settings.json, save an email address as `SIGNER_EMAIL` and a name as `SIGNER_NAME`.  
 **Note:** Protect your personal information. Please make sure that settings.json will not be stored in your source code repository.
+
+#### Installation steps for Multiple code examples, Authorization Code Grant, and JWT Grant and JWT grant remote signing example
 1. Run the launcher. In the root folder, right-click the **launcher** file and select **Run with PowerShell** > **Open**.
 1. Select an API when prompted in Windows PowerShell.
 1. Select **Authorization Code Grant** when authenticating your account.

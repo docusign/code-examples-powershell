@@ -126,6 +126,10 @@ For a list of code examples that use the Rooms API, see the [How-to guides overv
 1. Select **Authorization Code Grant** when authenticating your account.
 1. Select your desired code example.
 
+#### Installation steps for Authorization Code Grant embedded signing example
+1. In File Explorer, open your Quickstart folder, then open the Quick_ACG folder within it.
+1. Right-click the launcherACG.ps1 file and select Run with PowerShell > Open.
+
 
 ### Installation steps for JWT Grant authentication
 **Note:** If you downloaded this code using [Quickstart](https://developers.docusign.com/docs/esign-rest-api/quickstart/) from the DocuSign Developer Center, skip step 3 as it was automatically performed for you. Also, in order to select JSON Web Token authentication in the launcher, in config/settings.json, change the `quickstart` setting to `"false"`.

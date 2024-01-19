@@ -18,7 +18,6 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 # to the left under INTEGRATIONS and select
 # Payments to retrieve your Gateway account ID.
 
-# ***DS.snippet.0.start
 
 # Step 3. Create the envelope definition
 
@@ -33,7 +32,7 @@ $doc1Base64 = New-TemporaryFile
 Write-Output "Sending the envelope request to DocuSign..."
 
 # Concatenate the different parts of the request
-#ds-snippet-start:eSign14Step2
+#ds-snippet-start:eSign14Step3
 @{
     emailSubject = "Please complete your order";
     documents    = @(
@@ -160,9 +159,9 @@ Write-Output "Sending the envelope request to DocuSign..."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-#ds-snippet-end:eSign14Step2
+#ds-snippet-end:eSign14Step3
 
-#ds-snippet-start:eSign14Step3
+#ds-snippet-start:eSign14Step4
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -172,7 +171,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
-#ds-snippet-end:eSign14Step3
+#ds-snippet-end:eSign14Step4
 
 Write-Output "Results:"
 Get-Content $response

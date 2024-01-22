@@ -43,8 +43,6 @@ function checkEmailAddresses {
         exit 1;
     }
 
-
-
     # Fill in Quickstart Carbon Copy config values
     if (($config.CC_EMAIL -eq "{CC_EMAIL}" ) -or ($config.CC_EMAIL -eq "" )) {
         Write-Output "It looks like this is your first time running the launcher from Quickstart. "
@@ -103,7 +101,8 @@ function startLauncher {
             Admin = 5;
             ID_Evidence = 6;
             Notary = 7;
-            Exit = 8;
+            Maestro = 8;
+            Exit = 9;
         }
 
         $listApiView = $null;
@@ -141,6 +140,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Admin)) Admin"
             Write-Output "$([int][listApi]::ID_Evidence)) ID Evidence"
             Write-Output "$([int][listApi]::Notary)) Notary (closed beta)"
+            Write-Output "$([int][listApi]::Maestro)) Maestro"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -165,7 +165,10 @@ function startLauncher {
         }   
         elseif ($listApiView -eq [listApi]::Notary) {
             startAuth "notary"
-        }        
+        }   
+        elseif ($listApiView -eq [listApi]::Maestro) {
+            startAuth "maestro"
+        }       
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
         }
@@ -237,6 +240,9 @@ function startAuth ($apiVersion) {
     elseif ($listApiView -eq [listApi]::Notary) {
         startNotary
     }    
+    elseif ($listApiView -eq [listApi]::Maestro) {
+        startMaestro
+    } 
 }
 
 function startCFRSignature {
@@ -948,6 +954,40 @@ function startNotary {
     startLauncher
 }
 
+function startMaestro {
+    do {
+        Enum listMaestroExamples {
+            triggerWorkflow = 1;
+            cancelWorkflow = 2;
+            getWorkflowStatus = 3;
+            Pick_An_API = 4;
+        }
+        $listMaestroExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listMaestroExamples]::triggerWorkflow)) How to trigger a Maestro workflow"
+            Write-Output "$([int][listMaestroExamples]::cancelWorkflow)) How to cancel a Maestro workflow instance"
+            Write-Output "$([int][listMaestroExamples]::getWorkflowStatus)) How to get the status of a Maestro workflow instance"
+            Write-Output "$([int][listMaestroExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listMaestroExamplesView = Read-Host "Select the action"
+        } while (-not [listMaestroExamples]::IsDefined([listMaestroExamples], $listMaestroExamplesView));
+
+        if ($listMaestroExamplesView -eq [listMaestroExamples]::triggerWorkflow) {
+            powershell.exe -Command .\examples\Maestro\eg001TriggerWorkflow.ps1
+
+        }
+        elseif ($listMaestroExamplesView -eq [listMaestroExamples]::cancelWorkflow) {
+            powershell.exe -Command .\examples\Maestro\eg002CancelWorkflow.ps1
+
+        }
+        elseif ($listMaestroExamplesView -eq [listMaestroExamples]::getWorkflowStatus) {
+            powershell.exe -Command .\examples\Maestro\eg003GetWorkflowStatus.ps1
+        }
+
+    } until ($listMaestroExamplesView -eq [listMaestroExamples]::Pick_An_API)
+    startLauncher
+}
 
 Write-Output "Welcome to the DocuSign PowerShell Launcher"
 startLauncher

@@ -171,6 +171,7 @@ $body = @"
                         }
                     ],
                     "mergeValues": {
+                        "CustomMessage": "Follow this link to access and complete the workflow.",
                         "ParticipantFullName": {
                             "source": "step",
                             "propertyName": "signerName",

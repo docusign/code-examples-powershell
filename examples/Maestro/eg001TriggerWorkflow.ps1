@@ -1,11 +1,10 @@
 # Trigger a workflow
-
-if (Test-Path .\config\WORKFLOW_ID) {
-  $workflowId = Get-Content .\config\WORKFLOW_ID
-} else {
-  # create workflow
-
+if (-not (Test-Path .\config\WORKFLOW_ID)) {
+   # create workflow
+   powershell.exe .\examples\Maestro\createWorkflowUtils.ps1
 }
+
+$workflowId = Get-Content .\config\WORKFLOW_ID
 
 # check that create workflow script ran successfully
 if (Test-Path .\config\WORKFLOW_ID) {

@@ -35,6 +35,9 @@ elseif ($apiVersion -eq "admin") {
 elseif ($apiVersion -eq "notary") {
   $scopes = "signature%20organization_read%20notary_read%20notary_write"
 }
+elseif ($apiVersion -eq "maestro") {
+  $scopes = "signature%20aow_manage"
+}
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"

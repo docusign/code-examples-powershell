@@ -31,7 +31,9 @@ $responseOk = @"
 </body>
 </html>
 
-<!--#ds-snippet-start:WebForms1Step6-->
+<!--
+  #ds-snippet-start:WebForms1Step6
+-->
 <script src="https://js.docusign.com/bundle.js"></script>
 <script>
 async function loadWebform() {
@@ -70,7 +72,9 @@ webFormWidget.mount("#docusign");
 }
 loadWebform();
 </script>
-<!--#ds-snippet-end:WebForms1Step6-->
+<!--
+  #ds-snippet-end:WebForms1Step6
+-->
 "@
 
 [Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }

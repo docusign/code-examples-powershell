@@ -101,8 +101,9 @@ function startLauncher {
             Admin = 5;
             ID_Evidence = 6;
             Notary = 7;
-            Maestro = 8;
-            Exit = 9;
+            WebForms = 8;
+            Maestro = 9;
+            Exit = 10;
         }
 
         $listApiView = $null;
@@ -140,6 +141,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Admin)) Admin"
             Write-Output "$([int][listApi]::ID_Evidence)) ID Evidence"
             Write-Output "$([int][listApi]::Notary)) Notary (closed beta)"
+            Write-Output "$([int][listApi]::WebForms)) Web Forms"
             Write-Output "$([int][listApi]::Maestro)) Maestro (beta)"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
@@ -165,10 +167,13 @@ function startLauncher {
         }   
         elseif ($listApiView -eq [listApi]::Notary) {
             startAuth "notary"
+        }    
+        elseif ($listApiView -eq [listApi]::WebForms) {
+            startAuth "webForms"
         }   
         elseif ($listApiView -eq [listApi]::Maestro) {
             startAuth "maestro"
-        }       
+        }      
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
         }
@@ -239,10 +244,12 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::Notary) {
         startNotary
+    } elseif ($listApiView -eq [listApi]::WebForms) {
+        startWebForms
     }    
     elseif ($listApiView -eq [listApi]::Maestro) {
         startMaestro
-    } 
+    }
 }
 
 function startCFRSignature {
@@ -951,6 +958,28 @@ function startNotary {
             powershell.exe -Command .\examples\Notary\Jurisdictions.ps1
         }
     } until ($listNotaryExamplesView -eq [listNotaryExamples]::Pick_An_API)
+    startLauncher
+}
+
+function startWebForms {
+    do {
+        Enum listWebFormsExamples {
+            createInstance = 1;
+            Pick_An_API = 2;
+        }
+        $listWebFormsExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listWebFormsExamples]::createInstance)) Create_Instance"
+            Write-Output "$([int][listWebFormsExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listWebFormsExamplesView = Read-Host "Select the action"
+        } while (-not [listWebFormsExamples]::IsDefined([listWebFormsExamples], $listWebFormsExamplesView));
+
+        if ($listWebFormsExamplesView -eq [listWebFormsExamples]::createInstance) {
+            powershell.exe -Command .\examples\WebForms\eg001CreateInstance.ps1
+        }
+    } until ($listWebFormsExamplesView -eq [listWebFormsExamples]::Pick_An_API)
     startLauncher
 }
 

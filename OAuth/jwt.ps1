@@ -51,6 +51,9 @@ if ($apiVersion -eq "rooms") {
   elseif ($apiVersion -eq "maestro") {
     $scopes = "signature%20aow_manage%20impersonation"
   }
+  elseif ($apiVersion -eq "webForms") {
+    $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
+  }
 
 # Request application consent
 $PORT = '8080'

@@ -40,7 +40,7 @@ $SIGNER2_NAME = Read-Host 'Please enter signer #2 name'
 $CC_EMAIL = Read-Host 'Please enter carbon copy email address'
 $CC_NAME = Read-Host 'Please enter carbon copy name'
 
-#ds-snippet-start:eSign403Step2
+#ds-snippet-start:eSign40Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")

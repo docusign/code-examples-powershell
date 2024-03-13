@@ -36,7 +36,6 @@ do {
     [int]$startingView = Read-Host "Please make a selection"
 } while (-not [ViewType]::IsDefined([ViewType], $startingView));
 
-# ***DS.snippet.0.start
 
 # Step 2. Create the envelope
 # Create the document request body
@@ -53,6 +52,7 @@ do {
 #  The envelope will be sent first to the signer.
 #  After it is signed, a copy is sent to the cc person.
 
+#ds-snippet-start:eSign11Step2
 # temp files:
 $requestData = New-TemporaryFile
 $response = New-TemporaryFile
@@ -136,8 +136,10 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign11Step2
 
 # Step 3. Create the sender view
+#ds-snippet-start:eSign11Step3
 # pull out the envelopeId
 $envelop = $response | Get-Content | ConvertFrom-Json
 Write-Output "Envelope received: $envelop"
@@ -166,7 +168,7 @@ $sendingUrl = $sendingObj.url
 if ($startingView -eq [ViewType]::RecipientsAndDocuments) {
     $sendingUrl = $sendingUrl -replace "send=1", "send=0"
 }
-# ***DS.snippet.0.end
+#ds-snippet-end:eSign11Step3
 
 Write-Output "The embedded sending URL is ${sendingUrl}"
 Write-Output "It is only valid for five minutes. Attempting to automatically open your browser..."

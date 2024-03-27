@@ -60,6 +60,7 @@ Write-Output "Results:"
 #ds-snippet-start:eSign40Step3
 @{
     emailSubject = "Please sign this document set";
+    enforceSignerVisibility = "true";
     documents    = @(
         @{
             documentBase64 = "$(Get-Content $doc1Base64)";

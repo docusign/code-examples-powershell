@@ -13,10 +13,8 @@ $CC_EMAIL = $variables.CC_EMAIL
 $CC_NAME = $variables.CC_NAME
 $SIGNER_EMAIL = $variables.SIGNER_EMAIL
 $SIGNER_NAME = $variables.SIGNER_NAME
-# Step 1 start
 # Obtain your OAuth access token
 $accessToken = Get-Content ".\config\ds_access_token.txt"
-# Step 1 end
 
 # Obtain your accountId from demo.docusign.net -- the account id is shown in
 # the drop down on the upper right corner of the screen by your picture or
@@ -153,8 +151,8 @@ $headers = @{
 
 # Send request
 try {
-	# Step 4 start
 	# Call the eSignature REST API
+	#ds-snippet-start:eSign10Step4
 	Invoke-RestMethod `
 		-Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
 		-Method 'POST' `
@@ -163,12 +161,11 @@ try {
 		-OutFile $response
 
 	Write-Output "Response: $(Get-Content -Raw $response)"
+	#ds-snippet-end:eSign10Step4
 }
-# Step 4 end
 catch {
 	Write-Error $_
 }
-# ***DS.snippet.0.end
 
 Get-Content $response
 

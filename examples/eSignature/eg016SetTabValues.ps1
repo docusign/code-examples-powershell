@@ -124,7 +124,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 #ds-snippet-end:eSign16Step3
 
 # Step 4. Call the eSignature REST API
-#ds-snippet-start:eSign15Step4
+#ds-snippet-start:eSign16Step4
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
   -Method 'POST' `

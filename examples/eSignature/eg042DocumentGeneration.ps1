@@ -12,7 +12,7 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
 
 
-# Step 2. Create a template
+# Create a template
 #
 #  The envelope has one document and one signer/recipient
 #  The document must be a Word docx file
@@ -33,6 +33,7 @@ Write-Output "Sending the template create request to DocuSign..."
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\Offer_Letter_Demo.docx"))) > $doc1Base64
 
 # Concatenate the different parts of the request
+#ds-snippet-start:eSign42Step2
 @{
     description = "Example template created via the API";
     name = "${templateName}";
@@ -76,10 +77,11 @@ Invoke-RestMethod `
 
 # pull out the template id
 $templateId = $(Get-Content $response | ConvertFrom-Json).templateId
-
+#ds-snippet-end:eSign42Step2
 Write-Output "Template '${templateName}' was created! Template ID ${templateId}."
 
-# Step 3. Add a document with merge fields to your template
+# Add a document with merge fields to your template
+#ds-snippet-start:eSign42Step3
 @{
   documents = @(
       @{
@@ -103,8 +105,10 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response
+#ds-snippet-end:eSign42Step3
 
-# Step 4. Add tabs to the template
+# Add tabs to the template
+#ds-snippet-start:eSign42Step4
 @{
     signHereTabs   = @(
         @{
@@ -133,9 +137,11 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:eSign42Step4
 
-# Step 5. Create an envelope draft from a template
+# Create an envelope draft from a template
 # Leave envelope in "draft"/"created" status, don't send it yet
+#ds-snippet-start:eSign42Step5
 @{
     templateId    = "${templateId}";
     templateRoles = @(
@@ -160,10 +166,12 @@ Invoke-RestMethod `
 
 # pull out the envelope id
 $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
+#ds-snippet-end:eSign42Step5
 
 Write-Output "Envelope '${templateName}' draft was created! Envelope ID ${envelopeId}."
 
-# Step 6: Get DocGenFormFields
+# Get DocGenFormFields
+#ds-snippet-start:eSign42Step6
 Invoke-RestMethod `
   -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/docGenFormFields" `
   -Method 'GET' `
@@ -178,11 +186,11 @@ Get-Content $response
 
 # pull out the document id value
 $documentId = $(Get-Content $response | ConvertFrom-Json).docGenFormFields[0].documentId
-
+#ds-snippet-end:eSign42Step6
 
 Write-Output "Document ID ${documentId}."
 
-# Step 6. Build the request to update the data fields in the envelope that we created from the template
+# Build the request to update the data fields in the envelope that we created from the template
 # Collect user data to send to API/Document fields
 $CandidateName  = Read-Host "Enter candidate name"
 $ManagerName  = Read-Host "Enter manager name"
@@ -201,6 +209,7 @@ elseif ($JobNumber -eq "3") {
     $JobTitle = "Sales Representative"
 }
 
+#ds-snippet-start:eSign42Step7
 @{
     docGenFormFields = @(
       @{
@@ -240,8 +249,10 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response
+#ds-snippet-end:eSign42Step7
 
-# Step 8 - Send the envelope
+# Send the envelope
+#ds-snippet-start:eSign42Step8
 @{
     status = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
@@ -255,7 +266,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path  `
     -OutFile $response
-
+#ds-snippet-end:eSign42Step8
 Write-Output "Response:"
 Get-Content $response
 

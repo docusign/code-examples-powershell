@@ -120,7 +120,7 @@ Invoke-RestMethod `
     );
     dateSignedTabs   = @(
         @{
-            anchorString = "Date";
+            anchorString = "Date Signed";
             anchorUnits = "pixels";
             anchorYOffset = "-22";
         };

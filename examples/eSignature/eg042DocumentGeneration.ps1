@@ -195,7 +195,9 @@ Write-Output "Document ID ${documentId}."
 $CandidateName  = Read-Host "Enter candidate name"
 $ManagerName  = Read-Host "Enter manager name"
 $StartDate  = Read-Host "Enter start date"
-$Salary  = Read-Host "Enter salary"
+Write-Host "Enter salary: $" -NoNewLine
+$Salary  = Read-Host
+$Rsus  = Read-Host "Enter RSUs"
 Write-Output "Choose job title"
 Write-Output "1 - Software Engineer"
 Write-Output "2 - Account Executive"
@@ -239,7 +241,7 @@ if ($JobNumber -eq "2") {
                   };
                   @{
                     name = "Details";
-                    value = "${Salary}";
+                    value = "$" + "${Salary}";
                   }
                 )
               };
@@ -251,7 +253,19 @@ if ($JobNumber -eq "2") {
                   };
                   @{
                     name = "Details";
-                    value = "You will be eligible for a bonus of up to 20 percent based on your performance.";
+                    value = "20%";
+                  }
+                )
+              };
+              @{
+                docGenFormFieldList = @(
+                  @{
+                    name = "Compensation_Component";
+                    value = "RSUs";
+                  };
+                  @{
+                    name = "Details";
+                    value = $rsus;
                   }
                 )
               }

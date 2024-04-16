@@ -30,7 +30,7 @@ $templateName = "Example document generation template"
 Write-Output "Sending the template create request to DocuSign..."
 
 # Fetch document and encode
-[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\Offer_Letter_Demo.docx"))) > $doc1Base64
+[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\Offer_Letter_Dynamic_Table.docx"))) > $doc1Base64
 
 # Concatenate the different parts of the request
 #ds-snippet-start:eSign42Step2
@@ -120,7 +120,7 @@ Invoke-RestMethod `
     );
     dateSignedTabs   = @(
         @{
-            anchorString = "Date";
+            anchorString = "Date Signed";
             anchorUnits = "pixels";
             anchorYOffset = "-22";
         };
@@ -195,18 +195,16 @@ Write-Output "Document ID ${documentId}."
 $CandidateName  = Read-Host "Enter candidate name"
 $ManagerName  = Read-Host "Enter manager name"
 $StartDate  = Read-Host "Enter start date"
-$Salary  = Read-Host "Enter salary"
+Write-Host "Enter salary: $" -NoNewLine
+$Salary  = Read-Host
+$Rsus  = Read-Host "Enter RSUs"
 Write-Output "Choose job title"
 Write-Output "1 - Software Engineer"
-Write-Output "2 - Product Manager"
-Write-Output "3 - Sales Representative"
+Write-Output "2 - Account Executive"
 $JobTitle = "Software Engineer"
 $JobNumber = Read-Host
 if ($JobNumber -eq "2") {
-    $JobTitle = "Product Manager"
-}
-elseif ($JobNumber -eq "3") {
-    $JobTitle = "Sales Representative"
+    $JobTitle = "Account Executive"
 }
 
 #ds-snippet-start:eSign42Step7
@@ -232,8 +230,46 @@ elseif ($JobNumber -eq "3") {
             value = "${StartDate}";
           };
           @{
-            name = "Salary";
-            value = "${Salary}";
+            name = "Compensation_Package";
+            type = "TableRow";
+            rowValues = @(
+              @{
+                docGenFormFieldList = @(
+                  @{
+                    name = "Compensation_Component";
+                    value = "Salary";
+                  };
+                  @{
+                    name = "Details";
+                    value = "$" + "${Salary}";
+                  }
+                )
+              };
+              @{
+                docGenFormFieldList = @(
+                  @{
+                    name = "Compensation_Component";
+                    value = "Bonus";
+                  };
+                  @{
+                    name = "Details";
+                    value = "20%";
+                  }
+                )
+              };
+              @{
+                docGenFormFieldList = @(
+                  @{
+                    name = "Compensation_Component";
+                    value = "RSUs";
+                  };
+                  @{
+                    name = "Details";
+                    value = $rsus;
+                  }
+                )
+              }
+            )
           }
         )
       }

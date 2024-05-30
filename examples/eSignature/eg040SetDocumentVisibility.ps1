@@ -48,7 +48,12 @@ $headers.add("Content-Type", "application/json")
 
 
 # Fetch docs and encode
-[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\doc_1.html"))) > $doc1Base64
+$doc1String = [System.IO.File]::ReadAllText((Resolve-Path ".\demo_documents\doc_1.html"))
+$doc1String = $doc1String.Replace("{USER_EMAIL}", $SIGNER1_EMAIL)
+$doc1String = $doc1String.Replace("{USER_FULLNAME}", $SIGNER1_NAME)
+$doc1String = $doc1String.Replace("{CC_EMAIL}", $CC_EMAIL)
+$doc1String = $doc1String.Replace("{CC_NAME}", $CC_NAME)
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($doc1String)) > $doc1Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 

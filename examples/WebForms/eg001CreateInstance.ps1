@@ -19,7 +19,7 @@ $result = $webFormConfig -replace "template-id", $templateId
 $result | Set-Content -Path demo_documents\web-form-config.json
 
 Write-Host "" 
-Write-Host "Go to your DocuSign account to create the Web Form. Go to 'Forms' in your developer account, select 'New,' and choose 'Upload web form.' Upload the JSON config file 'web-form-config.json' found under the demo_documents folder of this project. You will need to activate the web form before proceeding. Press 1 to continue after doing so."
+Write-Host "Go to your Docusign account to create the Web Form. Go to 'Templates' in your developer account, select 'Start,' select 'Web Forms,' and choose 'Upload Web Form.' Upload the JSON config file 'web-form-config.json' found under the demo_documents folder of this project. You will need to activate the web form before proceeding. Press Continue after doing so."
 $choice = Read-Host
 
 #ds-snippet-start:WebForms1Step2

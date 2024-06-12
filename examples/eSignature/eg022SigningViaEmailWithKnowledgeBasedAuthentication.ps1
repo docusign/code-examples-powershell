@@ -2,8 +2,6 @@
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-$SIGNER_EMAIL = $variables.SIGNER_EMAIL
-$SIGNER_NAME = $variables.SIGNER_NAME
 
 # Get the envelope's custom field data
 # This script uses the envelope ID stored in ../envelope_id.
@@ -32,6 +30,21 @@ $headers.add("Authorization", "Bearer $oAuthAccessToken")
 $headers.add("Accept", "application/json")
 $headers.add("Content-Type", "application/json")
 #ds-snippet-end:eSign22Step2
+
+$isDataIncorrect = $true
+while($isDataIncorrect)
+{
+	$SIGNER_NAME = Read-Host "Please enter name for the signer"
+	$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
+
+	if ($SIGNER_EMAIL -eq $variables.SIGNER_EMAIL) {
+		Write-Output ""
+		Write-Output "For recipient authentication you must specify a different recipient from the account owner (sender) in order to ensure recipient authentication is performed."
+		Write-Output ""
+	} else {
+		$isDataIncorrect = $false
+	}
+}
 
 # Construct your envelope JSON body
 #ds-snippet-start:eSign22Step3

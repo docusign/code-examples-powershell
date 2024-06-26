@@ -1,7 +1,7 @@
 # PowerShell Launcher Code Examples
 
 >
->### PLEASE! Share your feedback in a [two questions survey](https://docs.google.com/forms/d/e/1FAIpQLScPa74hwhJwi7XWDDj4-XZVOQTF9jJWgbIFEpulXokCqYWT4A/viewform?usp=pp_url&entry.680551577=PowerShell).
+>### PLEASE! Share your feedback in a [two-question survey](https://docs.google.com/forms/d/e/1FAIpQLScPa74hwhJwi7XWDDj4-XZVOQTF9jJWgbIFEpulXokCqYWT4A/viewform?usp=pp_url&entry.680551577=PowerShell).
 >
 >
 ### GitHub repo: [code-examples-powershell](./README.md)

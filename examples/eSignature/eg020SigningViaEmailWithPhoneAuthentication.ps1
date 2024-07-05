@@ -2,8 +2,6 @@
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
-$SIGNER_EMAIL = $variables.SIGNER_EMAIL
-$SIGNER_NAME = $variables.SIGNER_NAME
 $PHONE_NUMBER = $variables.PHONE_NUMBER
 
 # Get the envelope's custom field data
@@ -52,9 +50,24 @@ if ($null -eq $workflowId)
 	throw "Please contact https://support.docusign.com to enable recipient phone authentication in your account."
 }
 
-$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
+$isDataIncorrect = $true
+while($isDataIncorrect)
+{
+	$SIGNER_NAME = Read-Host "Please enter name for the signer"
+	$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
 
+	if ($SIGNER_EMAIL -eq $variables.SIGNER_EMAIL) {
+		Write-Output ""
+		Write-Output "For recipient authentication you must specify a different recipient from the account owner (sender) in order to ensure recipient authentication is performed."
+		Write-Output ""
+	} else {
+		$isDataIncorrect = $false
+	}
+}
+
+$SIGNER_COUNTRY_CODE = Read-Host "Please enter a country code for recipient authentication for the signer"
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter a phone number for recipient authentication for the signer"
+
 # Construct your envelope JSON body
 #ds-snippet-start:eSign20Step4
 $body = @"

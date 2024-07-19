@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 # Trigger a workflow
 if (-not (Test-Path .\config\WORKFLOW_ID)) {

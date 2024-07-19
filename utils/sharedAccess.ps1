@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 $configFile = ".\config\settings.json"
 

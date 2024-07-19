@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 $ErrorActionPreference = "Stop" # force stop on failure
 
@@ -116,7 +116,7 @@ function startLauncher {
                 Write-Output ''
                 Write-Output "Quickstart Enabled, please wait"
                 write-Output ''
-                Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") -targetAccountId $($config.TARGET_ACCOUNT_ID)"
+                Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -clientSecret `"$($config.SECRET_KEY)`" -apiVersion $("eSignature") -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
 
 
                 if ((Test-Path "./config/ds_access_token.txt") -eq $true) {
@@ -209,13 +209,13 @@ function startAuth ($apiVersion) {
         startLauncher
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
-        Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion) -targetAccountId $($config.TARGET_ACCOUNT_ID)"
+        Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -clientSecret `"$($config.SECRET_KEY)`" -apiVersion $($apiVersion) -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
         if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
-        Invoke-Script -Command "`".\OAuth\jwt.ps1`" -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion) -targetAccountId $($config.TARGET_ACCOUNT_ID)"
+        Invoke-Script -Command "`".\OAuth\jwt.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -apiVersion `"$($apiVersion)`" -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
         if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }

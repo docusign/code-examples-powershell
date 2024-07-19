@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 $apiUri = "https://demo.docusign.net/restapi"
 $accountUri = "https://account-d.docusign.com"

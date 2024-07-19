@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 $apiUri = "https://apps-d.docusign.com/api/webforms/v1.1"
 $configPath = ".\config\settings.json"

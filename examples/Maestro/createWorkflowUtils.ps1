@@ -1,4 +1,4 @@
-. "utils\invokeScript.ps1"
+. "utils/invokeScript.ps1"
 
 # Check that we have a template id
 if (-not (Test-Path .\config\TEMPLATE_ID)) {

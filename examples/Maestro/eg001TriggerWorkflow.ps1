@@ -1,7 +1,9 @@
+. "utils\invokeScript.ps1"
+
 # Trigger a workflow
 if (-not (Test-Path .\config\WORKFLOW_ID)) {
-   # create workflow
-   powershell.exe .\examples\Maestro\createWorkflowUtils.ps1
+  # create workflow
+  Invoke-Script -Command "`".\examples\Maestro\createWorkflowUtils.ps1`""
 }
 
 $workflowId = Get-Content .\config\WORKFLOW_ID

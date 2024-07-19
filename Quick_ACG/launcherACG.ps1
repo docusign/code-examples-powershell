@@ -1,3 +1,5 @@
+. "..\utils\invokeScript.ps1"
+
 $ErrorActionPreference = "Stop" # force stop on failure
 
 $configFile = "..\config\settings.json"
@@ -15,11 +17,11 @@ function startQuickACG {
     Write-Output ''
     Write-Output "Authentication in progress, please wait"
     Write-Output ''
-    powershell.exe -Command ..\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") -targetAccountId $($config.TARGET_ACCOUNT_ID)
+    Invoke-Script -Command "`"..\OAuth\code_grant.ps1`" -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") -targetAccountId $($config.TARGET_ACCOUNT_ID)"
     Write-Output ''
 
     if ((Test-Path "../config/ds_access_token.txt") -eq $true) {
-        powershell.exe -Command ..\eg001EmbeddedSigning.ps1
+        Invoke-Script -Command "`"..\eg001EmbeddedSigning.ps1`""
         Write-Output ''
         startSignature
     }

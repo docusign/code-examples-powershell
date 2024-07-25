@@ -1,3 +1,5 @@
+. "utils/invokeScript.ps1"
+
 $apiUri = "https://apps-d.docusign.com/api/webforms/v1.1"
 $configPath = ".\config\settings.json"
 $tokenPath = ".\config\ds_access_token.txt"
@@ -10,7 +12,7 @@ $accessToken = Get-Content $tokenPath
 $accountId = Get-Content $accountIdPath
 
 # Create template for the Web Form from the API
-powershell.exe -Command .\utils\createWebFormTemplate.ps1
+Invoke-Script -Command "`".\utils\createWebFormTemplate.ps1`""
 
 $templateId = Get-Content -Path ".\config\WEB_FORM_TEMPLATE_ID"
 

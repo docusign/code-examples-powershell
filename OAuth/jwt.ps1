@@ -128,7 +128,7 @@ try {
         -Method "GET" `
         -Headers @{ "Authorization" = "Bearer $accessToken" }
 
-    if ($targetAccountId -ne "TARGET_ACCOUNT_ID") {
+    if ($targetAccountId -ne "TARGET_ACCOUNT_ID" -and $targetAccountId -ne "{TARGET_ACCOUNT_ID}") {
         $targetAccountFound = "false";
         foreach ($account_info in $userInfoResponse.accounts) {
             if ($account_info.account_id -eq $targetAccountId) {

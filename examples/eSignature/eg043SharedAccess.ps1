@@ -1,3 +1,5 @@
+. "utils/invokeScript.ps1"
+
 $apiUri = "https://demo.docusign.net/restapi"
 $accountUri = "https://account-d.docusign.com"
 
@@ -168,7 +170,7 @@ if ($choice -ne "1") {
     exit 1
 }
 
-powershell.exe -Command .\utils\sharedAccess.ps1
+Invoke-Script -Command "`".\utils\sharedAccess.ps1`""
 
 #ds-snippet-start:eSign43Step5
 try {

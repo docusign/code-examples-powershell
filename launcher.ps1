@@ -1,3 +1,5 @@
+. "utils/invokeScript.ps1"
+
 $ErrorActionPreference = "Stop" # force stop on failure
 
 $configFile = ".\config\settings.json"
@@ -114,11 +116,11 @@ function startLauncher {
                 Write-Output ''
                 Write-Output "Quickstart Enabled, please wait"
                 write-Output ''
-                powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $("eSignature") -targetAccountId $($config.TARGET_ACCOUNT_ID)
+                Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -clientSecret `"$($config.SECRET_KEY)`" -apiVersion $("eSignature") -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
 
 
                 if ((Test-Path "./config/ds_access_token.txt") -eq $true) {
-                    powershell.exe -Command .\eg001EmbeddedSigning.ps1
+                    Invoke-Script -Command "`".\eg001EmbeddedSigning.ps1`""
 
                     # This is to prevent getting stuck on the
                     # first example after trying it the first time
@@ -207,13 +209,13 @@ function startAuth ($apiVersion) {
         startLauncher
     }
     elseif ($AuthTypeView -eq [AuthType]::CodeGrant) {
-        powershell.exe -Command .\OAuth\code_grant.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -clientSecret $($config.SECRET_KEY) -apiVersion $($apiVersion) -targetAccountId $($config.TARGET_ACCOUNT_ID)
+        Invoke-Script -Command "`".\OAuth\code_grant.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -clientSecret `"$($config.SECRET_KEY)`" -apiVersion $($apiVersion) -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
         if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }
     }
     elseif ($AuthTypeView -eq [AuthType]::JWT) {
-        powershell.exe -Command .\OAuth\jwt.ps1 -clientId $($config.INTEGRATION_KEY_AUTH_CODE) -apiVersion $($apiVersion) -targetAccountId $($config.TARGET_ACCOUNT_ID)
+        Invoke-Script -Command "`".\OAuth\jwt.ps1`" -clientId `"$($config.INTEGRATION_KEY_AUTH_CODE)`" -apiVersion `"$($apiVersion)`" -targetAccountId `"$($config.TARGET_ACCOUNT_ID)`""
         if ((Test-Path "./config/ds_access_token.txt") -eq $false) {
             Write-Error "Failed to retrieve OAuth Access token, check your settings.json and that port 8080 is not in use"  -ErrorAction Stop
         }
@@ -328,104 +330,104 @@ function startCFRSignature {
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
 
         if ($ApiExamplesView -eq [ApiExamples]::Embedded_Signing_CFR) {
-            powershell.exe -Command .\examples\eSignature\eg041EmbeddedSigningCFR.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg041EmbeddedSigningCFR.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email) {
             checkEmailAddresses
-            powershell.exe -Command .\examples\eSignature\eg002SigningViaEmail.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg002SigningViaEmail.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::List_Envelopes) {
-            powershell.exe -Command .\examples\eSignature\eg003ListEnvelopes.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg003ListEnvelopes.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Info) {
-            powershell.exe -Command .\examples\eSignature\eg004EnvelopeInfo.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg004EnvelopeInfo.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Recipients) {
-            powershell.exe .\examples\eSignature\eg005EnvelopeRecipients.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg005EnvelopeRecipients.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Docs) {
-            powershell.exe .\examples\eSignature\eg006EnvelopeDocs.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg006EnvelopeDocs.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Get_Doc) {
-            powershell.exe .\examples\eSignature\eg007EnvelopeGetDoc.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg007EnvelopeGetDoc.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Template) {
-            powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg008CreateTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg009UseTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg009UseTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Send_Binary_Docs) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg010SendBinaryDocs.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg010SendBinaryDocs.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg011EmbeddedSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg011EmbeddedSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Console) {
-            powershell.exe .\examples\eSignature\eg012EmbeddedConsole.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg012EmbeddedConsole.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Add_Doc_To_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg013AddDocToTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg013AddDocToTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Tab_Data) {
-            powershell.exe .\examples\eSignature\eg015EnvelopeTabData.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg015EnvelopeTabData.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Tab_Values) {
-            powershell.exe .\examples\eSignature\eg016SetTabValues.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg016SetTabValues.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Template_Tab_Values) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg017SetTemplateTabValues.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg017SetTemplateTabValues.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Custom_Field_Data) {
-            powershell.exe .\examples\eSignature\eg018EnvelopeCustomFieldData.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg018EnvelopeCustomFieldData.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
-            powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
-            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
-            powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_Permission_Profiles) {
-            powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg024CreatingPermissionProfiles.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Setting_Permission_Profiles) {
-            powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg025SettingPermissionProfiles.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Updating_Individual_Permission) {
-            powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg026UpdatingIndividualPermission.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Deleting_Permissions) {
-            powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg027DeletingPermissions.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_A_Brand) {
-            powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg028CreatingABrand.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Envelope) {
-            powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg029ApplyingBrandEnvelope.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg030ApplyingBrandTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg031BulkSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg031BulkSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg035ScheduledSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Signable_HTML_document) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg038ResponsiveSigning.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg038ResponsiveSigning.ps1`""
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher
@@ -530,150 +532,150 @@ function startSignature {
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
 
         if ($ApiExamplesView -eq [ApiExamples]::Embedded_Signing) {
-            powershell.exe -Command .\eg001EmbeddedSigning.ps1
+            Invoke-Script -Command "`".\eg001EmbeddedSigning.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email) {
             checkEmailAddresses
-            powershell.exe -Command .\examples\eSignature\eg002SigningViaEmail.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg002SigningViaEmail.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::List_Envelopes) {
-            powershell.exe -Command .\examples\eSignature\eg003ListEnvelopes.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg003ListEnvelopes.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Info) {
-            powershell.exe -Command .\examples\eSignature\eg004EnvelopeInfo.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg004EnvelopeInfo.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Recipients) {
-            powershell.exe .\examples\eSignature\eg005EnvelopeRecipients.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg005EnvelopeRecipients.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Docs) {
-            powershell.exe .\examples\eSignature\eg006EnvelopeDocs.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg006EnvelopeDocs.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Get_Doc) {
-            powershell.exe .\examples\eSignature\eg007EnvelopeGetDoc.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg007EnvelopeGetDoc.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Template) {
-            powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg008CreateTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg009UseTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg009UseTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Send_Binary_Docs) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg010SendBinaryDocs.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg010SendBinaryDocs.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg011EmbeddedSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg011EmbeddedSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Embedded_Console) {
-            powershell.exe .\examples\eSignature\eg012EmbeddedConsole.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg012EmbeddedConsole.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Add_Doc_To_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg013AddDocToTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg013AddDocToTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Collect_Payment) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg014CollectPayment.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg014CollectPayment.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Tab_Data) {
-            powershell.exe .\examples\eSignature\eg015EnvelopeTabData.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg015EnvelopeTabData.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Tab_Values) {
-            powershell.exe .\examples\eSignature\eg016SetTabValues.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg016SetTabValues.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Template_Tab_Values) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg017SetTemplateTabValues.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg017SetTemplateTabValues.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Envelope_Custom_Field_Data) {
-            powershell.exe .\examples\eSignature\eg018EnvelopeCustomFieldData.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg018EnvelopeCustomFieldData.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Access_Code) {
-            powershell.exe .\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg019SigningViaEmailWithAccessCode.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Phone_Authentication) {
-            powershell.exe .\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg020SigningViaEmailWithPhoneAuthentication.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_Knowledge_Based_Authentication) {
-            powershell.exe .\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg022SigningViaEmailWithKnowledgeBasedAuthentication.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_Via_Email_With_IDV_Authentication) {
-            powershell.exe .\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg023SigningViaEmailWithIDVAuthentication.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_Permission_Profiles) {
-            powershell.exe .\examples\eSignature\eg024CreatingPermissionProfiles.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg024CreatingPermissionProfiles.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Setting_Permission_Profiles) {
-            powershell.exe .\examples\eSignature\eg025SettingPermissionProfiles.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg025SettingPermissionProfiles.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Updating_Individual_Permission) {
-            powershell.exe .\examples\eSignature\eg026UpdatingIndividualPermission.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg026UpdatingIndividualPermission.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Deleting_Permissions) {
-            powershell.exe .\examples\eSignature\eg027DeletingPermissions.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg027DeletingPermissions.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Creating_A_Brand) {
-            powershell.exe .\examples\eSignature\eg028CreatingABrand.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg028CreatingABrand.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Envelope) {
-            powershell.exe .\examples\eSignature\eg029ApplyingBrandEnvelope.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg029ApplyingBrandEnvelope.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Applying_Brand_Template) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg030ApplyingBrandTemplate.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg030ApplyingBrandTemplate.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Bulk_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg031BulkSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg031BulkSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Pause_Signature_Workflow) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg032PauseSignatureWorkflow.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg032PauseSignatureWorkflow.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Unpause_Signature_Workflow) {
-            powershell.exe .\examples\eSignature\eg033UnpauseSignatureWorkflow.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg033UnpauseSignatureWorkflow.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Use_Conditional_Recipients) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg034UseConditionalRecipients.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg034UseConditionalRecipients.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Scheduled_Sending) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg035ScheduledSending.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg035ScheduledSending.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Delayed_Routing) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg036DelayedRouting.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg036DelayedRouting.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::SMS_or_WhatsApp) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg037SMSDelivery.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg037SMSDelivery.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Create_Signable_HTML_document) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg038ResponsiveSigning.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg038ResponsiveSigning.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Signing_In_Person) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg039SigningInPerson.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg039SigningInPerson.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Set_Document_Visibility) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg040SetDocumentVisibility.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg040SetDocumentVisibility.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Document_Generation) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg042DocumentGeneration.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg042DocumentGeneration.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Shared_Access) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg043SharedAccess.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg043SharedAccess.ps1`""
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Focused_View) {
             checkEmailAddresses
-            powershell.exe .\examples\eSignature\eg044FocusedView.ps1
+            Invoke-Script -Command "`".\examples\eSignature\eg044FocusedView.ps1`""
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher
@@ -711,31 +713,31 @@ function startRooms {
         } while (-not [listRoomExamples]::IsDefined([listRoomExamples], $listRoomExamplesView));
 
         if ($listRoomExamplesView -eq [listRoomExamples]::CreateRoomWithDataController) {
-            powershell.exe -Command .\examples\Rooms\eg001CreateRoomWithDataController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg001CreateRoomWithDataController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateRoomWithTemplateController) {
-            powershell.exe -Command .\examples\Rooms\eg002CreateRoomWithTemplateController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg002CreateRoomWithTemplateController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::ExportDataFromRoomController) {
-            powershell.exe -Command .\examples\Rooms\eg003ExportDataFromRoomController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg003ExportDataFromRoomController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::AddFormsToRoomController) {
-            powershell.exe -Command .\examples\Rooms\eg004AddFormsToRoomController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg004AddFormsToRoomController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::GetRoomsWithFiltersController) {
-            powershell.exe -Command .\examples\Rooms\eg005GetRoomsWithFiltersController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg005GetRoomsWithFiltersController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateAnExternalFormFillSessionController) {
-            powershell.exe -Command .\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg006CreateAnExternalFormFillSessionController.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::CreateFormGroup) {
-            powershell.exe -Command .\examples\Rooms\eg007CreateFormGroup.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg007CreateFormGroup.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::AccessFormGroup) {
-            powershell.exe -Command .\examples\Rooms\eg008AccessFormGroup.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg008AccessFormGroup.ps1`""
         }
         elseif ($listRoomExamplesView -eq [listRoomExamples]::AssignFormGroup) {
-            powershell.exe -Command .\examples\Rooms\eg009AssignFormGroup.ps1
+            Invoke-Script -Command "`".\examples\Rooms\eg009AssignFormGroup.ps1`""
         }
     } until ($listRoomExamplesView -eq [listRoomExamples]::Pick_An_API)
     startLauncher
@@ -767,22 +769,22 @@ function startClick {
         } while (-not [listClickExamples]::IsDefined([listClickExamples], $listClickExamplesView));
 
         if ($listClickExamplesView -eq [listClickExamples]::createClickwrap) {
-            powershell.exe -Command .\examples\Click\eg001CreateClickwrap.ps1
+            Invoke-Script -Command "`".\examples\Click\eg001CreateClickwrap.ps1`""
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::activateClickwrap) {
-            powershell.exe -Command .\examples\Click\eg002ActivateClickwrap.ps1
+            Invoke-Script -Command "`".\examples\Click\eg002ActivateClickwrap.ps1`""
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::clickwrapVersioning) {
-            powershell.exe -Command .\examples\Click\eg003CreateNewClickwrapVersion.ps1
+            Invoke-Script -Command "`".\examples\Click\eg003CreateNewClickwrapVersion.ps1`""
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::retrieveClickwraps) {
-            powershell.exe -Command .\examples\Click\eg004GetListOfClickwraps.ps1
+            Invoke-Script -Command "`".\examples\Click\eg004GetListOfClickwraps.ps1`""
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::getClickwrapResponses) {
-            powershell.exe -Command .\examples\Click\eg005GetClickwrapResponses.ps1
+            Invoke-Script -Command "`".\examples\Click\eg005GetClickwrapResponses.ps1`""
         }
         elseif ($listClickExamplesView -eq [listClickExamples]::embedClickwrap) {
-            powershell.exe -Command .\examples\Click\eg006EmbedClickwrap.ps1
+            Invoke-Script -Command "`".\examples\Click\eg006EmbedClickwrap.ps1`""
         }
     } until ($listClickExamplesView -eq [listClickExamples]::Pick_An_API)
     startLauncher
@@ -804,9 +806,9 @@ function startMonitor {
         } while (-not [listMonitorExamples]::IsDefined([listMonitorExamples], $listMonitorExamplesView));
 
         if ($listMonitorExamplesView -eq [listMonitorExamples]::getMonitoringData) {
-            powershell.exe -Command .\examples\Monitor\eg001getMonitoringData.ps1
+            Invoke-Script -Command "`".\examples\Monitor\eg001getMonitoringData.ps1`""
         } elseif ($listMonitorExamplesView -eq [listMonitorExamples]::postWebQuery) {
-            powershell.exe -Command .\examples\Monitor\eg002WebQueryEndpoint.ps1
+            Invoke-Script -Command "`".\examples\Monitor\eg002WebQueryEndpoint.ps1`""
         }
     } until ($listMonitorExamplesView -eq [listMonitorExamples]::Pick_An_API)
     startLauncher
@@ -851,53 +853,53 @@ function startAdmin {
 
         if ($listAdminExamplesView -eq [listAdminExamples]::createNewUserWithActiveStatus) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg001CreateNewUserWithActiveStatus.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg001CreateNewUserWithActiveStatus.ps1`""
 
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::createActiveCLMEsignUser) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg002createActiveCLMEsignUser.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg002createActiveCLMEsignUser.ps1`""
 
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::bulkExportUserData) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg003BulkExportUserData.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg003BulkExportUserData.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::addUsersViaBulkImport) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg004AddUsersViaBulkImport.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg004AddUsersViaBulkImport.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::auditUsers) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg005AuditUsers.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg005AuditUsers.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserDSProfilesByEmail) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg006GetUserProfileByEmail.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg006GetUserProfileByEmail.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::getUserProfileByUserId) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg007GetUserProfileByUserId.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg007GetUserProfileByUserId.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::updateUserProductPermissionProfile) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg008UpdateUserProductPermissionProfile.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg008UpdateUserProductPermissionProfile.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserProductPermissionProfile) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg009DeleteUserProductPermissionProfile.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserDataFromOrganization) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg010DeleteUserDataFromOrganization.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg010DeleteUserDataFromOrganization.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::deleteUserDataFromAccount) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg011DeleteUserDataFromAccount.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg011DeleteUserDataFromAccount.ps1`""
         }
         elseif ($listAdminExamplesView -eq [listAdminExamples]::cloneAccount) {
             checkOrgId
-            powershell.exe -Command .\examples\Admin\eg012CloneAccount.ps1
+            Invoke-Script -Command "`".\examples\Admin\eg012CloneAccount.ps1`""
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher
@@ -921,9 +923,9 @@ function startID_Evidence {
         } while (-not [listID_EvidenceExamples]::IsDefined([listID_EvidenceExamples], $listID_EvidenceExamplesView));
 
         if ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::retrieveEvents) {
-            powershell.exe -Command .\examples\ID_Evidence\retrieveEvents.ps1
+            Invoke-Script -Command "`".\examples\ID_Evidence\retrieveEvents.ps1`""
         } elseif ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::retrieveMedia) {
-            powershell.exe -Command .\examples\ID_Evidence\retrieveMedia.ps1
+            Invoke-Script -Command "`".\examples\ID_Evidence\retrieveMedia.ps1`""
         }
     } until ($listID_EvidenceExamplesView -eq [listID_EvidenceExamples]::Pick_An_API)
     startLauncher
@@ -949,13 +951,13 @@ function startNotary {
         } while (-not [listNotaryExamples]::IsDefined([listNotaryExamples], $listNotaryExamplesView));
 
         # if ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
-        #     powershell.exe -Command .\examples\Notary\Jurisdictions.ps1
+        #     Invoke-Script -Command "`".\examples\Notary\Jurisdictions.ps1`""
         if ($listNotaryExamplesView -eq [listNotaryExamples]::signatureRequestToNotaryGroup) {
-            powershell.exe -Command .\examples\Notary\signatureRequestToNotaryGroup.ps1
+            Invoke-Script -Command "`".\examples\Notary\signatureRequestToNotaryGroup.ps1`""
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::inviteNotaryToPool) {
-            powershell.exe -Command .\examples\Notary\inviteNotaryToPool.ps1      
+            Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1"     
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
-            powershell.exe -Command .\examples\Notary\Jurisdictions.ps1
+            Invoke-Script -Command "`".\examples\Notary\Jurisdictions.ps1`""
         }
     } until ($listNotaryExamplesView -eq [listNotaryExamples]::Pick_An_API)
     startLauncher
@@ -977,7 +979,7 @@ function startWebForms {
         } while (-not [listWebFormsExamples]::IsDefined([listWebFormsExamples], $listWebFormsExamplesView));
 
         if ($listWebFormsExamplesView -eq [listWebFormsExamples]::createInstance) {
-            powershell.exe -Command .\examples\WebForms\eg001CreateInstance.ps1
+            Invoke-Script -Command "`".\examples\WebForms\eg001CreateInstance.ps1`""
         }
     } until ($listWebFormsExamplesView -eq [listWebFormsExamples]::Pick_An_API)
     startLauncher
@@ -1003,15 +1005,15 @@ function startMaestro {
         } while (-not [listMaestroExamples]::IsDefined([listMaestroExamples], $listMaestroExamplesView));
 
         if ($listMaestroExamplesView -eq [listMaestroExamples]::triggerWorkflow) {
-            powershell.exe -Command .\examples\Maestro\eg001TriggerWorkflow.ps1
+            Invoke-Script -Command "`".\examples\Maestro\eg001TriggerWorkflow.ps1`""
 
         }
         elseif ($listMaestroExamplesView -eq [listMaestroExamples]::cancelWorkflow) {
-            powershell.exe -Command .\examples\Maestro\eg002CancelWorkflow.ps1
+            Invoke-Script -Command "`".\examples\Maestro\eg002CancelWorkflow.ps1`""
 
         }
         elseif ($listMaestroExamplesView -eq [listMaestroExamples]::getWorkflowStatus) {
-            powershell.exe -Command .\examples\Maestro\eg003GetWorkflowStatus.ps1
+            Invoke-Script -Command "`".\examples\Maestro\eg003GetWorkflowStatus.ps1`""
         }
 
     } until ($listMaestroExamplesView -eq [listMaestroExamples]::Pick_An_API)

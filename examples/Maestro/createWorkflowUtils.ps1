@@ -1,7 +1,9 @@
+. "utils/invokeScript.ps1"
+
 # Check that we have a template id
 if (-not (Test-Path .\config\TEMPLATE_ID)) {
     Write-Output "Creating template"
-    powershell.exe .\examples\eSignature\eg008CreateTemplate.ps1
+    Invoke-Script -Command "`".\examples\eSignature\eg008CreateTemplate.ps1`""
 }
 
 $templateId = Get-Content "config/TEMPLATE_ID"

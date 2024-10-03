@@ -38,7 +38,6 @@ $headers.add("Accept-Language", "en-US,en;q=0.9")
 # - Obtain your workflow ID
 #ds-snippet-start:eSign23Step3
 $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$APIAccountId/identity_verification"
-
 Write-Output "Attempting to retrieve your account's workflow ID"
 
 Write-Output "Response:"
@@ -53,9 +52,20 @@ if ($null -eq $workflowId)
 	throw "Please contact https://support.docusign.com to enable IDV in your account."
 }
 
-$SIGNER_NAME = Read-Host "Please enter name for the signer"
+$isDataIncorrect = $true
+while($isDataIncorrect)
+{
+	$SIGNER_NAME = Read-Host "Please enter name for the signer"
+	$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
 
-$SIGNER_EMAIL = Read-Host "Please enter email address for the signer"
+	if ($SIGNER_EMAIL -eq $variables.SIGNER_EMAIL) {
+		Write-Output ""
+		Write-Output "For recipient authentication you must specify a different recipient from the account owner (sender) in order to ensure recipient authentication is performed."
+		Write-Output ""
+	} else {
+		$isDataIncorrect = $false
+	}
+}
 
 # - Construct your envelope JSON body
 # Note: If you did not successfully obtain your workflow ID, this step will fail.

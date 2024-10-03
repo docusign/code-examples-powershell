@@ -24,17 +24,18 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 
 # The sending editor can be opened in either of two views:
 Enum ViewType {
-    TaggingView = 1;
-    RecipientsAndDocuments = 2;
+    Tagger = 1;
+    Prepare = 2;
 }
 
 $startingView = $null;
 do {
     Write-Output 'Select the initial sending view: '
-    Write-Output "$([int][ViewType]::TaggingView) - Tagging view"
-    Write-Output "$([int][ViewType]::RecipientsAndDocuments) - Recipients and documents view"
+    Write-Output "$([int][ViewType]::Tagger) - Tagging view"
+    Write-Output "$([int][ViewType]::Prepare) - Prepare view"
     [int]$startingView = Read-Host "Please make a selection"
 } while (-not [ViewType]::IsDefined([ViewType], $startingView));
+[string]$startingView = [ViewType]::GetName([ViewType], $startingView)
 
 
 # Step 2. Create the envelope
@@ -55,13 +56,19 @@ do {
 #ds-snippet-start:eSign11Step2
 # temp files:
 $requestData = New-TemporaryFile
+$senderViewRequestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 $doc2Base64 = New-TemporaryFile
 $doc3Base64 = New-TemporaryFile
 
 # Fetch docs and encode
-[Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\doc_1.html"))) > $doc1Base64
+$doc1String = [System.IO.File]::ReadAllText((Resolve-Path ".\demo_documents\doc_1.html"))
+$doc1String = $doc1String.Replace("{USER_EMAIL}", $SIGNER_EMAIL)
+$doc1String = $doc1String.Replace("{USER_FULLNAME}", $SIGNER_NAME)
+$doc1String = $doc1String.Replace("{CC_EMAIL}", $CC_EMAIL)
+$doc1String = $doc1String.Replace("{CC_NAME}", $CC_NAME)
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($doc1String)) > $doc1Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
@@ -147,6 +154,36 @@ $envelopeId = $envelop.envelopeId
 
 Write-Output "Requesting the sender view url"
 
+@{
+    returnUrl = "http://httpbin.org/get";
+    viewAccess = "envelope";
+    settings = @{
+        startingScreen = $startingView;
+        sendButtonAction = "send";
+        showBackButton = "false";
+        backButtonAction = "previousPage";
+        showHeaderActions = "false";
+        showDiscardAction = "false";
+        lockToken = "";
+        recipientSettings = @{
+            showEditRecipients = "false";
+            showContactsList = "false";
+        };
+        documentSettings = @{
+            showEditDocuments = "false";
+            showEditDocumentVisibility = "false";
+            showEditPages = "false";
+        };
+        taggerSettings = @{
+            paletteSections = "default";
+            paletteDefault = "custom";
+        };
+        templateSettings = @{
+            showMatchingTemplatesPrompt = "true";
+        };
+    };
+} | ConvertTo-Json -Depth 32 >> $senderViewRequestData
+
 # The returnUrl is normally your own web app. DocuSign will redirect
 # the signer to returnUrl when the embedded sending completes.
 # For this example, we'll use http://httpbin.org/get to show the
@@ -158,16 +195,11 @@ Invoke-RestMethod `
     'Authorization' = "Bearer $accessToken";
     'Content-Type'  = "application/json";
 } `
-    -Body (@{ returnUrl = "http://httpbin.org/get"; } | ConvertTo-Json) `
+    -InFile (Resolve-Path $senderViewRequestData).Path `
     -OutFile $response
 
 $sendingObj = $response | Get-Content | ConvertFrom-Json
 $sendingUrl = $sendingObj.url
-# Next, we update the returned url if we want to start with the Recipient
-# and Documents view
-if ($startingView -eq [ViewType]::RecipientsAndDocuments) {
-    $sendingUrl = $sendingUrl -replace "send=1", "send=0"
-}
 #ds-snippet-end:eSign11Step3
 
 Write-Output "The embedded sending URL is ${sendingUrl}"
@@ -177,6 +209,7 @@ Start-Process $sendingUrl
 
 # cleanup
 Remove-Item $requestData
+Remove-Item $senderViewRequestData
 Remove-Item $response
 Remove-Item $doc1Base64
 Remove-Item $doc2Base64

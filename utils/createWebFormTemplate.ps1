@@ -65,8 +65,8 @@ $json = @"
                             "tabLabel": "Yes",
                             "anchorString": "/SMS/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         }
                     ],
                     "signHereTabs": [
@@ -85,32 +85,32 @@ $json = @"
                             "tabLabel": "FullName",
                             "anchorString": "/FullName/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         },
                         {
                             "documentId": "1",
                             "tabLabel": "PhoneNumber",
                             "anchorString": "/PhoneNumber/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         },
                         {
                             "documentId": "1",
                             "tabLabel": "Company",
                             "anchorString": "/Company/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         },
                         {
                             "documentId": "1",
                             "tabLabel": "JobTitle",
                             "anchorString": "/Title/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         }
                     ],
                     "dateSignedTabs": [
@@ -119,8 +119,8 @@ $json = @"
                             "tabLabel": "DateSigned",
                             "anchorString": "/Date/",
                             "anchorUnits": "pixels",
-                            "anchorXOffset": "20",
-                            "anchorYOffset": "10"
+                            "anchorXOffset": "0",
+                            "anchorYOffset": "0"
                         }
                     ]
                 }

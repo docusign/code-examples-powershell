@@ -20,7 +20,7 @@ $webFormConfig = Get-Content -Raw demo_documents\web-form-config.json
 $result = $webFormConfig -replace "template-id", $templateId
 $result | Set-Content -Path demo_documents\web-form-config.json
 
-Write-Host "" 
+Write-Host ""
 Write-Host "Go to your Docusign account to create the Web Form. Go to 'Templates' in your developer account, select 'Start,' select 'Web Forms,' and choose 'Upload Web Form.' Upload the JSON config file 'web-form-config.json' found under the demo_documents folder of this project. You will need to activate the web form before proceeding. Press Continue after doing so."
 $choice = Read-Host
 
@@ -77,7 +77,7 @@ $formUrl = $responseContent.formUrl
 $instanceToken = $responseContent.instanceToken
 $integrationKey  = $config.INTEGRATION_KEY_AUTH_CODE
 
-Start-Process -NoNewWindow -FilePath "powershell" -ArgumentList "-File .\utils\startServerForWebFormsExample.ps1 -integrationKey $integrationKey -url $formUrl -instanceToken $instanceToken"
+Invoke-Script -Command "./utils/startServerForWebFormsExample.ps1 -integrationKey $integrationKey -url $formUrl -instanceToken $instanceToken"
 
 Write-Output ""
 Write-Output "Done."

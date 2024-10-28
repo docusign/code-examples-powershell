@@ -4,7 +4,7 @@ function Invoke-Script {
     )
 
     # Get the path to the PowerShell executable
-    $powershellPath = if ($IsWindows) {
+    $powershellPath = if ([System.Environment]::OSVersion.Platform -eq "Win32NT") {
         try {
             (Get-Command powershell.exe -ErrorAction Stop).Source
         } catch {

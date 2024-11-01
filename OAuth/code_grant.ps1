@@ -42,74 +42,105 @@ elseif ($apiVersion -eq "webForms") {
   $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
 }
 
+function GenerateCodeVerifier {
+  return -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 43 | ForEach-Object {[char]$_})
+}
 
+function GenerateCodeChallenge($verifier) {
+  $sha256 = [System.Security.Cryptography.SHA256]::Create()
+  $hash = $sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($verifier))
+  return [Convert]::ToBase64String($hash).TrimEnd('=').Replace('+', '-').Replace('/', '_')
+}
+
+function StartHttpListenerAndAuthorize {
+    param (
+        [string]$authorizationURL,
+        [string]$redirectURI
+    )
+
+    $http = New-Object System.Net.HttpListener
+    $http.Prefixes.Add("$redirectURI/")
+
+    try {
+        $http.Start()
+    } catch {
+        Write-Error "OAuth listener failed. Is port 8080 in use by another program?" -ErrorAction Stop
+        return $null
+    }
+
+    if ($http.IsListening) {
+        # Notify the user to open the authorization URL
+        Write-Output "Open the following URL in a browser to continue: $authorizationURL"
+        Start-Process $authorizationURL
+    }
+
+    while ($http.IsListening) {
+        $context = $http.GetContext()
+
+        if ($context.Request.HttpMethod -eq 'GET' -and $context.Request.Url.LocalPath -match '/authorization-code/callback') {
+            # Prepare the HTML response
+            [string]$html = '
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <title></title>
+            </head>
+            <body>
+            Ok. You may close this tab and return to the shell. This window closes automatically in five seconds.
+            <script type="text/javascript">
+              setTimeout(function () {
+                self.close();
+              }, 5000);
+            </script>
+            </body>
+            </html>'
+            $buffer = [System.Text.Encoding]::UTF8.GetBytes($html)
+            $context.Response.ContentLength64 = $buffer.Length
+            $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
+            $context.Response.OutputStream.Close()
+
+            $url = $context.Request.Url.ToString()
+            $http.Stop()
+            
+            return $url
+        }
+    }
+
+    return $null  # Fallback if the function exits without returning
+}
+
+function ExtractAuthorizationCode {
+    param (
+        [Uri]$requestUrl
+    )
+
+    # Extract the authorization code using regex
+    $Regex = [Regex]::new("(?<=code=)([^&]*)")
+    $Match = $Regex.Match($requestUrl.ToString())
+
+    if ($Match.Success) {
+        return $Match.Value
+    } else {
+        return $null
+    }
+}
+
+$codeVerifier = GenerateCodeVerifier
+$code_challenge = GenerateCodeChallenge($codeVerifier)
+[System.Environment]::SetEnvironmentVariable("codeVerifier", $codeVerifier, "Process")
+
+$usePkce = $true;
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"
 $redirectUriEscaped = [Uri]::EscapeDataString($redirectURI)
-$authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=$scopes&client_id=$clientId&state=$state&redirect_uri=$redirectUriEscaped"
+$authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=$scopes&client_id=$clientId&state=$state&redirect_uri=$redirectUriEscaped&code_challenge=$code_challenge&code_challenge_method=S256"
 
-
-# Request the authorization code
-# Use Http Server
-$http = New-Object System.Net.HttpListener
-
-# Hostname and port to listen on
-
-$http.Prefixes.Add($redirectURI + "/")
-try {
-# Start the Http Server
-$http.Start()
-
-}
-catch {
-    Write-Error "OAuth listener failed. Is port 8080 in use by another program?" -ErrorAction Stop
+$requestUrl = StartHttpListenerAndAuthorize -authorizationURL $authorizationURL -redirectURI $redirectURI
+if ($requestUrl -is [System.Object[]] -and $requestUrl.Count -gt 0) {
+    $requestUrl = $requestUrl[-1]  # Get the last element of the array
 }
 
-if ($http.IsListening) {
-  Write-Output "Open the following URL in a browser to continue:" $authorizationURL
-  Start-Process $authorizationURL
-}
-
-while ($http.IsListening) {
-  $context = $http.GetContext()
-
-  if ($context.Request.HttpMethod -eq 'GET' -and $context.Request.Url.LocalPath -match '/authorization-code/callback') {
-    # write-host "Check context"
-    # write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
-    [string]$html = '
-        <html lang="en">
-        <head>
-          <meta charset="utf-8">
-          <title></title>
-        </head>
-        <body>
-        Ok. You may close this tab and return to the shell. This window closes automatically in five seconds.
-        <script type="text/javascript">
-          setTimeout(
-          function ( )
-          {
-            self.close();
-          }, 5000 );
-          </script>
-        </body>
-        </html>
-        '
-    # Respond to the request
-    $buffer = [System.Text.Encoding]::UTF8.GetBytes($html) # Convert HTML to bytes
-    $context.Response.ContentLength64 = $buffer.Length
-    $context.Response.OutputStream.Write($buffer, 0, $buffer.Length) # Stream HTML to browser
-    $context.Response.OutputStream.Close() # Close the response
-
-    # Get context
-    $Regex = [Regex]::new("(?<=code=)(.*)(?=&state)")
-    $Match = $Regex.Match($context.Request.Url)
-    if ($Match.Success) {
-      $authorizationCode = $Match.Value
-    }
-
-    $http.Stop()
-  }
-}
+$authorizationCode = ExtractAuthorizationCode -requestUrl $requestUrl
 
 # Obtain the access token
 # Preparing an Authorization header which contains your integration key and secret key
@@ -119,16 +150,48 @@ $authorizationHeader = "${clientId}:${clientSecret}"
 $authorizationHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($authorizationHeader)
 $authorizationHeaderKey = [System.Convert]::ToBase64String($authorizationHeaderBytes)
 
-try {
-  Write-Output "Getting an access token..."
-  $accessTokenResponse = Invoke-RestMethod `
-    -Uri "$authorizationEndpoint/token" `
-    -Method "POST" `
-    -Headers @{ "Authorization" = "Basic $authorizationHeaderKey" } `
-    -Body @{
-    "grant_type" = "authorization_code";
-    "code"       = "$authorizationCode"
+  try {
+    Write-Output "Getting an access token..."
+    $accessTokenResponse = Invoke-RestMethod `
+      -Uri "$authorizationEndpoint/token" `
+      -Method "POST" `
+      -Headers @{ "Authorization" = "Basic $authorizationHeaderKey" } `
+      -Body @{
+      "grant_type" = "authorization_code";
+      "code"       = "$authorizationCode"
+      "code_verifier" = "$codeVerifier"
+    }
+  } catch {
+      Write-Output "Error fetching access token"
+      $usePkce = $false
+      Write-Output "PKCE failed"
   }
+
+  if (-not $usePkce) {
+    $authorizationURL = "${authorizationEndpoint}auth?response_type=code&scope=$scopes&client_id=$clientId&state=$state&redirect_uri=$redirectUriEscaped"
+
+    $requestUrl = StartHttpListenerAndAuthorize -authorizationURL $authorizationURL -redirectURI $redirectURI
+    if ($requestUrl -is [System.Object[]] -and $requestUrl.Count -gt 0) {
+        $requestUrl = $requestUrl[-1]  # Get the last element of the array
+    }
+    $authorizationCode = ExtractAuthorizationCode -requestUrl $requestUrl
+
+    $authorizationHeader = "${clientId}:${clientSecret}"
+    $authorizationHeaderBytes = [System.Text.Encoding]::UTF8.GetBytes($authorizationHeader)
+    $authorizationHeaderKey = [System.Convert]::ToBase64String($authorizationHeaderBytes)
+
+    Write-Output "Getting an access token..."
+    $accessTokenResponse = Invoke-RestMethod `
+      -Uri "$authorizationEndpoint/token" `
+      -Method "POST" `
+      -Headers @{ "Authorization" = "Basic $authorizationHeaderKey" } `
+      -Body @{
+      "grant_type" = "authorization_code";
+      "code"       = "$authorizationCode"
+      }
+  }
+
+try {
   $accessToken = $accessTokenResponse.access_token
   Write-Output "Access token: $accessToken"
   Write-Output $accessToken > $accessTokenFile

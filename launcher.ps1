@@ -829,7 +829,8 @@ function startAdmin {
             deleteUserDataFromOrganization = 10;
             deleteUserDataFromAccount = 11;
             cloneAccount = 12;
-            Pick_An_API = 13;
+            createAccount = 13;
+            Pick_An_API = 14;
         }
         $listAdminExamplesView = $null;
         do {
@@ -847,6 +848,7 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::deleteUserDataFromOrganization)) Delete user data from organization"
             Write-Output "$([int][listAdminExamples]::deleteUserDataFromAccount)) Delete user data from account"
             Write-Output "$([int][listAdminExamples]::cloneAccount)) Clone Account"
+            Write-Output "$([int][listAdminExamples]::createAccount)) Create Account"
             Write-Output "$([int][listAdminExamples]::Pick_An_API)) Pick_An_API"
             [int]$listAdminExamplesView = Read-Host "Select the action"
         } while (-not [listAdminExamples]::IsDefined([listAdminExamples], $listAdminExamplesView));
@@ -900,6 +902,10 @@ function startAdmin {
         elseif ($listAdminExamplesView -eq [listAdminExamples]::cloneAccount) {
             checkOrgId
             Invoke-Script -Command "`".\examples\Admin\eg012CloneAccount.ps1`""
+        }
+        elseif ($listAdminExamplesView -eq [listAdminExamples]::createAccount) {
+            checkOrgId
+            Invoke-Script -Command "`".\examples\Admin\eg013CreateAccount.ps1`""
         }
     } until ($listAdminExamplesView -eq [listAdminExamples]::Pick_An_API)
     startLauncher

@@ -41,7 +41,9 @@ elseif ($apiVersion -eq "maestro") {
 elseif ($apiVersion -eq "webForms") {
   $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
 }
-
+elseif ($apiVersion -eq "navigator") {
+  $scopes = "signature%20adm_store_unified_repo_read"
+}
 
 $authorizationEndpoint = "https://account-d.docusign.com/oauth/"
 $redirectUri = "http://${IP}:${PORT}/authorization-code/callback"

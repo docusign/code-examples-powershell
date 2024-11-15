@@ -42,10 +42,13 @@ elseif ($apiVersion -eq "webForms") {
   $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
 }
 
-function GenerateCodeVerifier {
-  return -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 43 | ForEach-Object {[char]$_})
+elseif ($apiVersion -eq "navigator") {
+  $scopes = "signature%20adm_store_unified_repo_read"
 }
 
+function GenerateCodeVerifier {
+  return -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 43 | ForEach-Object {[char]$_})
+  
 function GenerateCodeChallenge($verifier) {
   $sha256 = [System.Security.Cryptography.SHA256]::Create()
   $hash = $sha256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($verifier))

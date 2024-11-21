@@ -16,7 +16,7 @@ if (Test-Path .\config\WORKFLOW_ID) {
   exit 1
 }
 
-$base_path = "https://demo.services.docusign.net/aow-manage/v1.0"
+$base_path = "https://demo.services.docusign.net/v1"
 
 # Step 1: Obtain your OAuth token
 # Note: Substitute these values with your own
@@ -41,12 +41,13 @@ Write-Output "Attempting to retrieve Workflow definition..."
 
 #ds-snippet-start:Maestro1Step3
 Invoke-RestMethod `
-  -Uri "${base_path}/management/accounts/${accountId}/workflowDefinitions/${workflowId}" `
+  -Uri "${base_path}/accounts/${accountId}/workflows/${workflowId}/trigger-requirements" `
   -Method 'GET' `
   -Headers $headers `
   -OutFile $response
 
-$triggerUrl = $(Get-Content $response | ConvertFrom-Json).triggerUrl
+$jsonContent = Get-Content -Path $response -Raw | ConvertFrom-Json
+$triggerUrl = $jsonContent.trigger_http_config.url
 #ds-snippet-end:Maestro1Step3
 
 $instance_name = Read-Host "Please input a name for the workflow instance"
@@ -58,15 +59,13 @@ $cc_email = Read-Host "Please input an email for the cc participant"
 #ds-snippet-start:Maestro1Step4
 $body = @"
 {
-  "instanceName": "$instance_name",
-  "participants": {},
-  "payload": {
-    "signerEmail": "$signer_email",
-    "signerName": "$signer_name",
-    "ccEmail": "$cc_email",
-    "ccName": "$cc_name"
-  },
-  "metadata": {}
+  "instance_name": "$instance_name",
+  "trigger_inputs": {
+    "signer_email": "$signer_email",
+    "signer_name": "$signer_name",
+    "cc_email": "$cc_email",
+    "cc_name": "$cc_name"
+  }
 }
 "@
 #ds-snippet-end:Maestro1Step4

@@ -90,7 +90,8 @@ $body = @"
                     "propertyName": "dacId",
                     "stepId": "$triggerId"
                 }
-            }
+            },
+            "type": "API"
         },
         "variables": {
             "dacId_$triggerId": {
@@ -145,46 +146,6 @@ $body = @"
         "steps": [
             {
                 "id": "step1",
-                "name": "Set Up Invite",
-                "moduleName": "Notification-SendEmail",
-                "configurationProgress": "Completed",
-                "type": "DS-EmailNotification",
-                "config": {
-                    "templateType": "WorkflowParticipantNotification",
-                    "templateVersion": 1,
-                    "language": "en",
-                    "sender_name": "DocuSign Orchestration",
-                    "sender_alias": "Orchestration",
-                    "participantId": "$signerId"
-                },
-                "input": {
-                    "recipients": [
-                        {
-                            "name": {
-                                "source": "step",
-                                "propertyName": "signerName",
-                                "stepId": "$triggerId"
-                            },
-                            "email": {
-                                "source": "step",
-                                "propertyName": "signerEmail",
-                                "stepId": "$triggerId"
-                            }
-                        }
-                    ],
-                    "mergeValues": {
-                        "CustomMessage": "Follow this link to access and complete the workflow.",
-                        "ParticipantFullName": {
-                            "source": "step",
-                            "propertyName": "signerName",
-                            "stepId": "$triggerId"
-                        }
-                    }
-                },
-                "output": {}
-            },
-            {
-                "id": "step2",
                 "name": "Get Signatures",
                 "moduleName": "ESign",
                 "configurationProgress": "Completed",
@@ -551,7 +512,7 @@ $body = @"
                 }
             },
             {
-                "id": "step3",
+                "id": "step2",
                 "name": "Show a Confirmation Screen",
                 "moduleName": "ShowConfirmationScreen",
                 "configurationProgress": "Completed",
@@ -604,6 +565,7 @@ while (-not $published) {
         Invoke-RestMethod -Uri "$base_path/management/accounts/$accountId/workflowDefinitions/$workflow_id/publish?isPreRunCheck=true" -Method POST -Headers $Headers
 
         $published = $true
+        $filePath = "config/WORKFLOW_ID"
         $workflow_id | Out-File -FilePath "config/WORKFLOW_ID"
         Write-Host "Successfully created and published workflow $workflow_id, ID saved to config/WORKFLOW_ID"
     }

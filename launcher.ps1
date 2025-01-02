@@ -37,7 +37,7 @@ function isCFR {
 
 function checkEmailAddresses {
 
-    if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.SIGNER_EMAIL, 
+    if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.SIGNER_EMAIL,
     "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
     "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
         Write-Output "Invalid signer email address for signer email in config - please fix it and try again";
@@ -49,7 +49,7 @@ function checkEmailAddresses {
     if (($config.CC_EMAIL -eq "{CC_EMAIL}" ) -or ($config.CC_EMAIL -eq "" )) {
         Write-Output "It looks like this is your first time running the launcher from Quickstart. "
         $config.CC_EMAIL = Read-Host "Enter a CC email address to receive copies of envelopes"
-        if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.CC_EMAIL, 
+        if (-not [system.Text.RegularExpressions.Regex]::IsMatch($config.CC_EMAIL,
         "^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
         "(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$"        )) {
             Write-Output ("Invalid email address for cc email in config - please fix it and try again");
@@ -105,7 +105,8 @@ function startLauncher {
             Notary = 7;
             WebForms = 8;
             Maestro = 9;
-            Exit = 10;
+            Navigator = 10;
+            Exit = 11;
         }
 
         $listApiView = $null;
@@ -145,6 +146,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Notary)) Notary (closed beta)"
             Write-Output "$([int][listApi]::WebForms)) Web Forms"
             Write-Output "$([int][listApi]::Maestro)) Maestro (beta)"
+            Write-Output "$([int][listApi]::Navigator)) Navigator (beta)"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -166,16 +168,19 @@ function startLauncher {
         }
         elseif ($listApiView -eq [listApi]::ID_Evidence) {
             startAuth "idEvidence"
-        }   
+        }
         elseif ($listApiView -eq [listApi]::Notary) {
             startAuth "notary"
-        }    
+        }
         elseif ($listApiView -eq [listApi]::WebForms) {
             startAuth "webForms"
-        }   
+        }
         elseif ($listApiView -eq [listApi]::Maestro) {
             startAuth "maestro"
-        }      
+        }
+        elseif ($listApiView -eq [listApi]::Navigator) {
+            startAuth "navigator"
+        }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
         }
@@ -248,7 +253,9 @@ function startAuth ($apiVersion) {
         startNotary
     } elseif ($listApiView -eq [listApi]::WebForms) {
         startWebForms
-    }    
+    } elseif ($listApiView -eq [listApi]::Navigator) {
+        startNavigator
+    }
     elseif ($listApiView -eq [listApi]::Maestro) {
         startMaestro
     }
@@ -922,8 +929,8 @@ function startID_Evidence {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listID_EvidenceExamples]::retrieveEvents)) Retrieve events"               
-            Write-Output "$([int][listID_EvidenceExamples]::retrieveMedia)) Retrieve media"            
+            Write-Output "$([int][listID_EvidenceExamples]::retrieveEvents)) Retrieve events"
+            Write-Output "$([int][listID_EvidenceExamples]::retrieveMedia)) Retrieve media"
             Write-Output "$([int][listID_EvidenceExamples]::Pick_An_API)) Pick_An_API"
             [int]$listID_EvidenceExamplesView = Read-Host "Select the action"
         } while (-not [listID_EvidenceExamples]::IsDefined([listID_EvidenceExamples], $listID_EvidenceExamplesView));
@@ -949,8 +956,8 @@ function startNotary {
         do {
             Write-Output ""
             Write-Output 'Select the action: '
-            Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send signature request to Notary group"               
-            Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite Notary to pool"            
+            Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send signature request to Notary group"
+            Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite Notary to pool"
             Write-Output "$([int][listNotaryExamples]::jurisdictions)) Jurisdictions"
             Write-Output "$([int][listNotaryExamples]::Pick_An_API)) Pick_An_API"
             [int]$listNotaryExamplesView = Read-Host "Select the action"
@@ -961,7 +968,7 @@ function startNotary {
         if ($listNotaryExamplesView -eq [listNotaryExamples]::signatureRequestToNotaryGroup) {
             Invoke-Script -Command "`".\examples\Notary\signatureRequestToNotaryGroup.ps1`""
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::inviteNotaryToPool) {
-            Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1"     
+            Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1"
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
             Invoke-Script -Command "`".\examples\Notary\Jurisdictions.ps1`""
         }
@@ -1026,5 +1033,32 @@ function startMaestro {
     startLauncher
 }
 
-Write-Output "Welcome to the DocuSign PowerShell Launcher"
+function startNavigator {
+    do {
+        Enum listNavigatorExamples {
+            listAgreements = 1;
+            getAgreement = 2;
+            Pick_An_API = 3;
+        }
+        $listNavigatorExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listNavigatorExamples]::listAgreements)) List_Agreements"
+            Write-Output "$([int][listNavigatorExamples]::getAgreement)) Get_Single_Agreement"
+            Write-Output "$([int][listNavigatorExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listNavigatorExamplesView = Read-Host "Select the action"
+        } while (-not [listNavigatorExamples]::IsDefined([listNavigatorExamples], $listNavigatorExamplesView));
+
+        if ($listNavigatorExamplesView -eq [listNavigatorExamples]::listAgreements) {
+            Invoke-Script -Command "`".\examples\Navigator\eg001ListAgreements.ps1`""
+        }
+        if ($listNavigatorExamplesView -eq [listNavigatorExamples]::getAgreement) {
+          Invoke-Script -Command "`".\examples\Navigator\eg002GetSingleAgreement.ps1`""
+        }
+    } until ($listNavigatorExamplesView -eq [listNavigatorExamples]::Pick_An_API)
+    startLauncher
+}
+
+Write-Output "Welcome to the Docusign PowerShell Launcher"
 startLauncher

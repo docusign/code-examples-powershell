@@ -57,5 +57,5 @@ function startSignature {
     exit 1
 }
 
-Write-Output "Welcome to the DocuSign PowerShell Quick Authorization Code Grant Launcher"
+Write-Output "Welcome to the Docusign PowerShell Quick Authorization Code Grant Launcher"
 startQuickACG

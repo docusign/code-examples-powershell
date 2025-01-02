@@ -54,6 +54,9 @@ if ($apiVersion -eq "rooms") {
   elseif ($apiVersion -eq "webForms") {
     $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
   }
+  elseif ($apiVersion -eq "navigator") {
+  $scopes = "signature%20adm_store_unified_repo_read"
+}
 
 # Request application consent
 $PORT = '8080'

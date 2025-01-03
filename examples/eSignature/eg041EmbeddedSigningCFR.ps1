@@ -71,7 +71,7 @@ $SIGNER_COUNTRY_CODE = Read-Host "Please enter a country phone number prefix for
 
 $SIGNER_PHONE_NUMBER = Read-Host "Please enter an SMS-enabled Phone number for the Signer"
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 
 # Construct your envelope JSON body
 #ds-snippet-start:eSign41Step3
@@ -142,10 +142,10 @@ $envelopeId = $(Get-Content $response | ConvertFrom-Json).envelopeId
 # Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
 #
-# The returnUrl is normally your own web app. DocuSign will redirect
+# The returnUrl is normally your own web app. Docusign will redirect
 # the signer to returnUrl when the signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 
 # temp files:
 $requestData = New-TemporaryFile
@@ -162,7 +162,7 @@ $json = [ordered]@{
 } | ConvertTo-Json -Compress
 #ds-snippet-end:eSign41Step5
 
-# Create the recipient view and begin the DocuSign signing
+# Create the recipient view and begin the Docusign signing
 #ds-snippet-start:eSign41Step6
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `

@@ -90,7 +90,7 @@ $body = @"
 #ds-snippet-end:Admin1Step5
 
 $result = ""
-# Call the DocuSign Admin API
+# Call the Docusign Admin API
 #ds-snippet-start:Admin1Step6
 $uri = "${base_path}/v2/organizations/${organizationId}/users"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method POST

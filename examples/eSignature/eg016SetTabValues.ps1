@@ -29,7 +29,7 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_salary.docx"))) > $doc1Base64
@@ -149,10 +149,10 @@ Write-Output $envelopeId > .\config\ENVELOPE_ID
 # Step 6. Create a recipient view (an embedded signing view)
 #         that the signer will directly open in their browser to sign
 #
-# The return URL is normally your own web app. DocuSign will redirect
-# the signer to the return URL when the DocuSign signing completes.
+# The return URL is normally your own web app. Docusign will redirect
+# the signer to the return URL when the Docusign signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 
 Write-Output "Requesting the url for the embedded signing..."
 

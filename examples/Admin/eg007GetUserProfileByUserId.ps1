@@ -23,7 +23,7 @@ $organizationId = $variables.ORGANIZATION_ID
 $userId = Read-Host "Enter the user's User ID"
 
 $result = ""
-# Call the DocuSign Admin API
+# Call the Docusign Admin API
 #ds-snippet-start:Admin7Step3
 $uri = "${base_path}/v2.1/organizations/${organizationId}/users/${userId}/dsprofile"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method GET

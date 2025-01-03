@@ -153,7 +153,7 @@ $body = @"
                     "templateType": "WorkflowParticipantNotification",
                     "templateVersion": 1,
                     "language": "en",
-                    "sender_name": "DocuSign Orchestration",
+                    "sender_name": "Docusign Orchestration",
                     "sender_alias": "Orchestration",
                     "participantId": "$signerId"
                 },

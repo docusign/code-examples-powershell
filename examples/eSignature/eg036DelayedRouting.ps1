@@ -30,7 +30,7 @@ $docBase64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $docBase64
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 

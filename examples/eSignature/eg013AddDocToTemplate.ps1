@@ -31,7 +31,7 @@ $doc1Base64 = New-TemporaryFile
 # Fetch docs and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\added_document.html"))) > $doc1Base64
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "A template is used, it has one document. A second document will be"
 Write-Output "added by using Composite Templates"
 
@@ -120,7 +120,7 @@ Write-Output "added by using Composite Templates"
 } | ConvertTo-Json -Depth 32 > $requestData
 #ds-snippet-end:eSign13Step2
 
-# Step 3. Call DocuSign to create the envelope
+# Step 3. Call Docusign to create the envelope
 #ds-snippet-start:eSign13Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -143,10 +143,10 @@ Write-Output "EnvelopeId: $envelopeId"
 # Step 4. Create the recipient view definition
 # that the signer will directly open in their browser to sign.
 #
-# The returnUrl is normally your own web app. DocuSign will redirect
+# The returnUrl is normally your own web app. Docusign will redirect
 # the signer to returnUrl when the signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 #ds-snippet-start:eSign13Step4
 Write-Output "Requesting the url for the embedded signing..."
 

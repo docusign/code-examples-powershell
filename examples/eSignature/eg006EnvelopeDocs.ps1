@@ -30,7 +30,7 @@ $headers = @{
 }
 #ds-snippet-end:eSign6Step2
 
-Write-Output "Sending the EnvelopeDocuments::list request to DocuSign..."
+Write-Output "Sending the EnvelopeDocuments::list request to Docusign..."
 Write-Output "Results:"
 
 # List envelope documents

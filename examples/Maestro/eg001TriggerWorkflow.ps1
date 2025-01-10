@@ -48,6 +48,7 @@ Invoke-RestMethod `
 
 $jsonContent = Get-Content -Path $response -Raw | ConvertFrom-Json
 $triggerUrl = $jsonContent.trigger_http_config.url
+$triggerUrl = $triggerUrl -replace "\\u0026", "&"
 #ds-snippet-end:Maestro1Step3
 
 $instance_name = Read-Host "Please input a name for the workflow instance"
@@ -74,10 +75,13 @@ $body = @"
 $triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST
 #ds-snippet-end:Maestro1Step5
 
-Write-Output "Response: $triggerResult"
+
+$instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
+$instanceUrl = $instanceUrl -replace "\\u0026", "&"
+Write-Output "Response: $instanceUrl"
 
 # pull out the envelopeId
-$instanceId = $($triggerResult | ConvertFrom-Json).instanceId
+$instanceId = $($triggerResult | ConvertFrom-Json).instance_id
 # Store the instance_id into the config file
 Write-Output $instanceId > .\config\INSTANCE_ID
 

@@ -25,7 +25,7 @@ else {
   exit 1
 }
 
-Write-Output "Sending the EnvelopeCustomFields::list request to DocuSign..."
+Write-Output "Sending the EnvelopeCustomFields::list request to Docusign..."
 
 # Step 2. Create your authorization headers
 #ds-snippet-start:eSign18Step2

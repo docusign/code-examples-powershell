@@ -56,7 +56,7 @@ $requestData = New-TemporaryFile
 $requestDataTemp = New-TemporaryFile
 $doc1Base64 = New-TemporaryFile
 
-Write-Output "Sending the template create request to DocuSign..."
+Write-Output "Sending the template create request to Docusign..."
 
 # Fetch document and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_fields.pdf"))) > $doc1Base64

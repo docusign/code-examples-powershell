@@ -25,7 +25,7 @@ else {
   exit 1
 }
 
-Write-Output "Sending the EnvelopeRecipients::list request to DocuSign..."
+Write-Output "Sending the EnvelopeRecipients::list request to Docusign..."
 Write-Output "Results:"
 
 

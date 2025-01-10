@@ -14,7 +14,7 @@ $accountID = Get-Content .\config\API_ACCOUNT_ID
 
 $response = New-TemporaryFile
 
-Write-Output "Sending the jurisdiction status request to DocuSign..."
+Write-Output "Sending the jurisdiction status request to Docusign..."
 Write-Output ""
 Write-Output "Results:"
 #ds-snippet-start:Notary3Step2

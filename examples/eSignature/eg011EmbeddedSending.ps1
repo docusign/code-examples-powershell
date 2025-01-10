@@ -2,7 +2,7 @@ $apiUri = "https://demo.docusign.net/restapi"
 
 # Use embedded sending:
 # 1. create a draft envelope with three documents
-# 2. Open the sending view of the DocuSign web tool
+# 2. Open the sending view of the Docusign web tool
 
 # Configuration
 # 1.  Get required variables from .\config\settings.json:
@@ -72,7 +72,7 @@ $doc1String = $doc1String.Replace("{CC_NAME}", $CC_NAME)
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
@@ -184,10 +184,10 @@ Write-Output "Requesting the sender view url"
     };
 } | ConvertTo-Json -Depth 32 >> $senderViewRequestData
 
-# The returnUrl is normally your own web app. DocuSign will redirect
+# The returnUrl is normally your own web app. Docusign will redirect
 # the signer to returnUrl when the embedded sending completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/sender" `
     -Method 'POST' `

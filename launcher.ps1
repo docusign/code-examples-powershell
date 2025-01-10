@@ -206,7 +206,7 @@ function startAuth ($apiVersion) {
             Write-Output "$([int][AuthType]::CodeGrant)) Authorization Code Grant"
             Write-Output "$([int][AuthType]::JWT)) Json Web Token (JWT)"
             Write-Output "$([int][AuthType]::Exit)) Exit"
-            [int]$AuthTypeView = Read-Host "Select an OAuth method to Authenticate with your DocuSign account"
+            [int]$AuthTypeView = Read-Host "Select an OAuth method to Authenticate with your Docusign account"
         } while (-not [AuthType]::IsDefined([AuthType], $AuthTypeView));
     }
 
@@ -848,8 +848,8 @@ function startAdmin {
             Write-Output "$([int][listAdminExamples]::bulkExportUserData)) Bulk-export user data"
             Write-Output "$([int][listAdminExamples]::addUsersViaBulkImport)) Add users via bulk import"
             Write-Output "$([int][listAdminExamples]::auditUsers)) Audit users"
-            Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's DocuSign profile using an email address"
-            Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's DocuSign profile using a User ID"
+            Write-Output "$([int][listAdminExamples]::getUserDSProfilesByEmail)) Retrieve the user's Docusign profile using an email address"
+            Write-Output "$([int][listAdminExamples]::getUserProfileByUserId)) Retrieve the user's Docusign profile using a User ID"
             Write-Output "$([int][listAdminExamples]::updateUserProductPermissionProfile)) Update user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::deleteUserProductPermissionProfile)) Delete user product permission profiles using an email address"
             Write-Output "$([int][listAdminExamples]::deleteUserDataFromOrganization)) Delete user data from organization"

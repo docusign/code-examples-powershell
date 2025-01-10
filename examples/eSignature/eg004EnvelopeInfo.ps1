@@ -25,7 +25,7 @@ else {
   exit 1
 }
 
-Write-Output "Sending the Envelopes::get request to DocuSign..."
+Write-Output "Sending the Envelopes::get request to Docusign..."
 Write-Output "Results:"
 
 #ds-snippet-start:eSign4Step2

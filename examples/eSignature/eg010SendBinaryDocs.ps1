@@ -43,7 +43,7 @@ $doc1 = Get-Item ".\demo_documents\doc_1.html"
 $doc2 = Get-Item ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"
 $doc3 = Get-Item ".\demo_documents\World_Wide_Corp_lorem.pdf"
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 

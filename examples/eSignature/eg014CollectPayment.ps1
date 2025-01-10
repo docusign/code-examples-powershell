@@ -13,7 +13,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # the default picture.
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-# Step 2. Log in to DocuSign Admin and from the top
+# Step 2. Log in to Docusign Admin and from the top
 # navigation, select Admin. From there look
 # to the left under INTEGRATIONS and select
 # Payments to retrieve your Gateway account ID.
@@ -29,7 +29,7 @@ $doc1Base64 = New-TemporaryFile
 # Fetch doc and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\order_form.html"))) > $doc1Base64
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 
 # Concatenate the different parts of the request
 #ds-snippet-start:eSign14Step3

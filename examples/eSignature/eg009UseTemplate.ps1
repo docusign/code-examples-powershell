@@ -2,7 +2,7 @@
 
 $apiUri = "https://demo.docusign.net/restapi"
 
-# Send a signing request via email using a DocuSign template
+# Send a signing request via email using a Docusign template
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -27,7 +27,7 @@ if (-not (Test-Path .\config\TEMPLATE_ID)) {
 $response = New-TemporaryFile
 $requestData = New-TemporaryFile
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 
 #ds-snippet-start:eSign9Step2
 @{

@@ -127,7 +127,7 @@ $MSGNumberCC = Read-Host "Please enter a Mobile number for the Carbon Copied rec
 } | ConvertTo-Json -Depth 32 > $requestData
 #ds-snippet-end:eSign37Step2
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 Write-Output $requestData

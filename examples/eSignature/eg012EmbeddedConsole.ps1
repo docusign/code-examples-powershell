@@ -1,6 +1,6 @@
 $apiUri = "https://demo.docusign.net/restapi"
 
-# Redirect to the DocuSign console web tool
+# Redirect to the Docusign console web tool
 
 
 # Step 1. Obtain your Oauth access token
@@ -19,10 +19,10 @@ if (-not (Test-Path .\config\ENVELOPE_ID)) {
 # Check that we have an envelope id
 $envelopeId = Get-Content .\config\ENVELOPE_ID
 
-# The returnUrl is normally your own web app. DocuSign will redirect
+# The returnUrl is normally your own web app. Docusign will redirect
 # the signer to returnUrl when the embedded signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 
 # The web tool console can be opened in either of two views:
 # The sending editor can be opened in either of two views:

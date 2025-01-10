@@ -224,7 +224,7 @@ catch [System.Net.WebException] {
     if ( $errorCode -eq "WORKFLOW_UPDATE_RECIPIENTROUTING_NOT_ALLOWED" ) {
         Write-Output ""
         Write-Output "The following Error happened: WORKFLOW_UPDATE_RECIPIENTROUTING_NOT_ALLOWED"
-        Write-Output "Please contact DocuSign support..."
+        Write-Output "Please contact Docusign support..."
     }
     else {
         $_

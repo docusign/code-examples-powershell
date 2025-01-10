@@ -14,7 +14,7 @@ $headers.add("Content-Type", "application/json")
 
 # Declare variables
 $complete=$false
-$cursorValue=""
+$cursorValue = (Get-Date (Get-Date).AddDays(-10) -Format "yyyy-MM-dd")
 $iterations=0
 # You must provide an access token that impersonates a user with permissions to access the Monitor API endpoint
 if (($accessToken -eq "") -or ($null -eq $accessToken)) {

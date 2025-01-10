@@ -40,7 +40,7 @@ Invoke-RestMethod `
 $hostEmail = $(Get-Content $response | ConvertFrom-Json).email
 $hostName = $(Get-Content $response | ConvertFrom-Json).name
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 
 # Concatenate the different parts of the request
 #ds-snippet-start:eSign39Step2
@@ -79,7 +79,7 @@ Write-Output "Sending the envelope request to DocuSign..."
 } | ConvertTo-Json -Depth 32 > $requestData
 #ds-snippet-end:eSign39Step2
 
-# Step 3. Call DocuSign to create the envelope
+# Step 3. Call Docusign to create the envelope
 #ds-snippet-start:eSign39Step3
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
@@ -101,10 +101,10 @@ Write-Output "EnvelopeId: $envelopeId"
 # Step 4. Create a recipient view definition
 # The signer will directly open this link from the browser to sign.
 #
-# The returnUrl is normally your own web app. DocuSign will redirect
+# The returnUrl is normally your own web app. Docusign will redirect
 # the signer to returnUrl when the signing completes.
 # For this example, we'll use http://httpbin.org/get to show the
-# query parameters passed back from DocuSign
+# query parameters passed back from Docusign
 
 Write-Output "Requesting the url for the embedded signing..."
 
@@ -117,7 +117,7 @@ $json = [ordered]@{
 } | ConvertTo-Json -Compress
 #ds-snippet-end:eSign39Step4
 
-# Step 5. Create the recipient view and begin the DocuSign signing
+# Step 5. Create the recipient view and begin the Docusign signing
 #ds-snippet-start:eSign39Step5
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}/views/recipient" `

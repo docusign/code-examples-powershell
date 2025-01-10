@@ -57,7 +57,7 @@ $doc1String = $doc1String.Replace("{CC_NAME}", $CC_NAME)
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_Battle_Plan_Trafalgar.docx"))) > $doc2Base64
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\World_Wide_Corp_lorem.pdf"))) > $doc3Base64
 
-Write-Output "Sending the envelope request to DocuSign..."
+Write-Output "Sending the envelope request to Docusign..."
 Write-Output "The envelope has three documents. Processing time will be about 15 seconds."
 Write-Output "Results:"
 
@@ -159,7 +159,7 @@ catch {
     Write-Host ""
 
     if ( $errorMessage.Contains("ACCOUNT_LACKS_PERMISSIONS") ) {
-        Write-Host "See https://developers.docusign.com/docs/esign-rest-api/how-to/set-document-visibility in the DocuSign Developer Center for instructions on how to enable document visibility in your developer account."
+        Write-Host "See https://developers.docusign.com/docs/esign-rest-api/how-to/set-document-visibility in the Docusign Developer Center for instructions on how to enable document visibility in your developer account."
     }
 }
 

@@ -23,7 +23,7 @@ $organizationId = $variables.ORGANIZATION_ID
 $email = Read-Host "Enter the user's email address"
 
 $result = ""
-# Call the DocuSign Admin API
+# Call the Docusign Admin API
 #ds-snippet-start:Admin6Step3
 $uri = "${base_path}/v2.1/organizations/${organizationId}/users/dsprofile?email=${email}"
 $result = Invoke-WebRequest -headers $headers -Uri $uri -body $body -Method GET

@@ -14,7 +14,7 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # the default picture.
 $accountID = Get-Content .\config\API_ACCOUNT_ID
 
-Write-Output "Sending the list envelope status request to DocuSign..."
+Write-Output "Sending the list envelope status request to Docusign..."
 Write-Output "Results:"
 
 # Get date in the ISO 8601 format

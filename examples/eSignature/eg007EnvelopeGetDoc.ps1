@@ -79,7 +79,7 @@ else {
     $docChoice = $listDocsView
 }
 
-Write-Output "Sending the EnvelopeDocuments::get request to DocuSign..."
+Write-Output "Sending the EnvelopeDocuments::get request to Docusign..."
 # Call the eSignature API
 #ds-snippet-start:eSign7Step3
 Invoke-RestMethod `

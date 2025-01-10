@@ -27,7 +27,7 @@ $response = New-TemporaryFile
 
 $templateName = "Example document generation template"
 
-Write-Output "Sending the template create request to DocuSign..."
+Write-Output "Sending the template create request to Docusign..."
 
 # Fetch document and encode
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path ".\demo_documents\Offer_Letter_Dynamic_Table.docx"))) > $doc1Base64

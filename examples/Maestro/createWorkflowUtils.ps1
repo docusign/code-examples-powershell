@@ -145,7 +145,7 @@ $body = @"
         },
         "steps": [
             {
-                "id": "step1",
+                "id": "step2",
                 "name": "Get Signatures",
                 "moduleName": "ESign",
                 "configurationProgress": "Completed",
@@ -512,7 +512,7 @@ $body = @"
                 }
             },
             {
-                "id": "step2",
+                "id": "step3",
                 "name": "Show a Confirmation Screen",
                 "moduleName": "ShowConfirmationScreen",
                 "configurationProgress": "Completed",
@@ -530,7 +530,8 @@ $body = @"
                         }
                     }
                 },
-                "output": {}
+                "output": {},
+                "triggerType": "API"
             }
         ]
     }
@@ -558,6 +559,10 @@ catch {
 # Define redirect_url
 $redirect_url = "http://localhost:8080"
 
+if (-not (Test-Path -Path "config/WORKFLOW_ID")) { 
+    New-Item -ItemType File -Path "config/WORKFLOW_ID"
+}
+
 # Publish workflow
 $published = $false
 while (-not $published) {
@@ -565,7 +570,6 @@ while (-not $published) {
         Invoke-RestMethod -Uri "$base_path/management/accounts/$accountId/workflowDefinitions/$workflow_id/publish?isPreRunCheck=true" -Method POST -Headers $Headers
 
         $published = $true
-        $filePath = "config/WORKFLOW_ID"
         $workflow_id | Out-File -FilePath "config/WORKFLOW_ID"
         Write-Host "Successfully created and published workflow $workflow_id, ID saved to config/WORKFLOW_ID"
     }

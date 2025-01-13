@@ -12,7 +12,7 @@ $workflowId = Get-Content .\config\WORKFLOW_ID
 if (Test-Path .\config\WORKFLOW_ID) {
   $workflowId = Get-Content .\config\WORKFLOW_ID
 } else {
-  Write-Output "Please create a worklow before running this example"
+  Write-Output "Please create a workflow before running this example"
   exit 1
 }
 
@@ -52,20 +52,20 @@ $triggerUrl = $triggerUrl -replace "\\u0026", "&"
 #ds-snippet-end:Maestro1Step3
 
 $instance_name = Read-Host "Please input a name for the workflow instance"
-$signer_name = Read-Host "Please input the full name for the signer participant"
-$signer_email = Read-Host "Please input an email for the signer participant"
-$cc_name = Read-Host "Please input the full name for the cc participant"
-$cc_email = Read-Host "Please input an email for the cc participant"
+$signerName = Read-Host "Please input the full name for the signer participant"
+$signerEmail = Read-Host "Please input an email for the signer participant"
+$ccName = Read-Host "Please input the full name for the cc participant"
+$ccEmail = Read-Host "Please input an email for the cc participant"
 
 #ds-snippet-start:Maestro1Step4
 $body = @"
 {
   "instance_name": "$instance_name",
   "trigger_inputs": {
-    "signer_email": "$signer_email",
-    "signer_name": "$signer_name",
-    "cc_email": "$cc_email",
-    "cc_name": "$cc_name"
+    "signerEmail": "$signerEmail",
+    "signerName": "$signerName",
+    "ccEmail": "$ccEmail",
+    "ccName": "$ccName"
   }
 }
 "@

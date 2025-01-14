@@ -12,11 +12,11 @@ $workflowId = Get-Content .\config\WORKFLOW_ID
 if (Test-Path .\config\WORKFLOW_ID) {
   $workflowId = Get-Content .\config\WORKFLOW_ID
 } else {
-  Write-Output "Please create a worklow before running this example"
+  Write-Output "Please create a workflow before running this example"
   exit 1
 }
 
-$base_path = "https://demo.services.docusign.net/aow-manage/v1.0"
+$base_path = "https://demo.services.docusign.net/v1"
 
 # Step 1: Obtain your OAuth token
 # Note: Substitute these values with your own
@@ -41,44 +41,47 @@ Write-Output "Attempting to retrieve Workflow definition..."
 
 #ds-snippet-start:Maestro1Step3
 Invoke-RestMethod `
-  -Uri "${base_path}/management/accounts/${accountId}/workflowDefinitions/${workflowId}" `
+  -Uri "${base_path}/accounts/${accountId}/workflows/${workflowId}/trigger-requirements" `
   -Method 'GET' `
   -Headers $headers `
   -OutFile $response
 
-$triggerUrl = $(Get-Content $response | ConvertFrom-Json).triggerUrl
+$jsonContent = Get-Content -Path $response -Raw | ConvertFrom-Json
+$triggerUrl = $jsonContent.trigger_http_config.url
+$triggerUrl = $triggerUrl -replace "\\u0026", "&"
 #ds-snippet-end:Maestro1Step3
 
 $instance_name = Read-Host "Please input a name for the workflow instance"
-$signer_name = Read-Host "Please input the full name for the signer participant"
-$signer_email = Read-Host "Please input an email for the signer participant"
-$cc_name = Read-Host "Please input the full name for the cc participant"
-$cc_email = Read-Host "Please input an email for the cc participant"
+$signerName = Read-Host "Please input the full name for the signer participant"
+$signerEmail = Read-Host "Please input an email for the signer participant"
+$ccName = Read-Host "Please input the full name for the cc participant"
+$ccEmail = Read-Host "Please input an email for the cc participant"
 
 #ds-snippet-start:Maestro1Step4
 $body = @"
 {
-  "instanceName": "$instance_name",
-  "participants": {},
-  "payload": {
-    "signerEmail": "$signer_email",
-    "signerName": "$signer_name",
-    "ccEmail": "$cc_email",
-    "ccName": "$cc_name"
-  },
-  "metadata": {}
+  "instance_name": "$instance_name",
+  "trigger_inputs": {
+    "signerEmail": "$signerEmail",
+    "signerName": "$signerName",
+    "ccEmail": "$ccEmail",
+    "ccName": "$ccName"
+  }
 }
 "@
 #ds-snippet-end:Maestro1Step4
 
 #ds-snippet-start:Maestro1Step5
-$triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST
+$triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST -UseBasicParsing
 #ds-snippet-end:Maestro1Step5
 
-Write-Output "Response: $triggerResult"
+
+$instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
+$instanceUrl = $instanceUrl -replace "\\u0026", "&"
+Write-Output "Response: $instanceUrl"
 
 # pull out the envelopeId
-$instanceId = $($triggerResult | ConvertFrom-Json).instanceId
+$instanceId = $($triggerResult | ConvertFrom-Json).instance_id
 # Store the instance_id into the config file
 Write-Output $instanceId > .\config\INSTANCE_ID
 

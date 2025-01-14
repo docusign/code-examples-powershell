@@ -72,7 +72,7 @@ $body = @"
 #ds-snippet-end:Maestro1Step4
 
 #ds-snippet-start:Maestro1Step5
-$triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST
+$triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST -UseBasicParsing
 #ds-snippet-end:Maestro1Step5
 
 

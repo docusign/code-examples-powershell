@@ -90,7 +90,8 @@ $body = @"
                     "propertyName": "dacId",
                     "stepId": "$triggerId"
                 }
-            }
+            },
+            "type": "API"
         },
         "variables": {
             "dacId_$triggerId": {
@@ -143,46 +144,6 @@ $body = @"
             }
         },
         "steps": [
-            {
-                "id": "step1",
-                "name": "Set Up Invite",
-                "moduleName": "Notification-SendEmail",
-                "configurationProgress": "Completed",
-                "type": "DS-EmailNotification",
-                "config": {
-                    "templateType": "WorkflowParticipantNotification",
-                    "templateVersion": 1,
-                    "language": "en",
-                    "sender_name": "Docusign Orchestration",
-                    "sender_alias": "Orchestration",
-                    "participantId": "$signerId"
-                },
-                "input": {
-                    "recipients": [
-                        {
-                            "name": {
-                                "source": "step",
-                                "propertyName": "signerName",
-                                "stepId": "$triggerId"
-                            },
-                            "email": {
-                                "source": "step",
-                                "propertyName": "signerEmail",
-                                "stepId": "$triggerId"
-                            }
-                        }
-                    ],
-                    "mergeValues": {
-                        "CustomMessage": "Follow this link to access and complete the workflow.",
-                        "ParticipantFullName": {
-                            "source": "step",
-                            "propertyName": "signerName",
-                            "stepId": "$triggerId"
-                        }
-                    }
-                },
-                "output": {}
-            },
             {
                 "id": "step2",
                 "name": "Get Signatures",
@@ -569,7 +530,8 @@ $body = @"
                         }
                     }
                 },
-                "output": {}
+                "output": {},
+                "triggerType": "API"
             }
         ]
     }
@@ -596,6 +558,10 @@ catch {
 
 # Define redirect_url
 $redirect_url = "http://localhost:8080"
+
+if (-not (Test-Path -Path "config/WORKFLOW_ID")) { 
+    New-Item -ItemType File -Path "config/WORKFLOW_ID"
+}
 
 # Publish workflow
 $published = $false

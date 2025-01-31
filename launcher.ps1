@@ -950,7 +950,8 @@ function startNotary {
             signatureRequestToNotaryGroup = 1;
             inviteNotaryToPool = 2;
             jurisdictions = 3;
-            Pick_An_API = 4;
+            sendWithThirdPartyNotary = 4;
+            Pick_An_API = 5;
         }
         $listNotaryExamplesView = $null;
         do {
@@ -959,6 +960,7 @@ function startNotary {
             Write-Output "$([int][listNotaryExamples]::signatureRequestToNotaryGroup)) Send signature request to Notary group"
             Write-Output "$([int][listNotaryExamples]::inviteNotaryToPool)) Invite Notary to pool"
             Write-Output "$([int][listNotaryExamples]::jurisdictions)) Jurisdictions"
+            Write-Output "$([int][listNotaryExamples]::sendWithThirdPartyNotary)) Notary On-Demand"
             Write-Output "$([int][listNotaryExamples]::Pick_An_API)) Pick_An_API"
             [int]$listNotaryExamplesView = Read-Host "Select the action"
         } while (-not [listNotaryExamples]::IsDefined([listNotaryExamples], $listNotaryExamplesView));
@@ -971,6 +973,8 @@ function startNotary {
             Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1"
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
             Invoke-Script -Command "`".\examples\Notary\Jurisdictions.ps1`""
+        } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::sendWithThirdPartyNotary) {
+            Invoke-Script -Command "`".\examples\Notary\sendWithThirdPartyNotary.ps1`""
         }
     } until ($listNotaryExamplesView -eq [listNotaryExamples]::Pick_An_API)
     startLauncher

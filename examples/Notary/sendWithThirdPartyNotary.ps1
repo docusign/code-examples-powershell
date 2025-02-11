@@ -48,8 +48,15 @@ if ((Test-Path $docPath) -eq $false) {
 Write-Output "Sending the envelope request to Docusign..."
 Write-Output "Please wait, this may take a few moments."
 
-# Concatenate the different parts of the request
 #ds-snippet-start:Notary4Step2
+$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+$headers.add("Authorization", "Bearer $accessToken")
+$headers.add("Content-Type", "application/json")
+$headers.add("Accept", "application/json")
+#ds-snippet-end:Notary4Step2
+
+# Concatenate the different parts of the request
+#ds-snippet-start:Notary4Step3
 @{
     emailSubject = "Please sign this document set";
     documents    = @(
@@ -90,7 +97,6 @@ Write-Output "Please wait, this may take a few moments."
         );
         notaries = @(
             @{
-                email           = "";
                 name            = "Notary";
                 recipientId     = "1";
                 routingOrder    = "1";
@@ -127,20 +133,17 @@ Write-Output "Please wait, this may take a few moments."
     };
     status       = "sent";
 } | ConvertTo-Json -Depth 32 > $requestData
-#ds-snippet-end:Notary4Step2
+#ds-snippet-end:Notary4Step3
 
 # Step 3. Call Docusign to create the envelope
-#ds-snippet-start:Notary4Step3
+#ds-snippet-start:Notary4Step4
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
-    -Headers @{
-    'Authorization' = "Bearer $accessToken";
-    'Content-Type'  = "application/json";
-} `
+    -Headers $headers `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
-#ds-snippet-end:Notary4Step3
+#ds-snippet-end:Notary4Step4
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 

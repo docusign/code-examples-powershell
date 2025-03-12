@@ -115,6 +115,13 @@ function Parse-VerificationData {
     # Convert JSON string to PowerShell object
     $data = $jsonData | ConvertFrom-Json
 
+    $connectionKeyData   = ''
+    $connectionValueData = ''
+    if ($data.tabs[0].extensionData.connectionInstances) {
+        $connectionKeyData   = $data.tabs[0].extensionData.connectionInstances[0].connectionKey
+        $connectionValueData = $data.tabs[0].extensionData.connectionInstances[0].connectionValue
+    }
+
     # Extract required fields from the first element
     $extractedData = @{
         appId                = $data.appId
@@ -128,8 +135,8 @@ function Parse-VerificationData {
         extensionContract    = $data.tabs[0].extensionData.extensionContract
         requiredForExtension = $data.tabs[0].extensionData.requiredForExtension
         tabLabel             = ($data.tabs | ForEach-Object { $_.tabLabel }) -join ", "
-        connectionKey        = $data.tabs[0].extensionData.connectionInstances[0].connectionKey
-        connectionValue      = $data.tabs[0].extensionData.connectionInstances[0].connectionValue
+        connectionKey        = $connectionKeyData
+        connectionValue      = $connectionValueData
     }
 
     # Output the extracted information

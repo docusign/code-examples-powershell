@@ -20,17 +20,22 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 $docBase64 = New-TemporaryFile
 
+#ds-snippet-start:ConnectedFields1Step2
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.add("Authorization", "Bearer $accessToken")
 $headers.add("Content-Type", "application/json")
 $headers.add("Accept", "application/json")
+#ds-snippet-end:ConnectedFields1Step2
 
+#ds-snippet-start:ConnectedFields1Step3
 Invoke-RestMethod `
     -Uri "${apiUri1}/v1/accounts/${accountId}/connected-fields/tab-groups" `
     -Method 'GET' `
     -Headers $headers `
     -OutFile $response
+#ds-snippet-end:ConnectedFields1Step3
 
+#ds-snippet-start:ConnectedFields1Step4
 function Extract-VerifyInfo {
     param (
         [string]$responseFile
@@ -50,7 +55,10 @@ function Extract-VerifyInfo {
 
     # Filter the JSON to keep only verification extension apps
     $filtered = $json | Where-Object { 
-        $_.tabs -and ($_.tabs | Where-Object { $_.extensionData.actionContract -like "*Verify*" })
+        $_.tabs -and ($_.tabs | Where-Object { 
+            ($_.extensionData.actionContract -like "*Verify*") -or 
+            ($_.PSObject.Properties['tabLabel'] -and $_.tabLabel -like "*connecteddata*")
+        })
     }
 
     return $filtered | ConvertTo-Json -Depth 10
@@ -160,6 +168,7 @@ function Parse-VerificationData {
 $filteredData = Extract-VerifyInfo -responseFile $response
 
 $verificationData = Prompt-UserChoice -jsonData $filteredData
+#ds-snippet-end:ConnectedFields1Step4
 
 Write-Output "Sending the envelope request to Docusign..."
 
@@ -168,6 +177,7 @@ $docPath = ".\demo_documents\World_Wide_Corp_Lorem.pdf"
 [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path $docPath))) > $docBase64
 
 # Construct the request body
+#ds-snippet-start:ConnectedFields1Step5
 @{
     emailSubject = "Please sign this document";
     documents    = @(
@@ -243,7 +253,9 @@ $docPath = ".\demo_documents\World_Wide_Corp_Lorem.pdf"
         );
     };
 } | ConvertTo-Json -Depth 32 > $requestData
+#ds-snippet-end:ConnectedFields1Step5
 
+#ds-snippet-start:ConnectedFields1Step6
 Invoke-RestMethod `
     -Uri "${apiUri2}/v2.1/accounts/${accountId}/envelopes" `
     -Method 'POST' `
@@ -253,6 +265,7 @@ Invoke-RestMethod `
 } `
     -InFile (Resolve-Path $requestData).Path `
     -OutFile $response
+#ds-snippet-end:ConnectedFields1Step6
 
 Write-Output "Response: $(Get-Content -Raw $response)"
 

@@ -33,29 +33,32 @@ $INTEGRATION_KEY_JWT = $variables.INTEGRATION_KEY_JWT
 $timestamp = [int][double]::Parse((Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
 
 if ($apiVersion -eq "rooms") {
-    $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
-  } elseif (($apiVersion -eq "eSignature") -or ($apiVersion -eq "idEvidence")) {
-    $scopes = "signature%20impersonation"
-  } elseif ($apiVersion -eq "click") {
-    $scopes = "click.manage%20click.send%20signature%20impersonation"
-  }
-  elseif ($apiVersion -eq "monitor") {
-    $scopes = "signature%20impersonation"
-  }
-  elseif ($apiVersion -eq "admin") {
-    $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read%20user_data_redact%20asset_group_account_read%20asset_group_account_clone_write%20asset_group_account_clone_read%20organization_sub_account_write%20organization_sub_account_read"
-  }
-  elseif ($apiVersion -eq "notary") {
-    $scopes = "signature%20organization_read%20notary_read%20notary_write"
-  }
-  elseif ($apiVersion -eq "maestro") {
-    $scopes = "signature%20aow_manage%20impersonation"
-  }
-  elseif ($apiVersion -eq "webForms") {
-    $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
-  }
-  elseif ($apiVersion -eq "navigator") {
+  $scopes = "signature%20impersonation%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.read%20dtr.documents.write%20dtr.profile.read%20dtr.profile.write%20dtr.company.read%20dtr.company.write%20room_forms"
+} elseif (($apiVersion -eq "eSignature") -or ($apiVersion -eq "idEvidence")) {
+  $scopes = "signature%20impersonation"
+} elseif ($apiVersion -eq "click") {
+  $scopes = "click.manage%20click.send%20signature%20impersonation"
+}
+elseif ($apiVersion -eq "monitor") {
+  $scopes = "signature%20impersonation"
+}
+elseif ($apiVersion -eq "admin") {
+  $scopes = "signature%20impersonation%20organization_read%20group_read%20permission_read%20user_read%20user_write%20account_read%20domain_read%20identity_provider_read%20user_data_redact%20asset_group_account_read%20asset_group_account_clone_write%20asset_group_account_clone_read%20organization_sub_account_write%20organization_sub_account_read"
+}
+elseif ($apiVersion -eq "notary") {
+  $scopes = "signature%20organization_read%20notary_read%20notary_write"
+}
+elseif ($apiVersion -eq "maestro") {
+  $scopes = "signature%20aow_manage%20impersonation"
+}
+elseif ($apiVersion -eq "webForms") {
+  $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
+}
+elseif ($apiVersion -eq "navigator") {
   $scopes = "signature%20adm_store_unified_repo_read"
+}
+elseif ($apiVersion -eq "connectedFields") {
+  $scopes = "signature%20adm_store_unified_repo_read%20impersonation"
 }
 
 # Request application consent

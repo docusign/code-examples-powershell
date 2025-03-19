@@ -106,7 +106,8 @@ function startLauncher {
             WebForms = 8;
             Maestro = 9;
             Navigator = 10;
-            Exit = 11;
+            ConnectedFields = 11;
+            Exit = 12;
         }
 
         $listApiView = $null;
@@ -147,6 +148,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::WebForms)) Web Forms"
             Write-Output "$([int][listApi]::Maestro)) Maestro (beta)"
             Write-Output "$([int][listApi]::Navigator)) Navigator (beta)"
+            Write-Output "$([int][listApi]::ConnectedFields)) Connected Fields"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -180,6 +182,9 @@ function startLauncher {
         }
         elseif ($listApiView -eq [listApi]::Navigator) {
             startAuth "navigator"
+        }
+        elseif ($listApiView -eq [listApi]::ConnectedFields) {
+            startAuth "connectedFields"
         }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
@@ -258,6 +263,9 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::Maestro) {
         startMaestro
+    }
+    elseif ($listApiView -eq [listApi]::ConnectedFields) {
+        startConnectedFields
     }
 }
 
@@ -1050,6 +1058,28 @@ function startNavigator {
           Invoke-Script -Command "`".\examples\Navigator\eg002GetSingleAgreement.ps1`""
         }
     } until ($listNavigatorExamplesView -eq [listNavigatorExamples]::Pick_An_API)
+    startLauncher
+}
+
+function startConnectedFields {
+    do {
+        Enum listConnectedFieldsExamples {
+            setConnectedFields = 1;
+            Pick_An_API = 2;
+        }
+        $listConnectedFieldsExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listConnectedFieldsExamples]::setConnectedFields)) Set_Connected_Fields"
+            Write-Output "$([int][listConnectedFieldsExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listConnectedFieldsExamplesView = Read-Host "Select the action"
+        } while (-not [listConnectedFieldsExamples]::IsDefined([listConnectedFieldsExamples], $listConnectedFieldsExamplesView));
+
+        if ($listConnectedFieldsExamplesView -eq [listConnectedFieldsExamples]::setConnectedFields) {
+            Invoke-Script -Command "`".\examples\ConnectedFields\eg001SetConnectedFields.ps1`""
+        }
+    } until ($listConnectedFieldsExamplesView -eq [listConnectedFieldsExamples]::Pick_An_API)
     startLauncher
 }
 

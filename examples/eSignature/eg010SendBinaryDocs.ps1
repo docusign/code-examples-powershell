@@ -1,3 +1,4 @@
+#ds-snippet-start:eSign10Step3
 function Add-OemContent {
 	param(
 		$destination,
@@ -5,6 +6,7 @@ function Add-OemContent {
 	)
 	Add-Content -Path $destination -Value $content -Encoding oem -NoNewline
 }
+#ds-snippet-end:eSign10Step3
 
 # Configuration
 # Get required variables from .\config\settings.json:

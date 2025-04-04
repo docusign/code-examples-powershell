@@ -106,9 +106,7 @@ function Prompt-UserChoice {
 
         # Filter JSON data for the selected app ID
         $selectedData = $data | Where-Object { $_.appId -eq $chosenAppId }
-
-        # Call another function to process selected data (assuming Parse-VerificationData exists)
-        Parse-VerificationData -jsonData ($selectedData | ConvertTo-Json -Depth 10)
+        return $selectedData
     } else {
         Write-Host "Invalid choice. Exiting."
         exit 1
@@ -117,57 +115,40 @@ function Prompt-UserChoice {
 
 function Parse-VerificationData {
     param (
-        [string]$jsonData
+        $selectedAppId,
+        $tab
     )
-
-    # Convert JSON string to PowerShell object
-    $data = $jsonData | ConvertFrom-Json
 
     $connectionKeyData   = ''
     $connectionValueData = ''
-    if ($data.tabs[0].extensionData.connectionInstances) {
-        $connectionKeyData   = $data.tabs[0].extensionData.connectionInstances[0].connectionKey
-        $connectionValueData = $data.tabs[0].extensionData.connectionInstances[0].connectionValue
+    if ($tab.extensionData.connectionInstances) {
+        $connectionKeyData   = $tab.extensionData.connectionInstances[0].connectionKey
+        $connectionValueData = $tab.extensionData.connectionInstances[0].connectionValue
     }
 
     # Extract required fields from the first element
     $extractedData = @{
-        appId                = $data.appId
-        extensionGroupId     = $data.tabs[0].extensionData.extensionGroupId
-        publisherName        = $data.tabs[0].extensionData.publisherName
-        applicationName      = $data.tabs[0].extensionData.applicationName
-        actionName           = $data.tabs[0].extensionData.actionName
-        actionInputKey       = $data.tabs[0].extensionData.actionInputKey
-        actionContract       = $data.tabs[0].extensionData.actionContract
-        extensionName        = $data.tabs[0].extensionData.extensionName
-        extensionContract    = $data.tabs[0].extensionData.extensionContract
-        requiredForExtension = $data.tabs[0].extensionData.requiredForExtension
-        tabLabel             = ($data.tabs | ForEach-Object { $_.tabLabel }) -join ", "
+        appId                = $selectedAppId
+        extensionGroupId     = $tab.extensionData.extensionGroupId
+        publisherName        = $tab.extensionData.publisherName
+        applicationName      = $tab.extensionData.applicationName
+        actionName           = $tab.extensionData.actionName
+        actionInputKey       = $tab.extensionData.actionInputKey
+        actionContract       = $tab.extensionData.actionContract
+        extensionName        = $tab.extensionData.extensionName
+        extensionContract    = $tab.extensionData.extensionContract
+        requiredForExtension = $tab.extensionData.requiredForExtension
+        tabLabel             = $tab.tabLabel
         connectionKey        = $connectionKeyData
         connectionValue      = $connectionValueData
     }
-
-    # Output the extracted information
-    Write-Host "App ID: $($extractedData.appId)";
-    Write-Host "Extension Group ID: $($extractedData.extensionGroupId)";
-    Write-Host "Publisher Name: $($extractedData.publisherName)";
-    Write-Host "Application Name: $($extractedData.applicationName)";
-    Write-Host "Action Name: $($extractedData.actionName)";
-    Write-Host "Action Contract: $($extractedData.actionContract)";
-    Write-Host "Action Input Key: $($extractedData.actionInputKey)";
-    Write-Host "Extension Name: $($extractedData.extensionName)";
-    Write-Host "Extension Contract: $($extractedData.extensionContract)";
-    Write-Host "Required for Extension: $($extractedData.requiredForExtension)";
-    Write-Host "Tab Label: $($extractedData.tabLabel)";
-    Write-Host "Connection Key: $($extractedData.connectionKey)";
-    Write-Host "Connection Value: $($extractedData.connectionValue)";
 
     return $extractedData
 }
 
 $filteredData = Extract-VerifyInfo -responseFile $response
 
-$verificationData = Prompt-UserChoice -jsonData $filteredData
+$selectedApp = Prompt-UserChoice -jsonData $filteredData
 #ds-snippet-end:ConnectedFields1Step4
 
 Write-Output "Sending the envelope request to Docusign..."
@@ -178,6 +159,84 @@ $docPath = ".\demo_documents\World_Wide_Corp_Lorem.pdf"
 
 # Construct the request body
 #ds-snippet-start:ConnectedFields1Step5
+function Get-Extension-Data {
+    param (
+        $verificationData
+    )
+
+    return @{
+        extensionGroupId     = $verificationData.extensionGroupId;
+        publisherName        = $verificationData.publisherName;
+        applicationId        = $verificationData.appId;
+        applicationName      = $verificationData.applicationName;
+        actionName           = $verificationData.actionName;
+        actionContract       = $verificationData.actionContract;
+        extensionName        = $verificationData.extensionName;
+        extensionContract    = $verificationData.extensionContract;
+        requiredForExtension = $verificationData.requiredForExtension;
+        actionInputKey       = $verificationData.actionInputKey;
+        extensionPolicy      = "MustVerifyToSign";
+        connectionInstances  = @(
+            @{
+                connectionKey   = $verificationData.connectionKey;
+                connectionValue = $verificationData.connectionValue;
+            };
+        );
+    };
+}
+
+function Make-Text-Tab {
+    param (
+        $verificationData,
+        $extensionData,
+        $textTabCount
+    )
+
+    return @{
+        requireInitialOnSharedChange = "false";
+        requireAll                   = "false";
+        name                         = $verificationData.applicationName;
+        required                     = "true";
+        locked                       = "false";
+        disableAutoSize              = "false";
+        maxLength                    = "4000";
+        tabLabel                     = $verificationData.tabLabel;
+        font                         = "lucidaconsole";
+        fontColor                    = "black";
+        fontSize                     = "size9";
+        documentId                   = "1";
+        recipientId                  = "1";
+        pageNumber                   = "1";
+        xPosition                    = [string](70 + 100 * [math]::Floor($textTabCount / 10));
+        yPosition                    = [string](560 + 20 * ($textTabCount % 10));
+        width                        = "84";
+        height                       = "22";
+        templateRequired             = "false";
+        tabType                      = "text";
+        tooltip                      = $verificationData.actionInputKey;
+        extensionData                = $extensionData
+    };
+}
+
+function Make-Text-Tab-List {
+    param (
+        $app
+    )
+
+    $text_tabs = @()
+    foreach ($tab in $app.tabs | Where-Object { $_.tabLabel -notlike '*SuggestionInput*' }) {
+        $verificationData = Parse-VerificationData -selectedAppId $app.appId -tab $tab
+        $extensionData = Get-Extension-Data -verificationData $verificationData
+
+        $text_tab = Make-Text-Tab -verificationData $verificationData -extensionData $extensionData -textTabCount $text_tabs.Count
+        $text_tabs += $text_tab
+    }
+
+    return $text_tabs
+}
+
+$textTabs = Make-Text-Tab-List -app $selectedApp
+
 @{
     emailSubject = "Please sign this document";
     documents    = @(
@@ -205,49 +264,7 @@ $docPath = ".\demo_documents\World_Wide_Corp_Lorem.pdf"
                             anchorYOffset = "10";
                         };
                     );
-                    textTabs = @(
-                        @{
-                            requireInitialOnSharedChange = $false;
-                            requireAll                   = $false;
-                            name                         = $verificationData.applicationName;
-                            required                     = $true;
-                            locked                       = $false;
-                            disableAutoSize              = $false;
-                            maxLength                    = 4000;
-                            tabLabel                     = $verificationData.tabLabel;
-                            font                         = "lucidaconsole";
-                            fontColor                    = "black";
-                            fontSize                     = "size9";
-                            documentId                   = "1";
-                            recipientId                  = "1";
-                            pageNumber                   = "1";
-                            xPosition                    = "273";
-                            yPosition                    = "191";
-                            width                        = "84";
-                            height                       = "22";
-                            templateRequired             = $false;
-                            tabType                      = "text";
-                            extensionData = @{
-                                extensionGroupId     = $verificationData.extensionGroupId;
-                                publisherName        = $verificationData.publisherName;
-                                applicationId        = $verificationData.appId;
-                                applicationName      = $verificationData.applicationName;
-                                actionName           = $verificationData.actionName;
-                                actionContract       = $verificationData.actionContract;
-                                extensionName        = $verificationData.extensionName;
-                                extensionContract    = $verificationData.extensionContract;
-                                requiredForExtension = $verificationData.requiredForExtension;
-                                actionInputKey       = $verificationData.actionInputKey;
-                                extensionPolicy      = "None";
-                                connectionInstances  = @(
-                                    @{
-                                        connectionKey   = $verificationData.connectionKey;
-                                        connectionValue = $verificationData.connectionValue;
-                                    };
-                                );
-                            };
-                        };
-                    );
+                    textTabs = @($textTabs);
                 };
             };
         );

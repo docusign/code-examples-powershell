@@ -193,13 +193,13 @@ function Make-Text-Tab {
     )
 
     return @{
-        requireInitialOnSharedChange = $false;
-        requireAll                   = $false;
+        requireInitialOnSharedChange = "false";
+        requireAll                   = "false";
         name                         = $verificationData.applicationName;
-        required                     = $true;
-        locked                       = $false;
-        disableAutoSize              = $false;
-        maxLength                    = 4000;
+        required                     = "true";
+        locked                       = "false";
+        disableAutoSize              = "false";
+        maxLength                    = "4000";
         tabLabel                     = $verificationData.tabLabel;
         font                         = "lucidaconsole";
         fontColor                    = "black";
@@ -207,11 +207,11 @@ function Make-Text-Tab {
         documentId                   = "1";
         recipientId                  = "1";
         pageNumber                   = "1";
-        xPosition                    = 70 + 100 * [math]::Floor($textTabCount / 10);
-        yPosition                    = 560 + 20 * ($textTabCount % 10);
+        xPosition                    = [string](70 + 100 * [math]::Floor($textTabCount / 10));
+        yPosition                    = [string](560 + 20 * ($textTabCount % 10));
         width                        = "84";
         height                       = "22";
-        templateRequired             = $false;
+        templateRequired             = "false";
         tabType                      = "text";
         tooltip                      = $verificationData.actionInputKey;
         extensionData                = $extensionData
@@ -235,7 +235,7 @@ function Make-Text-Tab-List {
     return $text_tabs
 }
 
-$text_tabs = Make-Text-Tab-List -app $selectedApp
+$textTabs = Make-Text-Tab-List -app $selectedApp
 
 @{
     emailSubject = "Please sign this document";
@@ -264,7 +264,7 @@ $text_tabs = Make-Text-Tab-List -app $selectedApp
                             anchorYOffset = "10";
                         };
                     );
-                    textTabs = $text_tabs;
+                    textTabs = @($textTabs);
                 };
             };
         );

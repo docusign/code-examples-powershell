@@ -67,7 +67,7 @@ For information about the scopes used for obtaining authorization to use the Mon
 For a list of code examples that use the Monitor API, see the [How-to guides overview](https://developers.docusign.com/docs/monitor-api/how-to/) on the Docusign Developer Center.
 
 
-## Notary API (closed beta)
+## Notary API
 
 **Note:** For closed beta participants interested in adding Notary API functionality to your production account, contact your Docusign representative. 
 

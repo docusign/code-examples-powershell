@@ -69,8 +69,6 @@ For a list of code examples that use the Monitor API, see the [How-to guides ove
 
 ## Notary API
 
-**Note:** For closed beta participants interested in adding Notary API functionality to your production account, contact your Docusign representative. 
-
 Example 1 requires a Sender Docusign developer account API account ID that has been provisioned for the [Notary API base URI](https://developers.docusign.com/docs/notary-api/go-live/). 
 
 Example 2 requires that you [create an organization](https://support.docusign.com/en/guides/org-admin-guide-create-org) in your Sender Docusign developer account.

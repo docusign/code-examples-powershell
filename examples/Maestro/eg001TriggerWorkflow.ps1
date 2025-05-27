@@ -77,15 +77,19 @@ $triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $bod
 
 
 $instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
+# Decode escaped characters
 $instanceUrl = $instanceUrl -replace "\\u0026", "&"
-Write-Output "Response: $instanceUrl"
+Write-Host "Use this URL to complete the workflow steps:"
+Write-Host $instanceUrl
 
-# pull out the envelopeId
-$instanceId = $($triggerResult | ConvertFrom-Json).instance_id
-# Store the instance_id into the config file
-Write-Output $instanceId > .\config\INSTANCE_ID
+Write-Host ""
+Write-Host "Opening a browser with the embedded workflow..."
 
-# cleanup
-Remove-Item $response
+# Wait a bit to let the server start
+Start-Sleep -Seconds 2
 
-Write-Output "Done."
+# Start script for the embedded workflow
+& "./examples/Maestro/startServerForEmbeddingWorkflow.ps1" -triggerUrl $instanceUrl
+
+# Open the browser
+Start-Process "http://localhost:8080"

@@ -89,7 +89,7 @@ if (-not ([string]::IsNullOrEmpty($triggerUrl))) {
   Start-Sleep -Seconds 2
 
   # Start script for the embedded workflow
-  & "./examples/Maestro/startServerForEmbeddingWorkflow.ps1" -triggerUrl $instanceUrl
+& "./examples/Maestro/startServerForEmbeddingWorkflow.ps1" -instanceUrl $instanceUrl
 
   # Open the browser
   Start-Process "http://localhost:8080"

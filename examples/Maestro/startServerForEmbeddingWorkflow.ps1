@@ -1,5 +1,5 @@
 param (
-    [string]$triggerUrl
+    [string]$instanceUrl
 )
 
 $PORT = 8080
@@ -12,9 +12,6 @@ Write-Host "Listening on $prefix"
 
 # Correct HTML without raw HTTP headers
 $responseHtml = @"
-<!--
-#ds-snippet-start:eSign44Step6
--->
 <br />
 <h2>The document has been embedded using Maestro Embedded Workflow.</h2>
 <br />
@@ -33,16 +30,19 @@ $responseHtml = @"
     </style>
 </head>
 <body>
+<!--
+#ds-snippet-start:Maestro1Step6
+-->
     <div>
-        <iframe src='$triggerUrl' width='800' height='600'></iframe>
+        <iframe src='$instanceUrl' width='800' height='600'></iframe>
     </div>
+<!--
+#ds-snippet-end:Maestro1Step6
+-->
 </body>
 </html>
 
 <p><a href="#" onclick="window.close(); return false;">Continue</a></p>
-<!--
-#ds-snippet-end:eSign44Step6
--->
 "@
 
 try {

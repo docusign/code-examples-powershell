@@ -30,13 +30,14 @@ Invoke-RestMethod `
     -OutFile $response
 
 # pull out the templateId if it was returned
-$templateId = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.templateId
+$templateIds = $(Get-Content $response | ConvertFrom-Json).envelopeTemplates.templateId
 
-Write-Output "Did we find any templateIds?: $templateId"
+Write-Output "Did we find any templateIds?: $templateIds"
 
-if (-not ([string]::IsNullOrEmpty($templateId))) {
+if (-not ([string]::IsNullOrEmpty($templateIds))) {
     Write-Output "Your account already includes the '${templateName}' template."
     # Save the template id for use by other scripts
+    $templateId = $templateIds -split ' ' | Select-Object -First 1
     Write-Output "${templateId}" > .\config\TEMPLATE_ID
     Remove-Item $response
     Write-Output "Done."

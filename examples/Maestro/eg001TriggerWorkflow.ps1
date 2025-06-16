@@ -37,7 +37,7 @@ $headers.add("Content-Type", "application/json")
 $headers.add("Accept", "application/json")
 #ds-snippet-end:Maestro1Step2
 
-Write-Output "Attempting to retrieve Workflow definition..."
+Write-Output "Attempting to retrieve the workflow definition..."
 
 #ds-snippet-start:Maestro1Step3
 Invoke-RestMethod `
@@ -75,12 +75,20 @@ if (-not ([string]::IsNullOrEmpty($triggerUrl))) {
   #ds-snippet-start:Maestro1Step5
   $triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST -UseBasicParsing
   #ds-snippet-end:Maestro1Step5
+  Write-Host $triggerResult
+  Write-Host ""
+
+  $workflowInstanceId = $($triggerResult | ConvertFrom-Json).instance_id
+  $workflowInstanceId | Out-File -FilePath "config/INSTANCE_ID" -Encoding utf8 -Force
+  Write-Host "Successfully created and published workflow $workflowInstanceId, ID saved to config/INSTANCE_ID"
+
 
   $instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
   # Decode escaped characters
   $instanceUrl = $instanceUrl -replace "\\u0026", "&"
   Write-Host "Use this URL to complete the workflow steps:"
   Write-Host $instanceUrl
+
 
   Write-Host ""
   Write-Host "Opening a browser with the embedded workflow..."

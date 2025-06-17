@@ -8,30 +8,30 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-#ds-snippet-start:Workflows1Step2
+#ds-snippet-start:Workspaces1Step2
 $headers = @{
     'Authorization' = "Bearer $accessToken";
     'Accept'        = 'application/json';
     'Content-Type'  = 'application/json';
 }
-#ds-snippet-end:Workflows1Step2
+#ds-snippet-end:Workspaces1Step2
 
 try {
     # Create the workspace definition
     #apx-snippet-start:createWorkspace
-    #ds-snippet-start:Workflows1Step3
+    #ds-snippet-start:Workspaces1Step3
     $body = @{
         name = "Example workspace";
     } | ConvertTo-Json
-    #ds-snippet-end:Workflows1Step3
+    #ds-snippet-end:Workspaces1Step3
 
-    #ds-snippet-start:Workflows1Step4
+    #ds-snippet-start:Workspaces1Step4
     $response = $(Invoke-WebRequest `
         -Uri "${apiUri}/accounts/${accountId}/workspaces" `
         -Method 'POST' `
         -headers $headers `
         -body $body)
-    #ds-snippet-end:Workflows1Step4
+    #ds-snippet-end:Workspaces1Step4
     #apx-snippet-end:createWorkspace
 } catch {
     Write-Output "Failed to create Workspace."

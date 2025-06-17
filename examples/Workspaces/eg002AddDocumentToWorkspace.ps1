@@ -18,13 +18,13 @@ $accountId = Get-Content .\config\API_ACCOUNT_ID
 # temp files:
 $requestData = New-TemporaryFile
 
-#ds-snippet-start:Workflows2Step2
+#ds-snippet-start:Workspaces2Step2
 $boundary = [System.Guid]::NewGuid().ToString()
 $headers = @{
 	'Authorization' = "Bearer $accessToken";
 	'Content-Type'  = "multipart/form-data; boundary=${boundary}";
 }
-#ds-snippet-end:Workflows2Step2
+#ds-snippet-end:Workspaces2Step2
 
 try {
     #apx-snippet-start:addWorkspaceDocument
@@ -37,20 +37,20 @@ try {
 
     $docName = Read-Host "Enter the name for the document in the workspace"
 
-    #ds-snippet-start:Workflows2Step3
+    #ds-snippet-start:Workspaces2Step3
     $form = @{
         file = Get-Item $filePath   # The file to upload
         name = $docName             # The document name
     }
-    #ds-snippet-end:Workflows2Step3
+    #ds-snippet-end:Workspaces2Step3
     
-    #ds-snippet-start:Workflows2Step4
+    #ds-snippet-start:Workspaces2Step4
     $response = $(Invoke-WebRequest `
         -Uri "${apiUri}/accounts/${accountId}/workspaces/${workspaceId}/documents" `
         -Method 'POST' `
         -headers $headers `
         -Form $form)
-    #ds-snippet-end:Workflows2Step4
+    #ds-snippet-end:Workspaces2Step4
     #apx-snippet-end:addWorkspaceDocument
 } catch {
     Write-Output "Failed to add document to workspace."

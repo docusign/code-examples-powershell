@@ -25,31 +25,31 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
-#ds-snippet-start:Workflows3Step2
+#ds-snippet-start:Workspaces3Step2
 $headers = @{
     'Authorization' = "Bearer $accessToken";
     'Accept'        = 'application/json';
     'Content-Type'  = "application/json";
 }
-#ds-snippet-end:Workflows3Step2
+#ds-snippet-end:Workspaces3Step2
 
 try {
     # Create the workspace envelope definition
     #apx-snippet-start:createWorkspaceEnvelope
-    #ds-snippet-start:Workflows3Step3
+    #ds-snippet-start:Workspaces3Step3
     $body = @{
         "envelope_name" = "Example Workspace Envelope";
         "document_ids"  = @("${documentId}")
     } | ConvertTo-Json
-    #ds-snippet-end:Workflows3Step3
+    #ds-snippet-end:Workspaces3Step3
 
-    #ds-snippet-start:Workflows3Step4
+    #ds-snippet-start:Workspaces3Step4
     $response = $(Invoke-WebRequest `
         -Uri "${apiUri}/accounts/${accountId}/workspaces/${workspaceId}/envelopes" `
         -Method 'POST' `
         -headers $headers `
         -body $body)
-    #ds-snippet-end:Workflows3Step4
+    #ds-snippet-end:Workspaces3Step4
     #apx-snippet-end:createWorkspaceEnvelope
 } catch {
     Write-Output "Failed to send envelope."
@@ -66,7 +66,7 @@ Write-Output "Envelope created! ID: $envelopeId"
 # Set the eSignature REST API base path
 $apiUri = "https://demo.docusign.net/restapi"
 
-#ds-snippet-start:Workflows3Step5
+#ds-snippet-start:Workspaces3Step5
 $body = @{
     emailSubject = "Please sign this document";
     recipients   = @{
@@ -91,16 +91,16 @@ $body = @{
     };
     status = "sent";
 } | ConvertTo-Json -Depth 32
-#ds-snippet-end:Workflows3Step5
+#ds-snippet-end:Workspaces3Step5
 
 try {
-    #ds-snippet-start:Workflows3Step6
+    #ds-snippet-start:Workspaces3Step6
     $response = $(Invoke-WebRequest `
         -Uri "${apiUri}/v2.1/accounts/${accountId}/envelopes/${envelopeId}" `
         -Method 'PUT' `
         -headers $headers `
         -body $body)
-    #ds-snippet-end:Workflows3Step6
+    #ds-snippet-end:Workspaces3Step6
 } catch {
     Write-Output "Failed to send envelope."
     Write-Output $_

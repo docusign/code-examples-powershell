@@ -71,21 +71,29 @@ $body = @"
 "@
 #ds-snippet-end:Maestro1Step4
 
-#ds-snippet-start:Maestro1Step5
-$triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST -UseBasicParsing
-#ds-snippet-end:Maestro1Step5
+if (-not ([string]::IsNullOrEmpty($triggerUrl))) {
+  #ds-snippet-start:Maestro1Step5
+  $triggerResult = Invoke-WebRequest -uri $triggerUrl -headers $headers -body $body -method POST -UseBasicParsing
+  #ds-snippet-end:Maestro1Step5
 
+  $instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
+  # Decode escaped characters
+  $instanceUrl = $instanceUrl -replace "\\u0026", "&"
+  Write-Host "Use this URL to complete the workflow steps:"
+  Write-Host $instanceUrl
 
-$instanceUrl = $($triggerResult | ConvertFrom-Json).instance_url
-$instanceUrl = $instanceUrl -replace "\\u0026", "&"
-Write-Output "Response: $instanceUrl"
+  Write-Host ""
+  Write-Host "Opening a browser with the embedded workflow..."
 
-# pull out the envelopeId
-$instanceId = $($triggerResult | ConvertFrom-Json).instance_id
-# Store the instance_id into the config file
-Write-Output $instanceId > .\config\INSTANCE_ID
+  # Wait a bit to let the server start
+  Start-Sleep -Seconds 2
 
-# cleanup
-Remove-Item $response
+  # Start script for the embedded workflow
+& "./examples/Maestro/startServerForEmbeddingWorkflow.ps1" -instanceUrl $instanceUrl
 
-Write-Output "Done."
+  # Open the browser
+  Start-Process "http://localhost:8080"
+} else {
+  Write-Host ""
+  Write-Host "The WORKFLOW_ID file contains the ID of the unpublished maestro workflow. Please, delete this file and try running the example again."
+}

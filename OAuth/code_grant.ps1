@@ -47,6 +47,9 @@ elseif ($apiVersion -eq "navigator") {
 elseif ($apiVersion -eq "connectedFields") {
   $scopes = "signature adm_store_unified_repo_read"
 }
+elseif ($apiVersion -eq "workspaces") {
+  $scopes = "signature%20impersonation%20dtr.company.read%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.write"
+}
 
 function GenerateCodeVerifier {
   return -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 43 | ForEach-Object {[char]$_})

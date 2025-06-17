@@ -27,8 +27,6 @@ $headers = @{
 #ds-snippet-end:Workspaces2Step2
 
 try {
-    #apx-snippet-start:addWorkspaceDocument
-
     $filePath = Read-Host "Enter the path to the document you want to add to the workspace"
     if (-Not (Test-Path -Path $filePath -PathType Leaf)) {
         Write-Host "File does not exist: $filePath"
@@ -51,7 +49,6 @@ try {
         -headers $headers `
         -Form $form)
     #ds-snippet-end:Workspaces2Step4
-    #apx-snippet-end:addWorkspaceDocument
 } catch {
     Write-Output "Failed to add document to workspace."
     Write-Output $_

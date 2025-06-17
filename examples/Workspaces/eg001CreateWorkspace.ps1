@@ -18,7 +18,6 @@ $headers = @{
 
 try {
     # Create the workspace definition
-    #apx-snippet-start:createWorkspace
     #ds-snippet-start:Workspaces1Step3
     $body = @{
         name = "Example workspace";
@@ -32,7 +31,6 @@ try {
         -headers $headers `
         -body $body)
     #ds-snippet-end:Workspaces1Step4
-    #apx-snippet-end:createWorkspace
 } catch {
     Write-Output "Failed to create Workspace."
     Write-Output $_

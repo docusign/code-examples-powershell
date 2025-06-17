@@ -35,7 +35,6 @@ $headers = @{
 
 try {
     # Create the workspace envelope definition
-    #apx-snippet-start:createWorkspaceEnvelope
     #ds-snippet-start:Workspaces3Step3
     $body = @{
         "envelope_name" = "Example Workspace Envelope";
@@ -50,7 +49,6 @@ try {
         -headers $headers `
         -body $body)
     #ds-snippet-end:Workspaces3Step4
-    #apx-snippet-end:createWorkspaceEnvelope
 } catch {
     Write-Output "Failed to send envelope."
     Write-Output $_

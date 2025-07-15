@@ -60,6 +60,9 @@ elseif ($apiVersion -eq "navigator") {
 elseif ($apiVersion -eq "connectedFields") {
   $scopes = "signature%20adm_store_unified_repo_read%20impersonation"
 }
+elseif ($apiVersion -eq "workspaces") {
+  $scopes = "signature%20impersonation%20dtr.company.read%20dtr.rooms.read%20dtr.rooms.write%20dtr.documents.write"
+}
 
 # Request application consent
 $PORT = '8080'

@@ -107,7 +107,8 @@ function startLauncher {
             Maestro = 9;
             Navigator = 10;
             ConnectedFields = 11;
-            Exit = 12;
+            Workspaces = 12;
+            Exit = 13;
         }
 
         $listApiView = $null;
@@ -149,6 +150,7 @@ function startLauncher {
             Write-Output "$([int][listApi]::Maestro)) Maestro (beta)"
             Write-Output "$([int][listApi]::Navigator)) Navigator (beta)"
             Write-Output "$([int][listApi]::ConnectedFields)) Connected Fields"
+            Write-Output "$([int][listApi]::Workspaces)) Workspaces"
             Write-Output "$([int][listApi]::Exit)) Exit"
             [int]$listApiView = Read-Host "Please make a selection"
         } while (-not [listApi]::IsDefined([listApi], $listApiView));
@@ -185,6 +187,9 @@ function startLauncher {
         }
         elseif ($listApiView -eq [listApi]::ConnectedFields) {
             startAuth "connectedFields"
+        }
+        elseif ($listApiView -eq [listApi]::Workspaces) {
+            startAuth "workspaces"
         }
         elseif ($listApiView -eq [listApi]::Exit) {
             exit 1
@@ -266,6 +271,9 @@ function startAuth ($apiVersion) {
     }
     elseif ($listApiView -eq [listApi]::ConnectedFields) {
         startConnectedFields
+    }
+    elseif ($listApiView -eq [listApi]::Workspaces) {
+        startWorkspaces
     }
 }
 
@@ -978,7 +986,7 @@ function startNotary {
         if ($listNotaryExamplesView -eq [listNotaryExamples]::signatureRequestToNotaryGroup) {
             Invoke-Script -Command "`".\examples\Notary\signatureRequestToNotaryGroup.ps1`""
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::inviteNotaryToPool) {
-            Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1"
+            Invoke-Script -Command "`".\examples\Notary\inviteNotaryToPool.ps1`""
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::jurisdictions) {
             Invoke-Script -Command "`".\examples\Notary\Jurisdictions.ps1`""
         } elseif ($listNotaryExamplesView -eq [listNotaryExamples]::sendWithThirdPartyNotary) {
@@ -1016,7 +1024,8 @@ function startMaestro {
             triggerWorkflow = 1;
             pauseWorkflow = 2;
             resumeWorkflow = 3;
-            Pick_An_API = 4;
+            cancelWorkflow = 4;
+            Pick_An_API = 5;
         }
         $listMaestroExamplesView = $null;
         do {
@@ -1025,6 +1034,8 @@ function startMaestro {
             Write-Output "$([int][listMaestroExamples]::triggerWorkflow)) How to trigger a Maestro workflow"
             Write-Output "$([int][listMaestroExamples]::pauseWorkflow)) How to pause the creation of workflow instances"
             Write-Output "$([int][listMaestroExamples]::resumeWorkflow)) How to resume the creation of workflow instances"
+            Write-Output "$([int][listMaestroExamples]::cancelWorkflow)) How to cancel a Maestro workflow"
+
             Write-Output "$([int][listMaestroExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMaestroExamplesView = Read-Host "Select the action"
         } while (-not [listMaestroExamples]::IsDefined([listMaestroExamples], $listMaestroExamplesView));
@@ -1032,6 +1043,8 @@ function startMaestro {
         if ($listMaestroExamplesView -eq [listMaestroExamples]::triggerWorkflow) {
             Invoke-Script -Command "`".\examples\Maestro\eg001TriggerWorkflow.ps1`""
 
+        } elseif ($listMaestroExamplesView -eq [listMaestroExamples]::cancelWorkflow) {
+            Invoke-Script -Command "`".\examples\Maestro\eg004CancelWorkflow.ps1`""
         }
         elseif ($listMaestroExamplesView -eq [listMaestroExamples]::pauseWorkflow) {
             Invoke-Script -Command "`".\examples\Maestro\eg002PauseWorkflow.ps1`""
@@ -1090,6 +1103,36 @@ function startConnectedFields {
             Invoke-Script -Command "`".\examples\ConnectedFields\eg001SetConnectedFields.ps1`""
         }
     } until ($listConnectedFieldsExamplesView -eq [listConnectedFieldsExamples]::Pick_An_API)
+    startLauncher
+}
+
+function startWorkspaces {
+    do {
+        Enum listWorkspacesExamples {
+            createWorkspace = 1;
+            addDocumentToWorkspace = 2;
+            sendEnvelopeWithRecipientInfo = 3;
+            Pick_An_API = 4;
+        }
+        $listWorkspacesExamplesView = $null;
+        do {
+            Write-Output ""
+            Write-Output 'Select the action: '
+            Write-Output "$([int][listWorkspacesExamples]::createWorkspace)) Create_Workspace"
+            Write-Output "$([int][listWorkspacesExamples]::addDocumentToWorkspace)) Add_Document_To_Workspace"
+            Write-Output "$([int][listWorkspacesExamples]::sendEnvelopeWithRecipientInfo)) Send_Envelope_With_Recipient_Info"
+            Write-Output "$([int][listWorkspacesExamples]::Pick_An_API)) Pick_An_API"
+            [int]$listWorkspacesExamplesView = Read-Host "Select the action"
+        } while (-not [listWorkspacesExamples]::IsDefined([listWorkspacesExamples], $listWorkspacesExamplesView));
+
+        if ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::createWorkspace) {
+            Invoke-Script -Command "`".\examples\Workspaces\eg001CreateWorkspace.ps1`""
+        } elseif ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::addDocumentToWorkspace) {
+            Invoke-Script -Command "`".\examples\Workspaces\eg002AddDocumentToWorkspace.ps1`""
+        } elseif ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::sendEnvelopeWithRecipientInfo) {
+            Invoke-Script -Command "`".\examples\Workspaces\eg003SendEnvelopeWithRecipientInfo.ps1`""
+        }
+    } until ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::Pick_An_API)
     startLauncher
 }
 

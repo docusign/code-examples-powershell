@@ -1022,6 +1022,8 @@ function startMaestro {
     do {
         Enum listMaestroExamples {
             triggerWorkflow = 1;
+            pauseWorkflow = 2;
+            resumeWorkflow = 3;
             cancelWorkflow = 4;
             Pick_An_API = 5;
         }
@@ -1030,7 +1032,10 @@ function startMaestro {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listMaestroExamples]::triggerWorkflow)) How to trigger a Maestro workflow"
+            Write-Output "$([int][listMaestroExamples]::pauseWorkflow)) How to pause the creation of workflow instances"
+            Write-Output "$([int][listMaestroExamples]::resumeWorkflow)) How to resume the creation of workflow instances"
             Write-Output "$([int][listMaestroExamples]::cancelWorkflow)) How to cancel a Maestro workflow"
+
             Write-Output "$([int][listMaestroExamples]::Pick_An_API)) Pick_An_API"
             [int]$listMaestroExamplesView = Read-Host "Select the action"
         } while (-not [listMaestroExamples]::IsDefined([listMaestroExamples], $listMaestroExamplesView));
@@ -1040,6 +1045,12 @@ function startMaestro {
 
         } elseif ($listMaestroExamplesView -eq [listMaestroExamples]::cancelWorkflow) {
             Invoke-Script -Command "`".\examples\Maestro\eg004CancelWorkflow.ps1`""
+        }
+        elseif ($listMaestroExamplesView -eq [listMaestroExamples]::pauseWorkflow) {
+            Invoke-Script -Command "`".\examples\Maestro\eg002PauseWorkflow.ps1`""
+        }
+        elseif ($listMaestroExamplesView -eq [listMaestroExamples]::resumeWorkflow) {
+            Invoke-Script -Command "`".\examples\Maestro\eg003ResumeWorkflow.ps1`""
         }
 
     } until ($listMaestroExamplesView -eq [listMaestroExamples]::Pick_An_API)

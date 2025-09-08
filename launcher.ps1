@@ -1000,19 +1000,23 @@ function startWebForms {
     do {
         Enum listWebFormsExamples {
             createInstance = 1;
-            Pick_An_API = 2;
+            createRemoteInstance = 2;
+            Pick_An_API = 3;
         }
         $listWebFormsExamplesView = $null;
         do {
             Write-Output ""
             Write-Output 'Select the action: '
             Write-Output "$([int][listWebFormsExamples]::createInstance)) Create_Instance"
+            Write-Output "$([int][listWebFormsExamples]::createRemoteInstance)) Create_Remote_Instance"
             Write-Output "$([int][listWebFormsExamples]::Pick_An_API)) Pick_An_API"
             [int]$listWebFormsExamplesView = Read-Host "Select the action"
         } while (-not [listWebFormsExamples]::IsDefined([listWebFormsExamples], $listWebFormsExamplesView));
 
         if ($listWebFormsExamplesView -eq [listWebFormsExamples]::createInstance) {
             Invoke-Script -Command "`".\examples\WebForms\eg001CreateInstance.ps1`""
+        } elseif ($listWebFormsExamplesView -eq [listWebFormsExamples]::createRemoteInstance) {
+            Invoke-Script -Command "`".\examples\WebForms\eg002CreateRemoteInstance.ps1`""
         }
     } until ($listWebFormsExamplesView -eq [listWebFormsExamples]::Pick_An_API)
     startLauncher

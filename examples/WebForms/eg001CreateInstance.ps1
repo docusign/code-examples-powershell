@@ -53,7 +53,7 @@ $json = @"
         "Company": "Tally",
         "JobTitle": "Programmer Writer"
     },
-    "expirationOffset": 3600
+    "expirationOffset": 24
 }
 "@
 #ds-snippet-end:WebForms1Step4

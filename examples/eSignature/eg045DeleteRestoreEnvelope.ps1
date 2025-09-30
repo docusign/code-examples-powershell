@@ -19,7 +19,6 @@ $requestData = New-TemporaryFile
 $response = New-TemporaryFile
 
 $recycle_bin_folder_id = "recyclebin"
-$sent_items_folder_id = "sentitems"
 
 Write-Output "Select the envelope ID to use for the delete and restore operations."
 if (Test-Path .\config\ENVELOPE_ID) {
@@ -84,6 +83,30 @@ if (-not $destinationFolderName) {
 Write-Output "Searching for folder with name: '${destinationFolderName}'..."
 
 #ds-snippet-start:eSign45Step5
+function Get-FolderIdByName {
+    param (
+        [object]$folders,
+        [string]$targetName
+    )
+
+    foreach ($folder in $folders) {
+        # Check this folder
+        if ($folder.name -eq $targetName) {
+            return $folder.folderId
+        }
+
+        # If this folder has subfolders, search inside them
+        if ($folder.folders) {
+            $result = Get-FolderIdByName -folders $folder.folders -targetName $targetName
+            if ($result) {
+                return $result
+            }
+        }
+    }
+
+    return $null
+}
+
 Invoke-RestMethod `
     -Uri "${apiUri}/v2.1/accounts/${accountId}/folders" `
     -Method 'GET' `
@@ -91,13 +114,12 @@ Invoke-RestMethod `
     -OutFile $response
 
 $folders = $(Get-Content $response | ConvertFrom-Json).folders
-$folder = $folders | Where-Object { $_.name -eq $destinationFolderName }
+$folderId = Get-FolderIdByName -folders $folders -targetName $destinationFolderName
 #ds-snippet-end:eSign45Step5
 
-if ($folder) {
-    $folderId = $folder.folderId
-} else {
+if (-not $folderId) {
     Write-Output "ERROR: Could not find a folder with the name '${destinationFolderName}'. Please check the spelling."
+    exit 1
 }
 
 Write-Output "Found folder ID: ${folderId} for folder name: '${destinationFolderName}'"

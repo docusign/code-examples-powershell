@@ -1,6 +1,6 @@
 $apiUri = "https://demo.docusign.net/restapi"
 
-# Delete and Restore an Envelope
+# Delete and Undelete an Envelope
 
 # Get required environment variables from .\config\settings.json file
 $variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
@@ -20,7 +20,7 @@ $response = New-TemporaryFile
 
 $recycle_bin_folder_id = "recyclebin"
 
-Write-Output "Select the envelope ID to use for the delete and restore operations."
+Write-Output "Select the envelope ID to use for the delete and undelete operations."
 if (Test-Path .\config\ENVELOPE_ID) {
     $envelopeIdFromFile = Get-Content .\config\ENVELOPE_ID
 
@@ -72,7 +72,7 @@ Invoke-RestMethod `
 Write-Output "The deleted envelope is now in your Docusign Recycle Bin."
 Write-Output "You can check your web app to confirm the deletion."
 
-Read-Host "Press Enter to proceed with restoring the envelope from the Recycle Bin..."
+Read-Host "Press Enter to proceed with undeleting the envelope from the Recycle Bin..."
 $destinationFolderName = Read-Host "Please enter the name of the folder to undelete the envelope to (e.g., 'Sent Items') or press Enter to use the default"
 
 if (-not $destinationFolderName) {
@@ -124,7 +124,7 @@ if (-not $folderId) {
 
 Write-Output "Found folder ID: ${folderId} for folder name: '${destinationFolderName}'"
 
-Write-Output "Restoring the Envelope from Recycle Bin to the '${destinationFolderName}' folder."
+Write-Output "Undeleting the Envelope from Recycle Bin to the '${destinationFolderName}' folder."
 Write-Output "Sending PUT request to Docusign..."
 Write-Output "Results:"
 

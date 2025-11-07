@@ -2,6 +2,7 @@ $apiUri = "https://api-d.docusign.com/v1"
 
 # check that a workspace exists
 $workspaceId = Get-Content .\config\WORKSPACE_ID
+$workspaceName = Get-Content .\config\WORKSPACE_NAME
 if ([string]::IsNullOrWhiteSpace($workspaceId)) {
     Write-Host "Please create a workspace before running this example"
     exit 0
@@ -26,21 +27,74 @@ $headers = @{
 }
 #ds-snippet-end:Workspaces2Step2
 
-try {
-    $filePath = Read-Host "Enter the path to the document you want to add to the workspace"
-    if (-Not (Test-Path -Path $filePath -PathType Leaf)) {
-        Write-Host "File does not exist: $filePath"
-        exit 1
+# Get the current script directory
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+# Resolve the demo_documents directory (two levels up)
+$DemoDocsPath = Resolve-Path (Join-Path $ScriptDir '..\..\demo_documents')
+
+Write-Host ""
+Write-Host "Enter the PDF file name (e.g. World_Wide_Corp_Web_Form.pdf) from the $DemoDocsPath folder:"
+Write-Host ""
+
+# Ask for the file until valid
+while ($true) {
+    $FileName = Read-Host
+    $FilePath = Join-Path $DemoDocsPath $FileName
+
+    if ($FileName -notmatch '\.pdf$') {
+        Write-Host ""
+        Write-Host "The file must be a PDF (must end with .pdf). Please try again."
+        Write-Host ""
+        continue
     }
 
-    $docName = Read-Host "Enter the name for the document in the workspace"
+    if (-not (Test-Path $FilePath)) {
+        Write-Host ""
+        Write-Host "File not found in demo_documents folder. Please try again."
+        Write-Host ""
+        continue
+    }
 
+    break
+}
+
+# Ask for document name to be used in the workspace
+Write-Host ""
+Write-Host "Enter the name for the document in the workspace (must end with .pdf):"
+Write-Host ""
+
+while ($true) {
+    $DocName = Read-Host
+    $DocName = $DocName.Trim()
+
+    if ($DocName -match '\.pdf$') {
+        break
+    } else {
+        Write-Host ""
+        Write-Host "Invalid name. The document name must end with '.pdf' (e.g., example.pdf)."
+        Write-Host "Please try again:"
+        Write-Host ""
+    }
+}
+
+Write-Host ""
+Write-Host "File path selected: $FilePath"
+Write-Host "Document name for workspace: $DocName"
+try {
     #ds-snippet-start:Workspaces2Step3
+
+    # Create a temporary copy with the desired document name
+    $tempFilePath = Join-Path ([System.IO.Path]::GetTempPath()) $docName
+    Copy-Item -Path $filePath -Destination $tempFilePath -Force
+
     $form = @{
-        file = Get-Item $filePath   # The file to upload
-        name = $docName             # The document name
+        file = Get-Item $tempFilePath   # The file to upload (with the correct name)
+        name = $docName                 # The document name
     }
     #ds-snippet-end:Workspaces2Step3
+
+    Remove-Item $tempFilePath -Force
     
     #ds-snippet-start:Workspaces2Step4
     $response = $(Invoke-WebRequest `
@@ -61,7 +115,7 @@ Write-Output "Response: $response"
 $documentId = $($response.Content | ConvertFrom-Json).document_id
 
 # Save the document id for use by other scripts
-Write-Output "Document added! ID: $documentId"
+Write-Output "Document added to the workspace '$workspaceName'!! ID: $documentId"
 Write-Output $documentId > .\config\DOCUMENT_ID
 
 # cleanup

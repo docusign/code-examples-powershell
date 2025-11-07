@@ -78,9 +78,6 @@ while ($true) {
     }
 }
 
-Write-Host ""
-Write-Host "File path selected: $FilePath"
-Write-Host "Document name for workspace: $DocName"
 try {
     #ds-snippet-start:Workspaces2Step3
 

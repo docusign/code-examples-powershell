@@ -80,25 +80,38 @@ while ($true) {
 
 try {
     #ds-snippet-start:Workspaces2Step3
-
     # Create a temporary copy with the desired document name
     $tempFilePath = Join-Path ([System.IO.Path]::GetTempPath()) $docName
     Copy-Item -Path $filePath -Destination $tempFilePath -Force
 
-    $form = @{
-        file = Get-Item $tempFilePath   # The file to upload (with the correct name)
-        name = $docName                 # The document name
-    }
+    $boundary = [System.Guid]::NewGuid().ToString()
+    $LF = "`r`n"
+    $fileBytes = [System.IO.File]::ReadAllBytes($tempFilePath)
+    $fileContent = [System.Text.Encoding]::GetEncoding("iso-8859-1").GetString($fileBytes)
+
+    # Construct the multipart form body
+    $bodyLines = @(
+        "--$boundary",
+        "Content-Disposition: form-data; name=`"file`"; filename=`"$docName`"",
+        "Content-Type: application/octet-stream$LF",
+        $fileContent,
+        "--$boundary",
+        "Content-Disposition: form-data; name=`"name`"$LF",
+        $docName,
+        "--$boundary--$LF"
+    )
+    $body = $bodyLines -join $LF
     #ds-snippet-end:Workspaces2Step3
 
     Remove-Item $tempFilePath -Force
     
     #ds-snippet-start:Workspaces2Step4
-    $response = $(Invoke-WebRequest `
+    $response = Invoke-WebRequest `
         -Uri "${apiUri}/accounts/${accountId}/workspaces/${workspaceId}/documents" `
         -Method 'POST' `
-        -headers $headers `
-        -Form $form)
+        -Headers $headers `
+        -ContentType "multipart/form-data; boundary=$boundary" `
+        -Body $body
     #ds-snippet-end:Workspaces2Step4
 } catch {
     Write-Output "Failed to add document to workspace."

@@ -1121,7 +1121,8 @@ function startWorkspaces {
             createWorkspace = 1;
             addDocumentToWorkspace = 2;
             sendEnvelopeWithRecipientInfo = 3;
-            Pick_An_API = 4;
+            createWorkspaceWithBrand = 4;
+            Pick_An_API = 5;
         }
         $listWorkspacesExamplesView = $null;
         do {
@@ -1130,6 +1131,7 @@ function startWorkspaces {
             Write-Output "$([int][listWorkspacesExamples]::createWorkspace)) Create_Workspace"
             Write-Output "$([int][listWorkspacesExamples]::addDocumentToWorkspace)) Add_Document_To_Workspace"
             Write-Output "$([int][listWorkspacesExamples]::sendEnvelopeWithRecipientInfo)) Send_Envelope_With_Recipient_Info"
+            Write-Output "$([int][listWorkspacesExamples]::createWorkspaceWithBrand)) Create_Workspace_With_Brand"
             Write-Output "$([int][listWorkspacesExamples]::Pick_An_API)) Pick_An_API"
             [int]$listWorkspacesExamplesView = Read-Host "Select the action"
         } while (-not [listWorkspacesExamples]::IsDefined([listWorkspacesExamples], $listWorkspacesExamplesView));
@@ -1140,6 +1142,8 @@ function startWorkspaces {
             Invoke-Script -Command "`".\examples\Workspaces\eg002AddDocumentToWorkspace.ps1`""
         } elseif ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::sendEnvelopeWithRecipientInfo) {
             Invoke-Script -Command "`".\examples\Workspaces\eg003SendEnvelopeWithRecipientInfo.ps1`""
+        } elseif ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::createWorkspaceWithBrand) {
+            Invoke-Script -Command "`".\examples\Workspaces\eg004CreateWorkspaceWithBrand.ps1`""
         }
     } until ($listWorkspacesExamplesView -eq [listWorkspacesExamples]::Pick_An_API)
     startLauncher

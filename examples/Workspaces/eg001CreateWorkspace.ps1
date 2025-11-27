@@ -8,6 +8,8 @@ $accessToken = Get-Content .\config\ds_access_token.txt
 # Note: Substitute these values with your own
 $accountId = Get-Content .\config\API_ACCOUNT_ID
 
+$workspaceName = Read-Host "Enter the name for the new workspace"
+
 #ds-snippet-start:Workspaces1Step2
 $headers = @{
     'Authorization' = "Bearer $accessToken";
@@ -20,7 +22,7 @@ try {
     # Create the workspace definition
     #ds-snippet-start:Workspaces1Step3
     $body = @{
-        name = "Example workspace";
+        name = $workspaceName;
     } | ConvertTo-Json
     #ds-snippet-end:Workspaces1Step3
 
@@ -45,5 +47,6 @@ $workspaceId = $($response.Content  | ConvertFrom-Json).workspace_id
 # Save the envelope id for use by other scripts
 Write-Output "Workspace created! ID: $workspaceId"
 Write-Output $workspaceId > .\config\WORKSPACE_ID
+Write-Output $workspaceName > .\config\WORKSPACE_NAME
 
 Write-Output "Done."

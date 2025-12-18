@@ -43,10 +43,12 @@ Write-Output "Response: $response"
 
 # pull out the workspaceId
 $workspaceId = $($response.Content  | ConvertFrom-Json).workspace_id
+$workspaceCreatorId = $($response.Content  | ConvertFrom-Json).created_by_user_id
 
 # Save the envelope id for use by other scripts
 Write-Output "Workspace created! ID: $workspaceId"
 Write-Output $workspaceId > .\config\WORKSPACE_ID
 Write-Output $workspaceName > .\config\WORKSPACE_NAME
+Write-Output $workspaceCreatorId > .\config\WORKSPACE_CREATOR_ID
 
 Write-Output "Done."

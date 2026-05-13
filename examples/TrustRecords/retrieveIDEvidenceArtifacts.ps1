@@ -68,7 +68,7 @@ if ([string]::IsNullOrWhiteSpace($record_id)) {
 }
 
 # Save Record ID internally
-$record_id | Out-File "config/RECIPIENT_ID_GUID" -NoNewline
+$record_id | Out-File "../../config/RECIPIENT_ID_GUID" -NoNewline
 
 # --- Step 4: Call Trust Records Endpoint ---
 #ds-snippet-start:TrustRecordsStep4

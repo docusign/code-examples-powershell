@@ -28,7 +28,7 @@ if ($has_completed -match "^[Yy]$") {
         }
 
         Write-Host "Retrieving Record ID from envelope recipients..."
-        #ds-snippet-start:TrustRecordsStep2
+        #ds-snippet-start:TrustRecords1Step2
         $uri = "https://demo.docusign.net/restapi/v2.1/accounts/$account_id/envelopes/$idv_envelope_id/recipients"
         
         try {
@@ -46,7 +46,7 @@ if ($has_completed -match "^[Yy]$") {
             Write-Host "Failed to retrieve recipients. Error: $_" -ForegroundColor Red
             exit
         }
-        #ds-snippet-end:TrustRecordsStep2
+        #ds-snippet-end:TrustRecords1Step2
     }
     elseif ($id_type -eq "2") {
         $record_id = Read-Host "Please enter the Record ID"
@@ -71,14 +71,14 @@ if ([string]::IsNullOrWhiteSpace($record_id)) {
 $record_id | Out-File "../../config/RECIPIENT_ID_GUID" -NoNewline
 
 # --- Step 4: Call Trust Records Endpoint ---
-#ds-snippet-start:TrustRecordsStep4
+#ds-snippet-start:TrustRecords1Step4
 $uri = "https://api-d.docusign.com/v1/accounts/$account_id/trust-records/$record_id"
-#ds-snippet-end:TrustRecordsStep4
+#ds-snippet-end:TrustRecords1Step4
 
 Write-Host "`n-------------------------------------------------------"
 Write-Host "Fetching Trust Records for Record ID: $record_id"
 Write-Host "-------------------------------------------------------"
-#ds-snippet-start:TrustRecordsStep3
+#ds-snippet-start:TrustRecords1Step3
 try {
     $headers = @{
         "Authorization" = "Bearer $access_token"
@@ -86,7 +86,7 @@ try {
     }
     
     $apiResponse = Invoke-WebRequest -Uri $uri -Headers $headers -Method Get
-  #ds-snippet-end:TrustRecordsStep3  
+  #ds-snippet-end:TrustRecords1Step3  
     Write-Host "API Response Content:"
     $rawContent = $apiResponse.Content
     Write-Host $rawContent
@@ -96,7 +96,7 @@ try {
     $jsonObj = $rawContent | ConvertFrom-Json
     
     # Try direct access first, then try a regex fallback if the JSON is nested/complex
-    #ds-snippet-start:TrustRecordsStep5
+    #ds-snippet-start:TrustRecords1Step5
     $pdf_path = $jsonObj.pdf_url
     
     if ([string]::IsNullOrWhiteSpace($pdf_path)) {
@@ -106,7 +106,7 @@ try {
         }
     }
 }
-    #ds-snippet-end:TrustRecordsStep5
+    #ds-snippet-end:TrustRecords1Step5
 catch {
     Write-Host "Error fetching trust records: $_" -ForegroundColor Red
     exit

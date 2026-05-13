@@ -9,14 +9,6 @@ $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $accessToken = (Get-Content $tokenPath -Raw).Trim()
 $accountId = (Get-Content $accountIdPath -Raw).Trim()
 
-$agreementSetId = $config.AGREEMENT_SET_ID
-if ([string]::IsNullOrWhiteSpace($agreementSetId) -or $agreementSetId -eq "{AGREEMENT_SET_ID}") {
-    Write-Output "Invalid AGREEMENT_SET_ID value"
-    Write-Output "Please provide a valid agreement set id and rerun this example."
-    exit 0
-}
-
-
 $demoFiles = @(
     (Join-Path $projectRoot "demo_documents/World_Wide_Corp_Battle_Plan_Trafalgar.docx"),
     (Join-Path $projectRoot "demo_documents/World_Wide_Corp_lorem.pdf"),
@@ -41,7 +33,6 @@ $createBody = @{
     job_name                = "Example bulk upload job"
     expected_number_of_docs = $existingFiles.Count
     language                = "en-US"
-    agreement_set_ids       = @($agreementSetId)
 } | ConvertTo-Json
 
 $createResponse = Invoke-WebRequest `

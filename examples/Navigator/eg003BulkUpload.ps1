@@ -23,6 +23,7 @@ if ($existingFiles.Count -eq 0) {
     exit 0
 }
 
+#ds-snippet-start:Navigator3Step2
 $headers = @{
     Authorization = "Bearer $accessToken"
     Accept        = "application/json"
@@ -50,6 +51,8 @@ $uploadUrls = @()
 foreach ($match in $uploadUrlMatches) {
     $uploadUrls += ($match.Groups[1].Value -replace '\\/', '/')
 }
+#ds-snippet-end:Navigator3Step2
+
 
 if ([string]::IsNullOrWhiteSpace($jobId)) {
     Write-Output "Could not read the upload job id from the API response."
@@ -63,6 +66,7 @@ Read-Host "Press Enter to upload documents for this job"
 Write-Output "Uploading documents..."
 Write-Output ""
 
+#ds-snippet-start:Navigator3Step3
 for ($i = 0; $i -lt $existingFiles.Count; $i++) {
     $filePath = $existingFiles[$i]
     $uploadUrl = if ($i -lt $uploadUrls.Count) { $uploadUrls[$i] } else { $null }
@@ -96,14 +100,17 @@ for ($i = 0; $i -lt $existingFiles.Count; $i++) {
         -ContentType $contentType `
         -InFile $filePath | Out-Null
 }
+#ds-snippet-end:Navigator3Step3
 
 Write-Output ""
 Read-Host "The documents have been uploaded. Press Enter to update the job status"
 
+#ds-snippet-start:Navigator3Step4
 $completeResponse = Invoke-WebRequest `
     -Uri "$apiUri/accounts/$accountId/upload/jobs/$jobId/actions/complete" `
     -Method POST `
     -Headers $headers
+#ds-snippet-end:Navigator3Step4
 
 Write-Output ""
 Write-Output "Bulk upload job has been completed. Response:"

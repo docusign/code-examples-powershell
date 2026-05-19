@@ -9,6 +9,7 @@ $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $accessToken = (Get-Content $tokenPath -Raw).Trim()
 $accountId = (Get-Content $accountIdPath -Raw).Trim()
 
+#ds-snippet-start:Navigator3Step2
 $demoFiles = @(
     (Join-Path $projectRoot "demo_documents/World_Wide_Corp_Battle_Plan_Trafalgar.docx"),
     (Join-Path $projectRoot "demo_documents/World_Wide_Corp_lorem.pdf"),
@@ -23,7 +24,6 @@ if ($existingFiles.Count -eq 0) {
     exit 0
 }
 
-#ds-snippet-start:Navigator3Step2
 $headers = @{
     Authorization = "Bearer $accessToken"
     Accept        = "application/json"

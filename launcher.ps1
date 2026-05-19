@@ -1076,7 +1076,8 @@ function startNavigator {
         Enum listNavigatorExamples {
             listAgreements = 1;
             getAgreement = 2;
-            Pick_An_API = 3;
+            bulkUpload = 3;
+            Pick_An_API = 4;
         }
         $listNavigatorExamplesView = $null;
         do {
@@ -1084,6 +1085,7 @@ function startNavigator {
             Write-Output 'Select the action: '
             Write-Output "$([int][listNavigatorExamples]::listAgreements)) List_Agreements"
             Write-Output "$([int][listNavigatorExamples]::getAgreement)) Get_Single_Agreement"
+            Write-Output "$([int][listNavigatorExamples]::bulkUpload)) Bulk_Upload"
             Write-Output "$([int][listNavigatorExamples]::Pick_An_API)) Pick_An_API"
             [int]$listNavigatorExamplesView = Read-Host "Select the action"
         } while (-not [listNavigatorExamples]::IsDefined([listNavigatorExamples], $listNavigatorExamplesView));
@@ -1094,6 +1096,9 @@ function startNavigator {
         if ($listNavigatorExamplesView -eq [listNavigatorExamples]::getAgreement) {
           Invoke-Script -Command "`".\examples\Navigator\eg002GetSingleAgreement.ps1`""
         }
+                if ($listNavigatorExamplesView -eq [listNavigatorExamples]::bulkUpload) {
+                    Invoke-Script -Command "`".\examples\Navigator\eg003BulkUpload.ps1`""
+                }
     } until ($listNavigatorExamplesView -eq [listNavigatorExamples]::Pick_An_API)
     startLauncher
 }

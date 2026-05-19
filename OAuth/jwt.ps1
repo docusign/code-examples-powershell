@@ -55,7 +55,7 @@ elseif ($apiVersion -eq "webForms") {
   $scopes = "signature%20webforms_read%20webforms_instance_read%20webforms_instance_write"
 }
 elseif ($apiVersion -eq "navigator") {
-  $scopes = "signature%20adm_store_unified_repo_read"
+  $scopes = "signature%20adm_store_unified_repo_read%20document_uploader_write%20document_uploader_read"
 }
 elseif ($apiVersion -eq "connectedFields") {
   $scopes = "signature%20adm_store_unified_repo_read%20impersonation"

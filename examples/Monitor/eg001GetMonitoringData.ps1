@@ -3,6 +3,15 @@ $response = New-TemporaryFile
 
 # Step 1. Get required environment variables from .\config\settings.json file
 $accessToken = Get-Content .\config\ds_access_token.txt
+$variables = Get-Content .\config\settings.json -Raw | ConvertFrom-Json
+
+# Check that we have an organization id in the settings.json config file
+if (!$variables.ORGANIZATION_ID) {
+    Write-Output "Organization ID is needed. Please add the ORGANIZATION_ID variable to the settings.json"
+    exit -1
+}
+
+$organizationId = $variables.ORGANIZATION_ID
 
 # Step 2. Construct your API headers
 #ds-snippet-start:Monitor1Step2
@@ -13,14 +22,9 @@ $headers.add("Content-Type", "application/json")
 #ds-snippet-end:Monitor1Step2
 
 # Declare variables
-$complete=$false
-$cursorValue = (Get-Date (Get-Date).AddDays(-10) -Format "yyyy-MM-dd")
-$iterations=0
-# You must provide an access token that impersonates a user with permissions to access the Monitor API endpoint
-if (($accessToken -eq "") -or ($null -eq $accessToken)) {
-   Write-Output "You must provide an access token"
-   $complete = $true
-}
+$complete = $false
+$cursorValue = (Get-Date).AddYears(-1).ToString("yyyy-MM-dd") + "T00:00:00Z"
+$iterations = 0
 
 # Step 3: Get monitoring data
 # First call the endpoint with no cursor to get the first records.
@@ -30,13 +34,13 @@ if (($accessToken -eq "") -or ($null -eq $accessToken)) {
 #ds-snippet-start:Monitor1Step3
 DO {
    $iterations++
-   Write-Output ""
    try {
       Invoke-RestMethod `
-      -Uri "https://lens-d.docusign.net/api/v2.0/datasets/monitor/stream?cursor=${cursorValue}&limit=2000" `
+      -Uri "https://api-d.docusign.com/v1/organizations/${organizationId}/stream?cursor=${cursorValue}&limit=2000" `
       -Method 'GET' `
       -Headers @{
          'Authorization' = "Bearer $accessToken";
+         'Accept'        = "application/json";
          'Content-Type'  = "application/json";
       } `
       -OutFile $response
@@ -78,9 +82,14 @@ DO {
       Write-Output "Command : "$_.InvocationInfo.Line
       $complete = $true
    }
-
-} While ($complete -eq $false )
+   else {
+      Write-Output "Updating the cursor value of  ${cursorValue}  to the new value of  ${endCursorValue}"
+      $cursorValue = $endCursorValue
+      Start-Sleep -Second 1
+   }
 #ds-snippet-end:Monitor1Step3
+   Write-Output ""
+} While ($complete -eq $false )
 
 Remove-Item $response
 

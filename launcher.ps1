@@ -503,7 +503,8 @@ function startSignature {
             Focused_View = 44;
             Delete_Restore_Envelope = 45;
             Multiple_Delivery = 46;
-            Pick_An_API = 47;
+            Shared_Envelope_Access = 47;
+            Pick_An_API = 48;
         }
 
         $ApiExamplesView = $null;
@@ -554,6 +555,7 @@ function startSignature {
             Write-Output "$([int][ApiExamples]::Focused_View)) Focused_View"
             Write-Output "$([int][ApiExamples]::Delete_Restore_Envelope)) Delete_Restore_Envelope"
             Write-Output "$([int][ApiExamples]::Multiple_Delivery)) Multiple_Delivery"
+            Write-Output "$([int][ApiExamples]::Shared_Envelope_Access)) Shared_Envelope_Access"
             Write-Output "$([int][ApiExamples]::Pick_An_API)) Pick_An_API"
             [int]$ApiExamplesView = Read-Host "Select the action"
         } while (-not [ApiExamples]::IsDefined([ApiExamples], $ApiExamplesView));
@@ -709,6 +711,10 @@ function startSignature {
         }
         elseif ($ApiExamplesView -eq [ApiExamples]::Multiple_Delivery) {
             Invoke-Script -Command "`".\examples\eSignature\eg046MultipleDelivery.ps1`""
+        }
+        elseif ($ApiExamplesView -eq [ApiExamples]::Shared_Envelope_Access) {
+            checkEmailAddresses
+            Invoke-Script -Command "`".\examples\eSignature\eg047SharedEnvelopeAccess.ps1`""
         }
     } until ($ApiExamplesView -eq [ApiExamples]::Pick_An_API)
     startLauncher
